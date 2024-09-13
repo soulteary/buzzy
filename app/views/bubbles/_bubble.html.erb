@@ -14,8 +14,8 @@
     <span class="for-screen-reader"><%= bubble.title %></span>
   <% end %>
 
-  <%= render "boosts", bubble: bubble %>
-  <%= render "date", bubble: bubble %>
-  <%= render "image", bubble: bubble %>
-  <%= render "tags", bubble: bubble %>
+  <%= render "bubbles/boosts", bubble: bubble %>
+  <%= render "bubbles/date", bubble: bubble %>
+  <%= render "bubbles/image", bubble: bubble %>
+  <%= render "bubbles/tags", bubble: bubble %>
 </div>

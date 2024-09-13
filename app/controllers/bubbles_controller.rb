@@ -29,8 +29,6 @@ class BubblesController < ApplicationController
 
   def update
     @bubble.update!(bubble_params)
-    @bubble.image.purge_later if params.key?(:remove_image)
-
     redirect_to @bubble
   end
 

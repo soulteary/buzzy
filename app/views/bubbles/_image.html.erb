@@ -2,15 +2,14 @@
   <%= image_tag bubble.image.attached? ? bubble.image : "", data: { upload_preview_target: "image" } %>
 </div>
 
-<%= form_with model: bubble, data: { controller: "form" } do |form| %>
-  <div class="bubble__bubble bubble__meta bubble__attachment">
-    <% if bubble.image.attached? %>
-      <%= tag.label class: "btn btn--plain", style: "--btn-icon-size: 3em; margin-block-start: -0.5em; margin-inline-end: -0.2em", data: { action: "click->upload-preview#clear click->form#submit", upload_preview_target: "button" } do %>
-        <svg viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg" fill="var(--bubble-color)"><path fill="var(--color-negative)" d="m19.1 0c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm-.8 5.7h-1.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6h1.2s1.6 0 1.6 0h1.2c.3 0 .6.3.6.6s-.3.6-.6.6h-1.2s-1.6 0-1.6 0z"/><path d="m6.7 10.5c.9 0 1.6-.7 1.6-1.6s-.7-1.6-1.6-1.6-1.6.7-1.6 1.6.7 1.6 1.6 1.6z" fill="none"/><path d="m9.7 16.9h.1l-.1-.1z"/><path d="m19.2 11.6v6.3c0 .2 0 .4-.4.4h-16.8v-13.7c0-.2 0-.4.4-.4h10.1c0-.7.3-1.3.5-1.8h-11.6c-.9.2-1.4.9-1.4 1.8v14c0 1 .8 1.8 1.8 1.8h17.5c1 0 1.8-.8 1.8-1.8v-6.9c-.6.2-1.2.3-1.8.3z"/><path d="m4.8 5.5c-.7 0-1.3.6-1.3 1.3v8.9c0 .4.2.7.5 1l2.6-3.5c.2-.3.6-.5.9-.5s0 0 0 0c.4 0 .7.2.9.5l.9 1.3 2.3-3.5c.3-.4.8-.7 1.3-.7s0 0 0 0c.5 0 1 .3 1.3.7l3.1 5c0-.1 0-.2 0-.3v-4.2c-2.8-.6-4.9-3-5.1-6h-7.6zm1.9 5c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6 1.6.7 1.6 1.6-.7 1.6-1.6 1.6z"/><path d="m5.2 16.9h2.6l1-1.5-1.2-1.7z"/><path d="m10.4 15.8-.7 1 .1.1h1.3 5.1l-3.1-5.1z"/></svg>
-        <%= check_box_tag :remove_image, true %>
-        <span class="for-screen-reader">Remove image</span>
-      <% end %>
-    <% else %>
+<div class="bubble__bubble bubble__meta bubble__attachment">
+  <% if bubble.image.attached? %>
+    <%= button_to bubble_image_path(bubble), method: :delete, class: "btn btn--plain", style: "--btn-icon-size: 3em; margin-block-start: -0.5em; margin-inline-end: -0.2em", data: { action: "click->upload-preview#clear", upload_preview_target: "button" } do %>
+      <svg viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg" fill="var(--bubble-color)"><path fill="var(--color-negative)" d="m19.1 0c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm-.8 5.7h-1.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6h1.2s1.6 0 1.6 0h1.2c.3 0 .6.3.6.6s-.3.6-.6.6h-1.2s-1.6 0-1.6 0z"/><path d="m6.7 10.5c.9 0 1.6-.7 1.6-1.6s-.7-1.6-1.6-1.6-1.6.7-1.6 1.6.7 1.6 1.6 1.6z" fill="none"/><path d="m9.7 16.9h.1l-.1-.1z"/><path d="m19.2 11.6v6.3c0 .2 0 .4-.4.4h-16.8v-13.7c0-.2 0-.4.4-.4h10.1c0-.7.3-1.3.5-1.8h-11.6c-.9.2-1.4.9-1.4 1.8v14c0 1 .8 1.8 1.8 1.8h17.5c1 0 1.8-.8 1.8-1.8v-6.9c-.6.2-1.2.3-1.8.3z"/><path d="m4.8 5.5c-.7 0-1.3.6-1.3 1.3v8.9c0 .4.2.7.5 1l2.6-3.5c.2-.3.6-.5.9-.5s0 0 0 0c.4 0 .7.2.9.5l.9 1.3 2.3-3.5c.3-.4.8-.7 1.3-.7s0 0 0 0c.5 0 1 .3 1.3.7l3.1 5c0-.1 0-.2 0-.3v-4.2c-2.8-.6-4.9-3-5.1-6h-7.6zm1.9 5c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6 1.6.7 1.6 1.6-.7 1.6-1.6 1.6z"/><path d="m5.2 16.9h2.6l1-1.5-1.2-1.7z"/><path d="m10.4 15.8-.7 1 .1.1h1.3 5.1l-3.1-5.1z"/></svg>
+      <span class="for-screen-reader">Remove image</span>
+    <% end %>
+  <% else %>
+    <%= form_with model: bubble, data: { controller: "form" } do |form| %>
       <label class="btn btn--plain input--file" style="--btn-icon-size: 3em; margin-block-start: -0.5em; margin-inline-end: -0.2em">
         <svg viewBox="0 0 24 20" xmlns="http://www.w3.org/2000/svg" fill="var(--bubble-color)"><path fill="var(--color-positive)" d="m19.1 0c-2.8 0-5 2.2-5 5s2.2 5 5 5 5-2.2 5-5-2.2-5-5-5zm-.1 2.5c.3 0 .6.3.6.6v1.2c0 .2 0 .2.2.2h1.2c.3 0 .6.3.6.6s-.3.6-.6.6h-1.2c-.2 0-.2 0-.2.2v1.2c0 .3-.3.6-.6.6s-.6-.3-.6-.6v-1.2c0-.2 0-.2-.2-.2h-1.2c-.3 0-.6-.3-.6-.6s.3-.6.6-.6h1.2c.2 0 .2 0 .2-.2v-1.2c0-.3.3-.6.6-.6z"/><path d="m6.7 10.5c.9 0 1.6-.7 1.6-1.6s-.7-1.6-1.6-1.6-1.6.7-1.6 1.6.7 1.6 1.6 1.6z" fill="none"/><path d="m9.7 16.9h.1l-.1-.1z"/><path d="m19.2 11.6v6.3c0 .2 0 .4-.4.4h-16.8v-13.7c0-.2 0-.4.4-.4h10.1c0-.7.3-1.3.5-1.8h-11.6c-.9.2-1.4.9-1.4 1.8v14c0 1 .8 1.8 1.8 1.8h17.5c1 0 1.8-.8 1.8-1.8v-6.9c-.6.2-1.2.3-1.8.3z"/><path d="m4.8 5.5c-.7 0-1.3.6-1.3 1.3v8.9c0 .4.2.7.5 1l2.6-3.5c.2-.3.6-.5.9-.5s0 0 0 0c.4 0 .7.2.9.5l.9 1.3 2.3-3.5c.3-.4.8-.7 1.3-.7s0 0 0 0c.5 0 1 .3 1.3.7l3.1 5c0-.1 0-.2 0-.3v-4.2c-2.8-.6-4.9-3-5.1-6h-7.6zm1.9 5c-.9 0-1.6-.7-1.6-1.6s.7-1.6 1.6-1.6 1.6.7 1.6 1.6-.7 1.6-1.6 1.6z"/><path d="m5.2 16.9h2.6l1-1.5-1.2-1.7z"/><path d="m10.4 15.8-.7 1 .1.1h1.3 5.1l-3.1-5.1z"/></svg>
         <%= form.file_field :image, class: "input", accept: "image/*",
@@ -18,5 +17,5 @@
         <span class="for-screen-reader">Upload an image</span>
       </label>
     <% end %>
-  </div>
-<% end %>
+  <% end %>
+</div>

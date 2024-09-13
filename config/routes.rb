@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resource :session
 
   resources :bubbles do
+    resource :image, controller: "bubbles/images"
+
     resources :boosts
     resources :comments
     resources :tags, shallow: true
