@@ -7,6 +7,11 @@ module Authentication
   end
 
   class_methods do
+    def require_unauthenticated_access(**options)
+      allow_unauthenticated_access **options
+      before_action :redirect_authenticated_user, **options
+    end
+
     def allow_unauthenticated_access(**options)
       skip_before_action :require_authentication, **options
       before_action :resume_session, **options
@@ -21,7 +26,6 @@ module Authentication
     def require_authentication
       resume_session || request_authentication
     end
-
 
     def resume_session
       if session = find_session_by_cookie
@@ -41,6 +45,10 @@ module Authentication
 
     def after_authentication_url
       session.delete(:return_to_after_authenticating) || root_url
+    end
+
+    def redirect_authenticated_user
+      redirect_to root_url if authenticated?
     end
 
 

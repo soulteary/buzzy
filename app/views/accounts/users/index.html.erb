@@ -1,0 +1,18 @@
+<% @page_title = "People on the account" %>
+
+<% content_for :header do %>
+  <nav>
+    <%= link_to root_path, class: "btn" do %>
+      <%= image_tag "arrow-left.svg", aria: { hidden: true }, size: 24 %>
+      <span class="for-screen-reader">Go back</span>
+    <% end %>
+  </nav>
+<% end %>
+
+<div class="panel borderless center pad fill-shade flex flex-column margin-block">
+  <%= render "accounts/users/invite" %>
+</div>
+
+<div class="panel borderless center pad fill-none flex flex-column gap">
+  <%= render partial: "accounts/users/user", collection: @users %>
+</div>

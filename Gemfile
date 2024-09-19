@@ -16,6 +16,7 @@ gem "sqlite3", ">= 2.0"
 
 # Features
 gem "bcrypt", "~> 3.1.7"
+gem "rqrcode"
 
 group :development, :test do
   gem "brakeman", require: false
