@@ -5,7 +5,7 @@ class BubblesController < ApplicationController
 
   def index
     if params[:tag_id]
-      @tag = Tag.find(params[:tag_id])
+      @tag = Current.account.tags.find(params[:tag_id])
       @bubbles = @tag.bubbles
       @most_active_bubbles = @tag.bubbles.left_joins(:comments, :boosts).group(:id).order(Arel.sql("COUNT(comments.id) + COUNT(boosts.id) DESC")).limit(10)
     else
@@ -33,7 +33,6 @@ class BubblesController < ApplicationController
     @bubble.update!(bubble_params)
     redirect_to bucket_bubble_url(@bucket, @bubble)
   end
-
 
   private
     def set_bubble

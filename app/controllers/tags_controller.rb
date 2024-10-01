@@ -5,14 +5,14 @@ class TagsController < ApplicationController
   before_action :set_tag, only: :destroy
 
   def index
-    @tags = Tag.all
+    @tags = Current.account.tags.order(:title)
   end
 
   def new
   end
 
   def create
-    @bubble.tags << Tag.find_or_create_by!(tag_params)
+    @bubble.tags << Current.account.tags.find_or_create_by!(tag_params)
     redirect_to bucket_bubble_url(@bucket, @bubble)
   end
 
@@ -27,7 +27,7 @@ class TagsController < ApplicationController
     end
 
     def set_tag
-      @tag = Tag.find(params[:id])
+      @tag = Current.account.tags.find(params[:id])
     end
 
     def set_bubble

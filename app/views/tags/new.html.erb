@@ -4,7 +4,7 @@
     <%= form.submit "Create Tag", hidden: true %>
 
     <datalist id="tags-list">
-      <%= Tag.all.each do |tag| %>
+      <%= Current.account.tags.each do |tag| %>
         <option value="<%= tag.title %>"></option>
       <% end %>
     </datalist>

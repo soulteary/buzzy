@@ -5,4 +5,6 @@ class Account < ApplicationRecord
 
   has_many :buckets, dependent: :destroy
   has_many :bubbles, through: :buckets
+
+  has_many :tags, dependent: :destroy
 end
