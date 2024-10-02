@@ -104,6 +104,9 @@
 </section>
 
 <section class="bubbles-list unpad-inline center margin-block-start">
+  <header class="flex-inline align-center center gap txt-small">
+    <input type="search" class="input center flex-inline" placeholder="Type to filter…">
+  </header>
   <ul class="unpad margin-none flex flex-column txt-align-start center">
     <%= render partial: "bubbles/list/bubble", collection: @bubbles %>
   </ul>
