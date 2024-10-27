@@ -9,8 +9,8 @@ module Bubble::Searchable
     scope :mentioning, ->(query) do
       if query = query.presence
         bubbles = search(query).select(:id).to_sql
-        comments = Comment.search(query).select(:bubble_id).to_sql
-        left_joins(:comments).where("bubbles.id in (#{bubbles}) or comments.bubble_id in (#{comments})").distinct
+        comments = Comment.search(query).select(:id).to_sql
+        left_joins(:messages).where("bubbles.id in (#{bubbles}) or messages.messageable_id in (#{comments})").distinct
       end
     end
   end

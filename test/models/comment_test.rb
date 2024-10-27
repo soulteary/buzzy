@@ -1,9 +1,13 @@
 require "test_helper"
 
 class CommentTest < ActiveSupport::TestCase
-  test "searchable by body" do
-    comment = bubbles(:logo).comments.create! body: "I'd prefer something more rustic", creator: users(:kevin)
+  setup do
+    Current.session = sessions(:david)
+  end
 
-    assert_includes Comment.search("something rustic"), comment
+  test "searchable by body" do
+    message = bubbles(:logo).comment "I'd prefer something more rustic"
+
+    assert_includes Comment.search("something rustic"), message.comment
   end
 end
