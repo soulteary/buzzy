@@ -5,12 +5,12 @@ class Filter < ApplicationRecord
   has_one :account, through: :creator
 
   class << self
-    def idempotent_create!(attrs)
+    def persist!(attrs)
       filter = new(attrs)
       filter.save!
       filter
     rescue ActiveRecord::RecordNotUnique
-      find_by! params: filter.params # possible thanks to denormalized params
+      find_by!(params: filter.params).tap(&:touch) # possible thanks to denormalized params
     end
   end
 

@@ -1,10 +1,13 @@
 require "test_helper"
 
 class FilterTest < ActiveSupport::TestCase
-  test "idempotent creation" do
+  test "persistence" do
     assert_difference "Filter.count", +1 do
-      filter = users(:david).filters.idempotent_create!(indexed_by: "most_boosted")
-      assert_equal filter, users(:david).filters.idempotent_create!(indexed_by: "most_boosted")
+      filter = users(:david).filters.persist!(indexed_by: "most_boosted")
+
+      assert_changes "filter.reload.updated_at" do
+        assert_equal filter, users(:david).filters.persist!(indexed_by: "most_boosted")
+      end
     end
   end
 
