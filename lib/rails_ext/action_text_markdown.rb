@@ -10,11 +10,19 @@ module ActionText
     end
 
     def to_unsafe_html
-      (html_renderer.try(:call) || html_renderer).render(content)
+      if html_renderer.respond_to? :call
+        html_renderer.call content
+      else
+        html_renderer.render content
+      end
     end
 
     def to_plain_text
-      (plain_renderer.try(:call) || plain_renderer).render(content)
+      if plain_renderer.respond_to? :call
+        plain_renderer.call content
+      else
+        plain_renderer.render content
+      end
     end
   end
 end

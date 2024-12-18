@@ -10,7 +10,6 @@ gem "propshaft"
 gem "stimulus-rails"
 gem "turbo-rails"
 gem "hotwire_combobox", github: "josefarias/hotwire_combobox", branch: :main
-gem "house_md", bc: "house", branch: :renderer
 
 # Deployment and drivers
 gem "bootsnap", require: false
@@ -21,7 +20,8 @@ gem "thruster", require: false
 # Features
 gem "bcrypt", "~> 3.1.7"
 gem "rqrcode"
-gem "rouge", "~> 4.5"
+gem "redcarpet"
+gem "rouge"
 gem "jbuilder"
 
 # Telemetry
