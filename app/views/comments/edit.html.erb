@@ -1,8 +1,8 @@
 <%= turbo_frame_tag dom_id(@comment) do %>
   <div class="comment__content flex-inline flex-column full-width border border-radius" style="background-color: var(--color-selected);">
     <%= form_with model: [@bubble.bucket, @bubble, @comment], class: "flex flex-column gap full-width",
-          data: { controller: "form", action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel" } do |form| %>
-      <%= form.markdown_area :body, class: "input comment__input", required: true %>
+          data: { controller: "form", action: "keydown.ctrl+enter->form#submit:prevent keydown.meta+enter->form#submit:prevent keydown.esc->form#cancel:stop" } do |form| %>
+      <%= form.markdown_area :body, class: "input comment__input", required: true, autofocus: true %>
       <div class="flex gap-half justify-start">
         <%= form.button class: "btn btn--reversed txt-small", type: :submit do %>
           <%= image_tag "check.svg", aria: { hidden: true }, size: 16 %>
