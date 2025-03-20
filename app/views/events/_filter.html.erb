@@ -1,9 +1,7 @@
 <% presenter = BucketFilterPresenter.new(@buckets, params, cookies) %>
 <div class="position-relative max-width"
 		data-controller="dialog" data-action="keydown.esc->dialog#close click@document->dialog#closeOnClickOutside">
-	<button class="input input--select flex-inline min-width max-width txt-small" 
-				data-action="click->dialog#open:stop"
-				style="background-color: var(--color-ink); color: var(--color-ink-reversed);">
+	<button class="events__filter-btn input input--select flex-inline min-width max-width txt-small" data-action="click->dialog#open:stop">
 		<span class="overflow-ellipsis">
 			<%= presenter.filter_text %>
 		</span>

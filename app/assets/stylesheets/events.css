@@ -34,9 +34,32 @@
   z-index: 2;
 }
 
+.events__filter-btn {
+  --input-background: transparent; 
+  --input-color: var(--color-ink-reversed);
+
+  font-weight: 500;
+
+  @media (prefers-color-scheme: dark) {
+    --input-color: var(--color-ink);
+  }
+}
+
 .events__index {
   --grid-lines: 0.2em;
   --row-gap: var(--block-space);
+}
+
+.events__index-header {
+  background-color: var(--color-ink); 
+  color: var(--color-ink-reversed); 
+  margin-inline-end: 0.2em;
+  padding: 0.7em calc(0.3em + 0.6em); 
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--color-selected);
+    color: var(--color-ink);
+  }
 }
 
 .events--none {

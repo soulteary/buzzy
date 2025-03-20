@@ -19,7 +19,7 @@
 
 <div class="events__container align-start gap">
   <div class="flex flex-column">
-    <div class="flex align-center gap justify-space-between" style="padding: 0.7em calc(0.3em + 0.6em); background-color: var(--color-ink); color: var(--color-ink-reversed); margin-inline-end: 0.2em;">
+    <div class="events__index-header flex align-center gap justify-space-between">
       <h2 class="txt-large txt-nowrap">Latest activity</h2>
       <%= render "events/filter" %>
     </div>
@@ -33,7 +33,7 @@
     <div style="border-block-start: 1px solid var(--color-subtle); padding-block-start: var(--block-space-half);">
       <% @filters.each do |filter| %>
         <h3 class="txt-medium margin-block-end-half txt-tight-lines">
-          <%= link_to filter.summary,bubbles_path(**filter.as_params) %>
+          <%= link_to filter.summary, bubbles_path(**filter.as_params) %>
         </h3>
       <% end %>
     </div>
