@@ -100,4 +100,6 @@ Rails.application.routes.draw do
     end
     resources :pins, only: :index
   end
+
+  resource :terminal, only: [ :show ]
 end

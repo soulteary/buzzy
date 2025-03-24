@@ -1,0 +1,5 @@
+<li class="min-width overflow-ellipsis">
+  <%= link_to event_action_sentence(event), bucket_bubble_path(event.bubble.bucket, event.bubble), 
+      class: "terminal__link", 
+      data: { turbo_frame: "_top" } %>
+</li>

@@ -160,17 +160,17 @@
         </menu>
       </div>
     <% end %>
+  </div>
 
-    <div class="flex align-center txt-align-center justify-space-between gap-half margin-block-start">
-      <%= tag.button class: "btn", form: :filter_form, formaction: filters_path, formmethod: :post do %>
-        <%= image_tag "bubbles.svg", aria: { hidden: true }, size: 24 %>
-        <span>Save collection</span>
-      <% end %>
+  <div class="flex align-center txt-align-center justify-space-between gap-half margin-block-start">
+    <%= tag.button class: "btn", form: :filter_form, formaction: filters_path, formmethod: :post do %>
+      <%= image_tag "bubbles.svg", aria: { hidden: true }, size: 24 %>
+      <span>Save collection</span>
+    <% end %>
 
-      <button class="btn btn--reversed" form="filter_form">
-        <span>Apply</span>
-        <%= image_tag "arrow-right.svg", aria: { hidden: true }, size: 24 %>
-      </button>
-    </div>
+    <button class="btn btn--reversed" form="filter_form">
+      <span>Apply</span>
+      <%= image_tag "arrow-right.svg", aria: { hidden: true }, size: 24 %>
+    </button>
   </div>
 </dialog>

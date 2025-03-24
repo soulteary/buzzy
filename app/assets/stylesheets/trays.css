@@ -6,7 +6,7 @@
   inline-size: var(--size);
   padding: var(--block-space-half) var(--inline-space);
   position: fixed;
-  z-index: 1;
+  z-index: 2;
 
   .tray__item {
     --offset: calc((var(--position) - 1) * (var(--block-space) * -1));

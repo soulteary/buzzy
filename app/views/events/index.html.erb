@@ -3,12 +3,8 @@
 <% content_for :header do %>
   <nav class="align-start">
     <header style="margin-inline-start: clamp(var(--inline-space), 3cqmin, calc(var(--inline-space) * 3))">
-      <h1 class="txt-x-large"><%= Current.account.name %></h1>
+      <h1 class="txt-x-large margin-none"><%= Current.account.name %></h1>
     </header>
-
-    <div class="search flex flex-inline flex-column center flex-shrink txt--large">
-      <input type="search" placeholder="Type names, tags, phrases to find something…" class="input input--search">
-    </div>
 
     <%= link_to account_users_path, class: "btn flex-item-justify-end" do %>
       <%= image_tag "settings.svg", aria: { hidden: true }, size: 24 %>
@@ -53,8 +49,5 @@
     </div>
   </div>
 </div>
-
-<%= render "notifications/tray" %>
-<%= render "bubbles/pins/tray" %>
 
 <%= event_next_page_link(@next_day) %>

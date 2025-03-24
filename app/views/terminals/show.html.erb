@@ -1,0 +1,28 @@
+<%= turbo_frame_tag "terminal" do %>
+  <div class="terminal full-width flex flex-column gap justify-end" data-controller="toggle-class" data-toggle-class-toggle-class="terminal--open">
+    <menu class="terminal__menu flex-column txt-align-start margin-block-end">
+      <%= render partial: "event", collection: @events %>   
+    </menu>
+    
+    <%= form_tag bubbles_path, class: "flex align-center gap-half", method: :get, data: { turbo_frame: "_top" } do %>
+      <% @filter.as_params.each do |key, value| %>
+        <%= filter_hidden_field_tag key, value %>
+      <% end %>
+      
+      <label class="terminal__label txt-nowrap" for="fizzy_do">Fizzy do ></label>
+      <%= text_field_tag "terms[]", nil, 
+          autocomplete: "off",
+          class: "terminal__input input fill-transparent unpad",
+          data: { controller: "filter", action: "keydown.up->toggle-class#toggle:prevent input->filter#filter" },
+          id: "fizzy_do",
+          placeholder: "Search or type commands…" %>
+    <% end %>
+
+    <div hidden class="terminal__button">
+      <%= tag.button class: "btn txt-x-small", data: { controller: "hotkey", action: "keydown.up@document->hotkey#click click->toggle-class#toggle" } do %>
+        <%= image_tag "arrow-right.svg", aria: { hidden: true }, size: 24 %>
+        <span class="for-screen-reader">Toggle terminal</span>
+      <% end %>
+    </div>
+  </div>
+<% end %>

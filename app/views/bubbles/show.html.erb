@@ -25,16 +25,12 @@
       <span class="for-screen-reader">Home</span>
     <% end %>
 
-    <header class="search flex flex-inline flex-column center flex-shrink txt--large">
-      <input type="search" placeholder="Type names, tags, phrases to find something…" class="input input--search">
-    </header>
-
     <div class="btn btn--placeholder flex-item-justify-end"></div>
   </nav>
 <% end %>
 
 <div data-controller="beacon" data-beacon-url-value="<%= bucket_bubble_readings_url(@bubble.bucket, @bubble) %>">
-  <div class="card__container position-relative margin-block-start <%= "card__container--pointing" unless @bubble.published? %>">
+  <div class="card__container position-relative <%= "card__container--pointing" unless @bubble.published? %>">
     <%= render "bubbles/card", bubble: @bubble %>
 
     <div class="card__actions flex flex-column gap-half">
@@ -99,6 +95,3 @@
 </div>
 
 <%= link_to "Go back", bubbles_path(bucket_ids: [ @bubble.bucket ]), class: "btn", data: { controller: "hotkey", action: "keydown.esc@document->hotkey#click" }, hidden: true %>
-
-<%= render "notifications/tray" %>
-<%= render "bubbles/pins/tray" %>

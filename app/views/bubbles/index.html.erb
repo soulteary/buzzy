@@ -13,7 +13,6 @@
     <div class="btn btn--placeholder flex-item-justify-start"></div>
 
     <header class="search flex flex-inline flex-column center flex-shrink txt--large">
-      <input type="search" placeholder="Type names, tags, phrases to find something…" class="input input--search">
       <%= render "bubbles/filters", filter: @filter %>
     </header>
 
@@ -54,6 +53,3 @@
     <%= render partial: "bubbles/list/bubble", collection: @bubbles.offset(@display_count), as: :bubble, cached: true %>
   </ul>
 </section>
-
-<%= render "notifications/tray" %>
-<%= render "bubbles/pins/tray" %>

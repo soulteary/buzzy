@@ -43,6 +43,10 @@
 
     <footer id="footer">
       <%= yield :footer %>
+
+      <%= render "notifications/tray" %>
+      <%= render "bubbles/pins/tray" %>
+      <%= turbo_frame_tag "terminal", src: terminal_path %>
     </footer>
 
     <%= render "layouts/lightbox" %>
