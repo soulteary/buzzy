@@ -6,7 +6,7 @@
     --actions-inline-inset: 4rem;
     --color-container: color-mix(in srgb, var(--card-color) 33%, var(--color-bg));
     --padding-inline: calc(var(--block-space-double) + var(--block-space));
-    --padding-block: var(--block-space-double) calc(var(--block-space-double) + var(--block-space-half));
+    --padding-block: calc(var(--block-space-double) + var(--block-space-half));
 
     align-items: start;
     column-gap: var(--inline-space);
@@ -60,12 +60,7 @@
   /* -------------------------------------------------------------------------- */
 
   .card-perma__notch {
-    --card-notch-padding: 0.5ch;
-    --border-radius: 1em;
-
     align-items: center;
-    background-color: var(--color-bg);
-    border-radius: 99rem;
     color: color-mix(in srgb, var(--card-color) 40%, var(--color-ink));
     display: inline-flex;
     inline-size: auto;
@@ -99,8 +94,7 @@
 
   .card-perma__notch--bottom {
     grid-area: notch-bottom;
-    padding: calc(var(--block-space) * 0.75) calc(var(--block-space) * 0.66);
-    translate: 0 -50%;
+    translate: 0 -25%;
 
     &:has([open]) {
       z-index: 1;
