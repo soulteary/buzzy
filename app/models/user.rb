@@ -1,8 +1,9 @@
 class User < ApplicationRecord
-  include Accessor, Assignee, Avatar, Role, Transferable
+  include Accessor, Assignee, Role, Transferable
 
   has_many :sessions, dependent: :destroy
   has_secure_password validations: false
+  has_one_attached :avatar
 
   has_many :comments, inverse_of: :creator, dependent: :destroy
 
