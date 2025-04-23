@@ -155,7 +155,6 @@
     flex-direction: column;
     justify-self: end;
     max-inline-size: 20ch;
-    min-inline-size: 15ch;
     padding-block: var(--block-space-half);
   }
 
