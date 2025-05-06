@@ -1,7 +1,7 @@
 class Command::Parser
   attr_reader :context
 
-  delegate :user, :cards, to: :context
+  delegate :user, :cards, :filter, to: :context
 
   def initialize(context)
     @context = context
@@ -38,7 +38,7 @@ class Command::Parser
       if card = user.accessible_cards.find_by_id(string)
         Command::GoToCard.new(card_id: card.id)
       else
-        Command::Search.new(query: string)
+        Command::Search.new(query: string, params: filter.as_params)
       end
     end
 end
