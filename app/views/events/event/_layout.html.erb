@@ -1,5 +1,5 @@
 <%= link_to event.notifiable_target,
-      class: "event event--#{ event.action } panel center center-block flex-inline align-start justify-start gap position-relative",
+      class: "event event--#{ event.action } #{ "event--golden" if event.card.golden? } panel center center-block flex-inline align-start justify-start gap position-relative",
       style: "--card-color: #{ card.closed? ? "var(--color-card-complete)" : card.color }; background-color: color-mix(in srgb, var(--card-color) 10%, var(--color-canvas));
   color: color-mix(in srgb, var(--card-color) 40%, var(--color-ink)); border: 1px solid color-mix(in srgb, var(--card-color) 20%, var(--color-canvas))",
       data: { related_element_target: "related",

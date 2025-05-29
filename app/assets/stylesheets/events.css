@@ -143,6 +143,27 @@
     }
   }
 
+  .event--golden {
+    --lch-golden: 89.1% 0.178 95.7;
+
+    background-color: var(--color-canvas) !important;
+    background-image: linear-gradient(60deg,
+      oklch(var(--lch-golden) / 0.5) 0%,
+      oklch(var(--lch-golden) / 0.15) 33%,
+      oklch(var(--lch-golden) / 0.05) 66%,
+      oklch(var(--lch-golden) / 0.5) 100%
+    );
+    border-color: var(--color-ink-lighter) !important;
+    box-shadow:
+      0 0 0 1px oklch(var(--lch-golden) / 75%),
+      0 0 0.2em 0.2em oklch(var(--lch-golden) / 25%),
+      0 0 .7em 0.5em oklch(var(--lch-golden) / 25%) !important;
+
+    @media (prefers-color-scheme: dark) {
+      --lch-golden: var(--lch-blue-medium);
+    }
+  }
+
   .event--related {
     --hover-color: var(--card-color);
     --hover-size: 0.15rem;
