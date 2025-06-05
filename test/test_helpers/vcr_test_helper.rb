@@ -10,7 +10,8 @@ module VcrTestHelper
     class_attribute :vcr_record
 
     setup do
-      VCR.insert_cassette "#{self.class.name.tableize.singularize}-#{name}",
+      @casette_name = "#{self.class.name.tableize.singularize}-#{name}"
+      VCR.insert_cassette @casette_name,
         record: recording? ? :all : :none,
         preserve_exact_body_bytes: true
     end
@@ -31,5 +32,9 @@ module VcrTestHelper
 
       self.vcr_record = true
     end
+  end
+
+  def without_vcr_body_matching(&block)
+    VCR.use_cassette("#{@casette_name}_without_body", match_requests_on: [:method, :uri], &block)
   end
 end

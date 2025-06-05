@@ -44,18 +44,20 @@ class CommandsControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body)
     assert_match /Close 2 cards/, json["confirmation"]
-    assert_equal cards_path(assignee_ids: [ users(:jz) ]), json["redirect_to"]
+    assert_equal cards_path(assignee_ids: [users(:jz)]), json["redirect_to"]
   end
 
   test "get insight" do
-    assert_difference -> { users(:kevin).commands.root.count }, +1 do
-      post commands_path, params: { command: "summarize this" }, headers: { "HTTP_REFERER" => card_path(cards(:logo)) }
+    without_vcr_body_matching do
+      assert_difference -> { users(:kevin).commands.root.count }, +1 do
+        post commands_path, params: { command: "summarize this" }, headers: { "HTTP_REFERER" => card_path(cards(:logo)) }
+      end
+
+      assert_response :accepted
+
+      json = JSON.parse(response.body)
+      assert_not_nil json["message"]
     end
-
-    assert_response :accepted
-
-    json = JSON.parse(response.body)
-    assert_not_nil json["message"]
   end
 
   test "get a 422 on errors" do
