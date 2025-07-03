@@ -48,8 +48,6 @@ class Command::Ai::TranslatorTest < ActionDispatch::IntegrationTest
     assert_command({ context: { terms: [ "123" ] } }, "123") # Notice existing cards will be intercepted earlier
   end
 
-  vcr_record!
-
   test "acts on cards passing their ids" do
     assert_command({ context: { card_ids: [ 123, 456 ] }, commands: [ "/close" ] }, "close 123 and 456")
     assert_command({ context: { card_ids: [ 123 ] }, commands: [ "/close" ] }, "close 123")
@@ -68,6 +66,16 @@ class Command::Ai::TranslatorTest < ActionDispatch::IntegrationTest
 
     # Card context
     assert_command({ commands: [ "/close" ] }, "close", context: :card)
+  end
+
+  test "reopen cards" do
+    # List context
+    assert_command({ commands: [ "/reopen" ] }, "reopen")
+    assert_command({ context: { assignee_ids: [ "jz" ] }, commands: [ "/reopen" ] }, "reopen cards assigned to jz")
+    assert_command({ context: { closure: "thisweek", indexed_by: "closed" }, commands: [ "/reopen" ] }, "reopen cards closed this week")
+
+    # Card context
+    assert_command({ commands: [ "/reopen" ] }, "reopen", context: :card)
   end
 
   test "assign cards" do

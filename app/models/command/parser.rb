@@ -28,8 +28,6 @@ class Command::Parser
       rich_text_command = as_plain_text_with_attachable_references(string)
       plain_text_command = as_plain_text(string)
 
-      Rails.logger.info "COMMANDS: #{rich_text_command} AND #{plain_text_command}"
-
       parse_plain_text_command(plain_text_command) || parse_rich_text_command(rich_text_command)
     end
 
@@ -57,6 +55,8 @@ class Command::Parser
         Command::ClearFilters.new(params: filter.as_params)
       when "/close"
         Command::Close.new(card_ids: cards.ids, reason: combined_arguments)
+      when "/reopen"
+        Command::Reopen.new(card_ids: cards.ids)
       when "/consider", "/reconsider"
         Command::Consider.new(card_ids: cards.ids)
       when "/do"

@@ -4,6 +4,7 @@ class Prompts::CommandsController < ApplicationController
       [ "/add_card", "Add a new card", "/add_card " ],
       [ "/assign", "Assign cards to people", "/assign @" ],
       [ "/close", "Close cards (with optional reason)", "/close " ],
+      [ "/reopen", "Reopen cards", "/reopen" ],
       [ "/clear", "Clear all filters", "/clear" ],
       [ "/consider", "Move cards back to Considering", "/consider" ],
       [ "/do", "Move cards to Doing", "/do" ],

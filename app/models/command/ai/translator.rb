@@ -77,7 +77,7 @@ class Command::Ai::Translator
         Cards have comments and live inside collections.
 
         Context filters describe card state already true.
-        Commands (/assign, /tag, /close, /search, /clear, /do, /consider, /stage, /visit, /add_card, /user) apply new actions.
+        Commands (/assign, /tag, /close, /reopen, /search, /clear, /do, /consider, /stage, /visit, /add_card, /user) apply new actions.
 
         Context properties you may use
           * terms — array of keywords
@@ -100,7 +100,7 @@ class Command::Ai::Translator
 
         * Use terms only if the query explicitly refers to cards; plain-text searches go to /search.
         * Numbers without the word "card(s)" default to terms **unless the number is the direct object of an
-          action verb that operates on cards (move, assign, tag, close, stage, consider, do, etc.).**
+          action verb that operates on cards (move, assign, tag, close, reopen, stage, consider, do, etc.).**
             – "123" (with no action verb)   → context: { terms: ["123"] }
             – "card 123"                    → context: { card_ids: [123] }
             – "card 1,2"                    → context: { card_ids: [1, 2] }
@@ -127,12 +127,11 @@ class Command::Ai::Translator
         * "Falling back soon" cards       → indexed_by: "falling_back_soon"
         * **Past-tense** “tagged with #X”, “#X cards” → tag_ids: ["X"]           (filter)
         * **Imperative** “tag …”, “tag with #X”, “add the #X tag”, “apply #X” → command /tag #X   (never a filter)
-        * When using past-tense verbs such as "assigned" or "closed", always use the corresponding filter, NEVER a command.
         * For command that acts on cards, you can reference those by their ID (number). Use the filter "card_ids" when the user passes numbers as command arguments.
           - User can reference with numbers to a single card or to a group of cards. E.g:
             - "close 123 and 456" → context: { card_ids: [123, 456] }, commands: [ "/close" ]
             - "assign 789 to jz" → context: { card_ids: [789] }, commands: [ "/assign jz" ]
-            - "close 789" → context: { card_ids: [789] }, commands: [ "/close" ]
+            - "reopen 789" → context: { card_ids: [789] }, commands: [ "/reopen" ]
             - "assign 5, 82 and 9 to jz" → context: { card_ids: [5, 82 and 9] }, commands: [ "/assign jz" ]
         * "Unassigned cards" (or “not assigned”, “with no assignee”) → assignment_status: "unassigned".
           – IMPORTANT: Only set assignment_status when the user **explicitly** asks for an unassigned state
@@ -162,14 +161,15 @@ class Command::Ai::Translator
         * /visit <url|path>      → open any other URL or internal path (cards, settings, etc.).
         * /do                    → engage with card and move it to "doing"
         * /consider              → move card back to "considering" (reconsider)
+        * /reopen                → reopen closed cards (moves them back to "open")
         * Unless a clear command applies, fallback to /search with the verbatim text.
-        * When searching for nouns (non-person), prefer /search over terms.
-        * When the person to pass to a command is "me" or "myself", use "#{user.to_gid}"
-        * Respect the spoken order of commands.
+
         * "close as [reason]" or "close because [reason]" → /close [reason]
           – Remove "as" or "because" from the actual command
         * Lone "close"           → /close (acts on current context)
+        * Lone "reopen"          → /reopen (acts on current context)
         * /close must **only** be produced if the request explicitly contains the verb “close”.
+        * /reopen must **only** be produced if the request explicitly contains the verb “reopen”.
         * /stage [workflow stage]→ assign the card to the given stage (never takes card IDs).
         * “Move <ID(s)> to <Stage>”      → context.card_ids = [IDs]; command /stage <Stage>
         * “Move <ID(s)> to doing”        → context.card_ids = [IDs]; command /do
@@ -189,7 +189,8 @@ class Command::Ai::Translator
 
         ------------------------- VISIT USER PROFILES ------------------------
 
-        Use **/user <Name>** (not /visit) whenever the request is about viewing a person’s profile or activity:
+        Use **/user <Name>** (not /visit) whenever the request is about viewing a person’s profile, activity
+        or what that person is up to:
 
           • visit user mike   → /user mike*
           • view user kevin   → /user kevin*
@@ -197,7 +198,7 @@ class Command::Ai::Translator
 
         ---------------------------- CRUCIAL DON’TS ---------------------------
 
-        * When the query contains active verbs such as "assign" or "close", always use the corresponding command, NEVER a filter.
+        * When the query contains active verbs such as "assign", "close", or "reopen", always use the corresponding command, NEVER a filter.
         * Don’t output “/visit /users/<name>”. Profile requests must use **/user <name>**.
         * Never use names, tags, or stage names mentioned **inside commands** (like /assign, /tag, /stage) as filters.
         * Never duplicate the assignee in both commands and context.
@@ -238,7 +239,14 @@ class Command::Ai::Translator
         User: assign to me
         Output:
         {
-          "commands": ["/assign <GID of current user>"]
+          "commands": ["/assign #{user.to_gid}"]
+        }
+
+        User: reopen cards closed this week
+        Output:
+        {
+          "context": { "closure": "thisweek", "indexed_by": "closed" },
+          "commands": ["/reopen"]
         }
 
         User: tag with #design*
