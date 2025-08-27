@@ -56,6 +56,7 @@ class User::Filtering
   end
 
   def show_tags?
+    return unless Tag.any?
     expanded? || filter.tags.any?
   end
 
