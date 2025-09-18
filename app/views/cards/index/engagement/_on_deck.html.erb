@@ -1,9 +1,14 @@
-<section id="on-deck-cards" class="cards cards--on-deck"
+<section id="on-deck-cards" class="cards cards--on-deck is-collapsed" style="--card-color: var(--color-black);"
+    data-controller="toggle-class" 
+    data-toggle-class-toggle-class="is-collapsed"
     data-drag-and-drop-target="container"
-    data-drop-target="on_deck"
-    data-related-element-target="related"
-    data-related-element-group-value="card-columns"
-    data-action="mouseover->related-element#highlight mouseout->related-element#unhighlight">
+    data-drop-target="on_deck">
+  <div class="cards__expander btn btn--plain" data-action="click->toggle-class#toggle">
+    <strong class="font-weight-black cards__expander-count"><%= page.records.count %></strong>
+    <button class="btn btn--plain cards__expander-button txt-uppercase">Not Now</button>
+    <div class="progress progress-<%= [page.records.count, 20].min %>"></div>
+  </div>
+
   <% if page.used? %>
     <%= render partial: "cards/display/preview", collection: page.records, as: :card, locals: { draggable: true }, cached: true %>
 

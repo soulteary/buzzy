@@ -104,16 +104,16 @@
         display: flex;
         flex-direction: column;
         justify-content: start;
-      }
 
-      &:after {
-        background-color: color-mix(in srgb, var(--card-color) 20%, var(--color-canvas));
-        block-size: 100%;
-        content: " ";
-        inline-size: 1px;
-        inset: 0 0 0 0;
-        position: absolute;
-        z-index: -1;
+        &:after {
+          background-color: color-mix(in srgb, var(--card-color) 20%, var(--color-canvas));
+          block-size: 100%;
+          content: " ";
+          inline-size: 1px;
+          inset: 0 0 0 0;
+          position: absolute;
+          z-index: -2;
+        }
       }
     }
 
@@ -444,6 +444,17 @@
 
     .card__tags {
       font-size: var(--text-small);
+    }
+  }
+
+  /* On Deck (Not Now)
+  /* ------------------------------------------------------------------------ */
+
+  .cards--on-deck {
+    margin-block: var(--cards-gap);
+  
+    @media (min-width: 640px) {
+      padding-inline: var(--cards-gap);
     }
   }
 

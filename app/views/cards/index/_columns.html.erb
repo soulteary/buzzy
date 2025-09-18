@@ -1,6 +1,7 @@
 <% cache @cache_key do %>
   <%= turbo_frame_tag :card_columns do %>
     <div class="card-columns">
+      <%= render "cards/index/engagement/on_deck", user_filtering: user_filtering, **on_deck.to_h %>
       <%= render "cards/index/engagement/considering", user_filtering: user_filtering, **considering.to_h %>
 
       <% if workflow = user_filtering.single_collection.workflow %>
