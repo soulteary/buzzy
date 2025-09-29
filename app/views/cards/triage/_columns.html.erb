@@ -1,10 +1,10 @@
   <div id="<%= dom_id(card, :stages) %>" class="card__stages">
     <%= button_to "Not now", card_not_now_path(card),
-        class: [ "btn justify-start workflow-stage txt-uppercase", { "workflow-stage--current": card.postponed? } ],
+        class: [ "workflow-stage btn", { "workflow-stage--current": card.postponed? } ],
         form_class: "flex align-center gap-half" %>
 
     <%= button_to "The Stream", card_triage_path(card), method: :delete,
-        class: [ "btn justify-start workflow-stage txt-uppercase", { "workflow-stage--current": card.awaiting_triage? } ],
+        class: [ "workflow-stage workflow-stage--stream btn", { "workflow-stage--current": card.awaiting_triage? } ],
         form_class: "flex align-center gap-half" %>
 
     <% card.collection.columns.each do |column| %>
@@ -12,6 +12,6 @@
     <% end %>
 
     <%= button_to "Closed", card_closure_path(card, reason: "Completed"),
-        class: [ "btn justify-start workflow-stage txt-uppercase", { "workflow-stage--current": card.closed? } ],
+        class: [ "workflow-stage btn", { "workflow-stage--current": card.closed? } ],
         form_class: "flex align-center gap-half" %>
   </div>
