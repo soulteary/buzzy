@@ -76,6 +76,7 @@ export default class extends Controller {
 
     const autofocusElement = element.querySelector("[autofocus]")
     autofocusElement?.focus()
+    autofocusElement?.select()
   }
 
   #hideItem(element) {

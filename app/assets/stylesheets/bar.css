@@ -43,6 +43,10 @@
     margin-block-end: calc(var(--footer-height) - 0.3rem);
     position: fixed;
     z-index: -1;
+
+    &:has(#bar-content[busy]), &:has(#bar-content:not([complete])), &:has([data-search-redirect]) {
+      display: none;
+    }
   }
 
   .bar__placeholder {

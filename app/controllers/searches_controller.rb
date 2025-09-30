@@ -1,8 +1,17 @@
 class SearchesController < ApplicationController
-  include Search::QueryTermsScoped
+  include Search::QueryTermsScoped, Turbo::DriveHelper
 
   def show
-    @search_results = Current.user.search(@query_terms).limit(50)
-    @recent_search_queries = Current.user.search_queries.order(updated_at: :desc).limit(10)
+    if card = Current.user.accessible_cards.find_by_id(@query_terms)
+      @card = card
+    else
+      perform_search
+    end
   end
+
+  private
+    def perform_search
+      @search_results = Current.user.search(@query_terms).limit(50)
+      @recent_search_queries = Current.user.search_queries.order(updated_at: :desc).limit(10)
+    end
 end
