@@ -32,3 +32,13 @@ threads 1, 1
 before_fork do
   Process.warmup
 end
+
+# Defer major GC (full marking phase) until after request handling,
+# and perform major GC deferred during request handling.
+on_worker_boot do
+  GC.config(rgengc_allow_full_mark: false)
+end
+
+out_of_band do
+  GC.start if GC.latest_gc_info(:need_major_by)
+end
