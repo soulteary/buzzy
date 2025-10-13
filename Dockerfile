@@ -61,6 +61,7 @@ RUN apt-get update -qq && \
 COPY --from=build /usr/local/bundle /usr/local/bundle
 COPY --from=build /rails /rails
 COPY --from=beamer /home/beamer/bin/beamer.so /rails/bin/lib/beamer.so
+# COPY --from=beamer /home/beamer/bin/beamer /rails/bin/beamer
 
 # Run and own only the runtime files as a non-root user for security
 RUN useradd rails --create-home --shell /bin/bash && \
