@@ -45,6 +45,8 @@
   .align-self-end { align-self: end; }
   .align-self-start { align-self: start; }
 
+  .v-align-middle { vertical-align: middle; }
+
   .contain { contain: inline-size; }
 
   .flex { display: flex; }
