@@ -8,12 +8,38 @@
     </button>
   </div>
 
-  <%= render "hotkeys" %>
+  <div class="nav__hotkeys margin-block-end-half" role="list">
+    <%= filter_hotkey_link "Home", root_path, 1, "home" %>
+    <%= filter_hotkey_link "Assigned to me", cards_path(assignee_ids: [Current.user.id]), 2, "clipboard" %>
+    <%= filter_hotkey_link "Added by me", cards_path(creator_ids: [Current.user.id]), 3, "person-add" %>
+    <%= filter_hotkey_link "Notifications", notifications_path, 4, "bell" %>
+    <%= filter_hotkey_link "My Profile", user_path(Current.user), 5, "person" %>
+    <%= filter_hotkey_link "Settings", account_settings_path, 6, "settings" %>
+  </div>
+  
   <%= render "saved_filter", filters: @filters %>
   <%= render "boards", boards: @boards %>
   <%= render "tags", tags: @tags %>
   <%= render "users", users: @users %>
-  <%= render "places" %>
-  <%= render "accounts" %>
-  <%= render "footer" %>
+
+  <%= collapsible_nav_section "Jump to…" do %>
+    <%= filter_place_menu_item account_settings_path, "Account Settings", "settings" %>
+    <%= filter_place_menu_item user_path(Current.user), "My Profile", "person" %>
+    <%= filter_place_menu_item notifications_path, "Notifications", "bell" %>
+    <%= filter_place_menu_item notifications_settings_path, "Notification Settings", "settings" %>
+
+    <%= tag.li class: "popup__item", data: { filter_target: "item", navigable_list_target: "item" } do %>
+      <%= icon_tag "logout", class: "popup__icon" %>
+      <%= button_to session_url(script_name: nil), method: :delete, class: "popup__btn btn", data: { turbo: false } do %>
+        <span>Sign out</span>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <%= turbo_frame_tag Current.identity, :account_menu, 
+        src: session_menu_url(script_name: nil, menu_section: true, without: ApplicationRecord.current_tenant) %>
+
+  <footer class="nav__footer">
+    Fizzy&trade; is designed, built, and backed by <strong class="txt-nowrap"><%= icon_tag "37signals", class: "v-align-middle" %> <a href="https://37signals.com" target="_blank" class="txt-ink">37signals&trade;</a></strong>
+  </footer>
 <% end %>
