@@ -11,11 +11,17 @@ export default class extends Controller {
     reverseNavigation: { type: Boolean, default: false },
     supportHorizontalNavigation: { type: Boolean, default: true },
     supportVerticalNavigation: { type: Boolean, default: true },
-    hasNestedNavigation: { type: Boolean, default: false }
+    hasNestedNavigation: { type: Boolean, default: false },
+    preventHandledKeys: { type: Boolean, default: false },
+    autoSelect: { type: Boolean, default: true }
   }
 
   connect() {
-    this.reset()
+    if (this.autoSelectValue) {
+      this.reset()
+    } else {
+      this.#activateManualSelection()
+    }
   }
 
   // Actions
@@ -29,7 +35,18 @@ export default class extends Controller {
   }
 
   navigate(event) {
+    console.debug("PRESSED", this.element);
     this.#keyHandlers[event.key]?.call(this, event)
+
+    const parentNavigableList = this.element.parentElement?.closest('[data-controller~="navigable-list"]')
+    if (parentNavigableList) {
+      const parentController = this.application.getControllerForElementAndIdentifier(parentNavigableList, "navigable-list")
+      if (parentController) {
+        console.debug("CALLED!");
+        parentNavigableList.focus()
+        parentController.navigate(event)
+      }
+    }
   }
 
   select({ target }) {
@@ -95,6 +112,11 @@ export default class extends Controller {
   #scrollAndFocusOnSelectedItem() {
     const id = this.currentItem?.getAttribute("id")
     this.currentItem.scrollIntoView({ block: "nearest", inline: "nearest" })
+  console.debug("this.currentItem", this.currentItem);
+    if (this.hasNestedNavigationValue) {
+      this.#activateNestedNavigableList()
+    }
+
     if (this.focusOnSelectionValue) { this.currentItem.focus() }
     if (this.hasInputTarget && id) {
       this.inputTarget.setAttribute("aria-activedescendant", id)
@@ -108,10 +130,19 @@ export default class extends Controller {
     }
   }
 
-  #handleArrowKey(event, fn, preventDefault = true) {
+  #activateManualSelection() {
+    const preselectedItem = this.itemTargets.find(item => item.hasAttribute(this.selectionAttributeValue))
+    if (preselectedItem) {
+      this.#setCurrentFrom(preselectedItem)
+    }
+  }
+
+  #handleArrowKey(event, fn) {
     if (event.shiftKey || event.metaKey || event.ctrlKey) { return }
     fn.call()
-    if (preventDefault) { event.preventDefault() }
+    if (this.preventHandledKeysValue) {
+      event.preventDefault()
+    }
   }
 
   #clickCurrentItem(event) {
@@ -137,6 +168,24 @@ export default class extends Controller {
     }
   }
 
+  #activateNestedNavigableList() {
+    const nestedController = this.#findNestedNavigableListController()
+    if (nestedController) {
+      console.debug("CALLED!", this.element);
+      nestedController.reset()
+      return true
+    }
+    return false
+  }
+
+  #findNestedNavigableListController() {
+    const nestedElement = this.currentItem?.querySelector('[data-controller~="navigable-list"]')
+    if (nestedElement) {
+      return this.application.getControllerForElementAndIdentifier(nestedElement, "navigable-list")
+    }
+    return null
+  }
+
   #keyHandlers = {
     ArrowDown(event) {
       if (this.supportVerticalNavigationValue) {
@@ -152,12 +201,12 @@ export default class extends Controller {
     },
     ArrowRight(event) {
       if (this.supportHorizontalNavigationValue) {
-        this.#handleArrowKey(event, this.#selectNext.bind(this), false)
+        this.#handleArrowKey(event, this.#selectNext.bind(this))
       }
     },
     ArrowLeft(event) {
       if (this.supportHorizontalNavigationValue) {
-        this.#handleArrowKey(event, this.#selectPrevious.bind(this), false)
+        this.#handleArrowKey(event, this.#selectPrevious.bind(this))
       }
     },
     Enter(event) {

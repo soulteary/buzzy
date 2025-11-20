@@ -3,8 +3,7 @@
   /* ------------------------------------------------------------------------ */
 
   /* DEBUG: Remove this when done debugging keyboard navigation */
-  .card-columns:focus,
-  .cards:focus {
+  .card-columns :focus {
     outline: 3px solid purple !important;
   }
 

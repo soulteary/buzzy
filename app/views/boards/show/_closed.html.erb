@@ -4,12 +4,11 @@
   data-drag-and-strum-target="container"
   data-collapsible-columns-target="column"
   data-navigable-list-target="item"
-  data-navigable-list-support-horizontal-navigation-value="false"
   data-column-name="Done"
   data-action="turbo:before-morph-attribute->collapsible-columns#preventToggle focus->collapsible-columns#focusOnColumn"
   data-drag-and-drop-url="<%= columns_card_drops_closure_path("__id__") %>"
 >
-  <div class="cards__transition-container">
+  <div class="cards__transition-container" data-controller="navigable-list" data-navigable-list-support-horizontal-navigation-value="false" data-navigable-list-prevent-handled-keys-value="true" data-navigable-list-auto-select-value="false" data-action="keydown->navigable-list#navigate">
     <header class="cards__header">
       <%= render "boards/show/expander", title: "Done", count: board.cards.closed.count, column_id: "closed-cards" %>
       <%= render "boards/show/menu/maximize", column_path: board_columns_closed_path(board) %>

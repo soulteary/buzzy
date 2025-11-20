@@ -5,13 +5,12 @@
   data-drag-and-strum-target="container"
   data-collapsible-columns-target="column"
   data-navigable-list-target="item"
-  data-navigable-list-support-horizontal-navigation-value="false"
   data-controller="clicker"
   data-column-name="<%= column.name %>"
   data-action="turbo:before-morph-attribute->collapsible-columns#preventToggle turbo:before-stream-render@document->collapsible-columns#restoreState focus->collapsible-columns#focusOnColumn"
   data-drag-and-drop-url="<%= columns_card_drops_column_path("__id__", column_id: column.id) %>"
 >
-  <div class="cards__transition-container">
+  <div class="cards__transition-container" data-controller="navigable-list" data-navigable-list-support-horizontal-navigation-value="false" data-navigable-list-prevent-handled-keys-value="true" data-navigable-list-auto-select-value="false" data-action="keydown->navigable-list#navigate">
     <header class="cards__header">
       <%= render "boards/show/menu/column", column: column %>
       <%= render "boards/show/expander", title: column.name, count: column.cards.active.count, column_id: dom_id(column) %>

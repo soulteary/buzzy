@@ -2,11 +2,11 @@
   tabindex="0"
   data-drag-and-drop-target="container"
   data-navigable-list-target="item"
-  data-navigable-list-support-horizontal-navigation-value="false"
   data-column-name="Maybe?"
   data-action="turbo:before-morph-attribute->collapsible-columns#preventToggle"
-  data-drag-and-drop-url="<%= columns_card_drops_stream_path("__id__") %>">
-  <div class="cards__transition-container">
+  data-drag-and-drop-url="<%= columns_card_drops_stream_path("__id__") %>"
+  aria-selected="true">
+  <div class="cards__transition-container" data-controller="navigable-list" data-navigable-list-support-horizontal-navigation-value="false" data-navigable-list-prevent-handled-keys-value="true" data-navigable-list-auto-select-value="false" data-action="keydown->navigable-list#navigate">
     <header class="cards__header">
       <div class="cards__expander">
         <h2 class="cards__expander-title" data-collapsible-columns-target="title">Maybe?</h2>
