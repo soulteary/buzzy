@@ -49,7 +49,7 @@ gem "yabeda-prometheus-mmap"
 gem "yabeda-puma-plugin"
 gem "yabeda-rails"
 gem "webrick" # required for yabeda-prometheus metrics server
-gem "prometheus-client-mmap", "~> 1.1"
+gem "prometheus-client-mmap", "~> 1.3"
 gem "autotuner"
 gem "benchmark" # indirect dependency, being removed from Ruby 3.5 stdlib so here to quash warnings
 
