@@ -503,6 +503,7 @@ DEPENDENCIES
   rouge
   rqrcode
   rubocop-rails-omakase
+  rubyzip
   selenium-webdriver
   solid_cable (>= 3.0)
   solid_cache (~> 1.0)

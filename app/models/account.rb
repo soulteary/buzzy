@@ -8,6 +8,7 @@ class Account < ApplicationRecord
   has_many :webhooks, dependent: :destroy
   has_many :tags, dependent: :destroy
   has_many :columns, dependent: :destroy
+  has_many :exports, class_name: "Account::Export", dependent: :destroy
 
   has_many_attached :uploads
 

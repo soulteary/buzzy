@@ -1,0 +1,22 @@
+<div class="settings__panel panel shadow center">
+  <header>
+    <h2 class="divider txt-large">Data Export</h2>
+    <p class="margin-none-block-start">You can request a ZIP file containing all your Fizzy data.</p>
+  </header>
+
+  <div data-controller="dialog" data-dialog-modal-value="true">
+    <button type="button" class="btn btn--primary" data-action="dialog#open">Export</button>
+
+    <dialog class="dialog panel shadow" data-dialog-target="dialog">
+      <p class="margin-none"><strong>Data Export</strong></p>
+      <p>We will create a downloadable ZIP file of all the Fizzy data that you have access to in this account.</p>
+      <p>This can take a few minutes. When the file is ready, we'll email you a link to download it.</p>
+      <p>The download link will expire after 24 hours. But you can always request another export later.</p>
+
+      <div class="flex gap justify-end">
+        <button type="button" class="btn" data-action="dialog#close">Cancel</button>
+        <%= button_to "Export", account_exports_path, method: :post, class: "btn btn--primary", form: { data: { action: "submit->dialog#close" } } %>
+      </div>
+    </dialog>
+  </div>
+</div>
