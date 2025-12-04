@@ -36,4 +36,45 @@ class Boards::ColumnsControllerTest < ActionDispatch::IntegrationTest
       assert_response :success
     end
   end
+
+  test "create requires board admin permission" do
+    logout_and_sign_in_as :jz
+
+    assert_no_difference -> { boards(:writebook).columns.count } do
+      post board_columns_path(boards(:writebook)), params: { column: { name: "New Column" } }, as: :turbo_stream
+      assert_response :forbidden
+    end
+  end
+
+  test "update requires board admin permission" do
+    logout_and_sign_in_as :jz
+
+    column = columns(:writebook_in_progress)
+    original_name = column.name
+
+    put board_column_path(boards(:writebook), column), params: { column: { name: "Updated Name" } }, as: :turbo_stream
+
+    assert_response :forbidden
+    assert_equal original_name, column.reload.name
+  end
+
+  test "destroy requires board admin permission" do
+    logout_and_sign_in_as :jz
+
+    column = columns(:writebook_on_hold)
+
+    assert_no_difference -> { boards(:writebook).columns.count } do
+      delete board_column_path(boards(:writebook), column), as: :turbo_stream
+      assert_response :forbidden
+    end
+  end
+
+  test "board creator can manage columns" do
+    logout_and_sign_in_as :david  # David is not admin but created writebook board
+
+    assert_difference -> { boards(:writebook).columns.count }, +1 do
+      post board_columns_path(boards(:writebook)), params: { column: { name: "Creator Column" } }, as: :turbo_stream
+      assert_response :success
+    end
+  end
 end

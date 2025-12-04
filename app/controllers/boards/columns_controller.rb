@@ -1,6 +1,7 @@
 class Boards::ColumnsController < ApplicationController
   include BoardScoped
 
+  before_action :ensure_permission_to_admin_board, only: %i[ create update destroy ]
   before_action :set_column, only: %i[ show update destroy ]
 
   def show
