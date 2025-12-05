@@ -57,4 +57,8 @@ export default class extends Controller {
   loadLazyFrames() {
     Array.from(this.dialogTarget.querySelectorAll("turbo-frame")).forEach(frame => { frame.loading = "eager" })
   }
+
+  captureKey(event) {
+    if (event.key !== "Escape") { event.stopPropagation() }
+  }
 }

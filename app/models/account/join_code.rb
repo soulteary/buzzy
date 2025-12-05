@@ -7,10 +7,9 @@ class Account::JoinCode < ApplicationRecord
 
   before_create :generate_code, if: -> { code.blank? }
 
-  def redeem
+  def redeem_if(&block)
     transaction do
-      increment!(:usage_count)
-      yield account if block_given?
+      increment!(:usage_count) if block.call(account)
     end
   end
 

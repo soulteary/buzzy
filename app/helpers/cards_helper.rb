@@ -1,5 +1,5 @@
 module CardsHelper
-  def card_article_tag(card, id: dom_id(card, :article), **options, &block)
+  def card_article_tag(card, id: dom_id(card, :article), data: {}, **options, &block)
     classes = [
       options.delete(:class),
       ("golden-effect" if card.golden?),
@@ -7,10 +7,13 @@ module CardsHelper
       ("card--active" if card.active?)
     ].compact.join(" ")
 
+    data[:drag_and_drop_top] = true if card.golden? && !card.closed? && !card.postponed?
+
     tag.article \
       id: id,
       style: "--card-color: #{card.color}; view-transition-name: #{id}",
       class: classes,
+      data: data,
       **options,
       &block
   end

@@ -34,6 +34,18 @@ class SignupsControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "create with email address containing blanks" do
+    untenanted do
+      assert_no_difference -> { Identity.count } do
+        assert_no_difference -> { MagicLink.count } do
+          post signup_path, params: { signup: { email_address: "sam smith@example.com" } }
+        end
+      end
+
+      assert_response :unprocessable_entity
+    end
+  end
+
   test "create for an authenticated user" do
     identity = identities(:kevin)
     sign_in_as identity

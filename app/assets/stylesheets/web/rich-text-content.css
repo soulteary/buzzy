@@ -62,7 +62,7 @@
     /* Links should hug media contained within */
     a:has(img),
     a:has(video) {
-      display: inline-block;
+      inline-size: fit-content;
     }
 
     /* Avoid extra space due to empty paragraphs */
@@ -263,7 +263,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-block-start: var(--block-space-half);
+      margin-block-start: 0.5ch;
     }
   }
 

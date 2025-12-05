@@ -121,4 +121,15 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to boards(:writebook)
   end
+
+  test "show card with comment containing malformed remote image attachment" do
+    card = cards(:logo)
+    card.comments.create!(
+      creator: users(:kevin),
+      body: '<action-text-attachment url="image.png" content-type="image/*" presentation="gallery"></action-text-attachment>'
+    )
+
+    get card_path(card)
+    assert_response :success
+  end
 end

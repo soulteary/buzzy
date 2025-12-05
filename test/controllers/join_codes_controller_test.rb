@@ -43,7 +43,7 @@ class JoinCodesControllerTest < ActionDispatch::IntegrationTest
     identity = identities(:jz)
     sign_in_as :jz
 
-    assert identity.member_of?(@account), "JZ should be a member of 37s for this test"
+    assert identity.users.exists?(account: @account), "JZ should be a member of 37s for this test"
     assert identity.users.find_by!(account: @account).setup?, "JZ's user should be setup for this test"
 
     assert_no_difference -> { Identity.count } do
@@ -59,7 +59,7 @@ class JoinCodesControllerTest < ActionDispatch::IntegrationTest
     identity = identities(:mike)
     sign_in_as :mike
 
-    assert_not identity.member_of?(@account), "Mike should not be a member of 37s for this test"
+    assert_not identity.users.exists?(account: @account), "Mike should not be a member of 37s for this test"
 
     assert_no_difference -> { Identity.count } do
       assert_difference -> { User.count }, 1 do

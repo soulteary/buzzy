@@ -51,12 +51,14 @@
     padding-inline-end: var(--reaction-size);
     text-align: start;
 
-    :first-child {
-      margin-block-start: 0;
-    }
+    .action-text-content {
+      > action-text-attachment:first-child figure {
+        margin-block-start: 0.5ch;
+      }
 
-    :last-child {
-      margin-block-end: 0;
+      > :last-child {
+        margin-block-end: 0;
+      }
     }
   }
 

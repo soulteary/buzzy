@@ -1,11 +1,7 @@
 class User < ApplicationRecord
-  include Accessor, Assignee, Attachable, Configurable, EmailAddressChangeable,
+  include Accessor, Assignee, Attachable, Avatar, Configurable, EmailAddressChangeable,
     Mentionable, Named, Notifiable, Role, Searcher, Watcher
   include Timelined # Depends on Accessor
-
-  has_one_attached :avatar do |attachable|
-    attachable.variant :thumb, resize_to_fill: [ 256, 256 ]
-  end
 
   belongs_to :account
   belongs_to :identity, optional: true

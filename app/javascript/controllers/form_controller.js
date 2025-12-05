@@ -21,8 +21,13 @@ export default class extends Controller {
 
     if (input) {
       const value = (input.value || "").trim()
-      if (value.length === 0) {
+      const isEmpty = value.length === 0
+
+      if (isEmpty) {
         event.preventDefault()
+        input.setCustomValidity(input.dataset.validationMessage || "Please fill out this field")
+        input.reportValidity()
+        input.addEventListener("input", () => input.setCustomValidity(""), { once: true })
       }
     }
   }

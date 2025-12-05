@@ -1,6 +1,6 @@
 <% @page_title = "Check your email" %>
 
-<div class="panel panel--centered flex flex-column gap-half <%= "shake" if flash[:alert] %>">
+<div class="panel panel--centered flex flex-column gap-half <%= "shake" if flash[:alert] || flash[:shake] %>">
   <header>
     <h1 class="txt-x-large font-weight-black margin-none"><%= @page_title %></h1>
     <p class="margin-none-block-start txt-medium">Then enter the verification code included in the email below:</p>

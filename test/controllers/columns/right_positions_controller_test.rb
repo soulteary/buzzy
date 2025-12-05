@@ -20,4 +20,17 @@ class Columns::RightPositionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal original_position_b, column_a.reload.position
     assert_equal original_position_a, column_b.reload.position
   end
+
+  test "users can only reorder columns in boards they have access to" do
+    column = columns(:writebook_triage)
+
+    post column_right_position_path(column), as: :turbo_stream
+    assert_response :success
+
+    boards(:writebook).update! all_access: false
+    boards(:writebook).accesses.revoke_from users(:kevin)
+
+    post column_right_position_path(column), as: :turbo_stream
+    assert_response :not_found
+  end
 end

@@ -21,7 +21,7 @@ bin/dev
 
 You'll be able to access the app in development at http://fizzy.localhost:3006.
 
-To login, enter `david@37signals.com` and grab the verification code from the browser console to sign in.
+To login, enter `david@example.com` and grab the verification code from the browser console to sign in.
 
 ### Running tests
 

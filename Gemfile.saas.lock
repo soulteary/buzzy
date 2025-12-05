@@ -1,9 +1,32 @@
 GIT
+  remote: https://github.com/basecamp/audits1984
+  revision: c790eaec0716c8df56b3d0ab5bf5d75e3e1b0ed0
+  specs:
+    audits1984 (0.1.7)
+      console1984
+      importmap-rails (>= 1.2.1)
+      rinku
+      rouge
+      turbo-rails
+
+GIT
+  remote: https://github.com/basecamp/console1984
+  revision: 02b1b9ee7fd7050174b6a98c2b43057553621dc4
+  specs:
+    console1984 (0.2.2)
+      irb (~> 1.13)
+      parser
+      rails (>= 7.0)
+      rainbow
+
+GIT
   remote: https://github.com/basecamp/fizzy-saas
-  revision: 6dd8bb616632edfabc3d814f88f0658d96486e17
+  revision: 97d126e0a6084905aceaadf4facaa2a48b44e124
   specs:
     fizzy-saas (0.1.0)
-      prometheus-client-mmap
+      audits1984
+      console1984
+      prometheus-client-mmap (~> 1.4.0)
       queenbee
       rails (>= 8.1.0.beta1)
       rails_structured_logging
@@ -367,32 +390,32 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.6.0)
-    prometheus-client-mmap (1.3.0)
+    prometheus-client-mmap (1.4.0)
       base64
       bigdecimal
       logger
       rb_sys (~> 0.9.117)
-    prometheus-client-mmap (1.3.0-aarch64-linux-gnu)
+    prometheus-client-mmap (1.4.0-aarch64-linux-gnu)
       base64
       bigdecimal
       logger
       rb_sys (~> 0.9.117)
-    prometheus-client-mmap (1.3.0-aarch64-linux-musl)
+    prometheus-client-mmap (1.4.0-aarch64-linux-musl)
       base64
       bigdecimal
       logger
       rb_sys (~> 0.9.117)
-    prometheus-client-mmap (1.3.0-arm64-darwin)
+    prometheus-client-mmap (1.4.0-arm64-darwin)
       base64
       bigdecimal
       logger
       rb_sys (~> 0.9.117)
-    prometheus-client-mmap (1.3.0-x86_64-linux-gnu)
+    prometheus-client-mmap (1.4.0-x86_64-linux-gnu)
       base64
       bigdecimal
       logger
       rb_sys (~> 0.9.117)
-    prometheus-client-mmap (1.3.0-x86_64-linux-musl)
+    prometheus-client-mmap (1.4.0-x86_64-linux-musl)
       base64
       bigdecimal
       logger
@@ -440,6 +463,7 @@ GEM
     reline (0.6.3)
       io-console (~> 0.5)
     rexml (3.4.4)
+    rinku (2.0.6)
     rouge (4.6.1)
     rqrcode (3.1.0)
       chunky_png (~> 1.0)
@@ -610,6 +634,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeresource
+  audits1984!
   autotuner
   aws-sdk-s3
   bcrypt (~> 3.1.7)
@@ -618,6 +643,7 @@ DEPENDENCIES
   brakeman
   bundler-audit
   capybara
+  console1984!
   debug
   faker
   fizzy-saas!

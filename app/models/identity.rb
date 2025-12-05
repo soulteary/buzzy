@@ -10,6 +10,7 @@ class Identity < ApplicationRecord
 
   before_destroy :deactivate_users
 
+  validates :email_address, format: { with: URI::MailTo::EMAIL_REGEXP }
   normalizes :email_address, with: ->(value) { value.strip.downcase.presence }
 
   def send_magic_link(**attributes)

@@ -178,6 +178,7 @@
       aspect-ratio: 5/3;
       background-color: var(--color-ink-lightest);
       border-radius: 0.5em;
+      container-type: inline-size;
       flex-basis: calc((100% - var(--gap) * 2) / 3);
       flex-direction: column;
       font-size: var(--text-small);
@@ -212,6 +213,7 @@
 
       @media (max-width: 639px) {
         font-size: var(--text-x-small);
+        font-size: clamp(var(--text-xx-small), 3.15cqi, var(--text-small));
         font-weight: 500;
       }
     }

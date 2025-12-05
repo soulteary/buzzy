@@ -35,7 +35,7 @@ class Account < ApplicationRecord
   end
 
   def system_user
-    users.where(role: :system).first!
+    users.find_by!(role: :system)
   end
 
   private

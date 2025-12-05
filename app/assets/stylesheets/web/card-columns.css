@@ -402,30 +402,6 @@
     }
   }
 
-  .blank-slate--card {
-    box-shadow: none !important;
-    color: color-mix(in srgb, var(--card-color) 70%, var(--color-canvas));
-
-    .cards--considering & {
-      background-color: var(--card-bg-color) !important;
-    }
-
-    p {
-      font-size: var(--text-small);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-
-      &.blank-slate-for-grid {
-        display: none;
-
-        .cards--grid & {
-          display: initial;
-        }
-      }
-    }
-  }
-
   /* TODO: I think this is legacy now? */
   .cards__heading {
     display: flex;

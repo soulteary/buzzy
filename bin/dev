@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 bin/rails runner - <<EOF
-  puts "Login with david@37signals.com to: http://fizzy.localhost:3006/"
+  puts "Login with david@example.com to: http://fizzy.localhost:3006/"
 EOF
 
 if [ -f tmp/solid-queue.txt ]; then

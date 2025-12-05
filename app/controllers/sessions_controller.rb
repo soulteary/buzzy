@@ -9,10 +9,15 @@ class SessionsController < ApplicationController
   end
 
   def create
-    if identity = Identity.find_by_email_address(email_address)
-      magic_link = identity.send_magic_link
-      serve_development_magic_link(magic_link)
+    identity = Identity.find_by_email_address(email_address)
+
+    magic_link = if identity
+      identity.send_magic_link
+    else
+      Signup.new(email_address: email_address).create_identity
     end
+
+    serve_development_magic_link(magic_link)
 
     redirect_to session_magic_link_path
   end

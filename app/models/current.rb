@@ -12,11 +12,11 @@ class Current < ActiveSupport::CurrentAttributes
     end
   end
 
-  def with_account(value, &block)
-    with(account: value, &block)
+  def with_account(value, &)
+    with(account: value, &)
   end
 
-  def without_account(&block)
-    with(account: nil, &block)
+  def without_account(&)
+    with(account: nil, &)
   end
 end

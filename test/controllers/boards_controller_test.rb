@@ -136,4 +136,13 @@ class BoardsControllerTest < ActionDispatch::IntegrationTest
     assert_response :forbidden
     assert_equal original_name, board.reload.name
   end
+
+  test "non-admin cannot destroy board they don't own" do
+    logout_and_sign_in_as :jz
+
+    board = boards(:writebook)
+    delete board_path(board)
+
+    assert_response :forbidden
+  end
 end

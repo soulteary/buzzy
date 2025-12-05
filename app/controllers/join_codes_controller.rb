@@ -12,7 +12,7 @@ class JoinCodesController < ApplicationController
   def create
     identity = Identity.find_or_create_by!(email_address: params.expect(:email_address))
 
-    @join_code.redeem { |account| identity.join(account) } unless identity.member_of?(@join_code.account)
+    @join_code.redeem_if { |account| identity.join(account) }
     user = User.active.find_by!(account: @join_code.account, identity: identity)
 
     if identity == Current.identity && user.setup?

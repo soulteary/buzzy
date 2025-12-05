@@ -1,7 +1,7 @@
 class Sessions::MagicLinksController < ApplicationController
   disallow_account_scope
   require_unauthenticated_access
-  rate_limit to: 10, within: 15.minutes, only: :create, with: -> { redirect_to session_magic_link_path, alert: "Try again in 15 minutes." }
+  rate_limit to: 10, within: 15.minutes, only: :create, with: -> { redirect_to session_magic_link_path, alert: "Wait 15 minutes, then try again" }
 
   layout "public"
 
@@ -13,7 +13,7 @@ class Sessions::MagicLinksController < ApplicationController
       start_new_session_for magic_link.identity
       redirect_to after_sign_in_url(magic_link)
     else
-      redirect_to session_magic_link_path, alert: "Try another code."
+      redirect_to session_magic_link_path, flash: { shake: true }
     end
   end
 
