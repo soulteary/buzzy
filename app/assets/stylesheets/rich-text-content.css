@@ -86,6 +86,7 @@
     a:has(img),
     a:has(video) {
       inline-size: fit-content;
+      margin-inline: auto;
     }
 
     hr {
