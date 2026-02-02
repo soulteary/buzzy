@@ -93,16 +93,6 @@ class Account::DataTransfer::RecordSet
       if model.exists?(id: data["id"])
         raise IntegrityError, "#{model} record with ID #{data['id']} already exists"
       end
-
-      record = model.new(data.slice(*attributes).merge("account_id" => account.id))
-      belongs_to_associations = model.reflect_on_all_associations(:belongs_to).map { |a| a.name.to_s }
-
-      record.validate
-      errors = record.errors.reject { |e| belongs_to_associations.include?(e.attribute.to_s) }
-
-      if errors.any?
-        raise IntegrityError, "Validation failed for #{model} record ID #{data['id']}: #{errors.map(&:full_message).join(', ')}"
-      end
     end
 
     def skip_to(file_list, last_id)
