@@ -9,11 +9,11 @@ class Account::DataTransfer::BlobFileRecordSet < Account::DataTransfer::RecordSe
     end
 
     def export_record(blob)
-      zip.add_file("storage/#{blob.key}", compress: false) do |out|
-        blob.download { |chunk| out.write(chunk) }
+      if blob.service.exist?(blob.key)
+        zip.add_file("storage/#{blob.key}", compress: false) do |out|
+          blob.download { |chunk| out.write(chunk) }
+        end
       end
-    rescue ActiveStorage::FileNotFoundError
-      # Skip blobs where the file is missing from storage
     end
 
     def files

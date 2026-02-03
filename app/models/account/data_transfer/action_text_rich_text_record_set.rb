@@ -57,11 +57,17 @@ class Account::DataTransfer::ActionTextRichTextRecordSet < Account::DataTransfer
 
       content.send(:attachment_nodes).each do |node|
         sgid = SignedGlobalID.parse(node["sgid"], for: ActionText::Attachable::LOCATOR_NAME)
-        record = sgid&.find
-        next if record&.account_id != account.id
 
-        node["gid"] = record.to_global_id.to_s
-        node.remove_attribute("sgid")
+        record = begin
+          sgid&.find
+        rescue ActiveRecord::RecordNotFound
+          nil
+        end
+
+        if record&.account_id == account.id
+          node["gid"] = record.to_global_id.to_s
+          node.remove_attribute("sgid")
+        end
       end
 
       content.fragment.source.to_html
@@ -74,11 +80,12 @@ class Account::DataTransfer::ActionTextRichTextRecordSet < Account::DataTransfer
 
       fragment.css("action-text-attachment[gid]").each do |node|
         gid = GlobalID.parse(node["gid"])
-        next unless gid
 
-        record = gid.find
-        node["sgid"] = record.attachable_sgid
-        node.remove_attribute("gid")
+        if gid
+          record = gid.find
+          node["sgid"] = record.attachable_sgid
+          node.remove_attribute("gid")
+        end
       end
 
       fragment.to_html

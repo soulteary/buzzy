@@ -1,4 +1,6 @@
 class ZipFile
+  class InvalidFileError < StandardError; end
+
   class << self
     def create_for(attachment, filename:)
       raise ArgumentError, "No block given" unless block_given?
@@ -57,6 +59,12 @@ class ZipFile
 
         blob.update!(byte_size: writer.byte_size, checksum: writer.checksum)
         attachment.attach(blob)
+      rescue Aws::S3::MultipartUploadError => e
+        if e.errors.any?
+          raise e.errors.first
+        else
+          raise e
+        end
       end
 
       def create_for_disk(attachment, filename:)

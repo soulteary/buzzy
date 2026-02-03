@@ -2,7 +2,7 @@ class Account::DataImportJob < ApplicationJob
   include ActiveJob::Continuable
 
   queue_as :backend
-  discard_on Account::DataTransfer::RecordSet::IntegrityError
+  discard_on Account::DataTransfer::RecordSet::IntegrityError, ZipFile::InvalidFileError
 
   def perform(import)
     step :check do |step|

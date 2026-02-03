@@ -59,4 +59,21 @@ class Account::ExportTest < ActiveSupport::TestCase
       assert entry, "Expected blob file in zip"
     end
   end
+
+  test "build succeeds when rich text references missing blob" do
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: file_fixture("moon.jpg").open,
+      filename: "moon.jpg",
+      content_type: "image/jpeg"
+    )
+    card = cards(:logo)
+    card.update!(description: "<action-text-attachment sgid=\"#{blob.attachable_sgid}\"></action-text-attachment>")
+    ActiveStorage::Blob.where(id: blob.id).delete_all
+
+    export = Account::Export.create!(account: Current.account, user: users(:david))
+
+    export.build
+
+    assert export.completed?
+  end
 end
