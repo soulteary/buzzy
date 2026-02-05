@@ -1,0 +1,13 @@
+en:
+  boards:
+    edit:
+      page_title: "Board Settings"
+      only_admins_notice: "Only admins can change these settings"
+      self_removal_confirm: "Are you sure you want to remove yourself from this board? You won't be able to get back in unless someone invites you."
+    new:
+      page_title: "Create a new board"
+      placeholder: "Name it…"
+      create_button: "Create board"
+      validation_message: "Board names can't be blank"
+    columns:
+      page_title: "Column: %{name}"
