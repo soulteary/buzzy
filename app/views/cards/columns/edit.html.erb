@@ -1,6 +1,6 @@
 <%= turbo_frame_tag @card, :columns do %>
   <div class="card__stages" role="radiogroup" data-controller="scroll-to">
-    <legend class="for-screen-reader">Choose a column for this card</legend>
+    <legend class="for-screen-reader"><%= t("columns.choose") %></legend>
 
     <%= button_to t("columns.not_now"), card_not_now_path(@card),
         class: [ "card__column-name btn", { "card__column-name--current": @card.postponed? } ],

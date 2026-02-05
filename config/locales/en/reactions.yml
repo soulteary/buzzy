@@ -1,0 +1,10 @@
+en:
+  reactions:
+    new:
+      submit: "Submit"
+      cancel: "Cancel"
+      new_reaction: "New reaction"
+    reaction:
+      add_your_own: "Add your own reaction"
+      delete_this: "Delete this reaction"
+      press_enter_to_delete: "Press enter to delete this reaction"

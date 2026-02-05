@@ -4,6 +4,12 @@ en:
       page_title: "Board Settings"
       only_admins_notice: "Only admins can change these settings"
       self_removal_confirm: "Are you sure you want to remove yourself from this board? You won't be able to get back in unless someone invites you."
+      select_all: "Select all"
+      select_none: "Select none"
+      save_changes: "Save changes"
+      save_changes_hotkey: "Save changes (%{hotkey})"
+    publication:
+      save_changes: "Save changes"
     new:
       page_title: "Create a new board"
       placeholder: "Name it…"
@@ -11,3 +17,11 @@ en:
       validation_message: "Board names can't be blank"
     columns:
       page_title: "Column: %{name}"
+      add_column: "Add column"
+      add_a_column: "Add a column"
+      column_options: "Column options"
+      edit_column: "Edit column"
+      move_left: "Move to the left"
+      move_right: "Move to the right"
+      delete_column: "Delete column"
+      delete_confirm: "Are you sure you want to delete this column? This will move the cards back to Maybe."

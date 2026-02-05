@@ -1,0 +1,9 @@
+en:
+  account:
+    entropy_section_title: "Auto close"
+    entropy_intro_html: "Fizzy doesn't let stale cards stick around forever. Cards automatically move to \"Not Now\" if there is no activity for a specific period of time. <em>This is the default, global setting — you can override it on each board.</em>"
+    saved: "Saved"
+    saved_removed_from_board: "Saved (you were removed from the board)"
+    export_started: "Export started. You'll receive an email when it's ready."
+    updated: "Account updated"
+    deleted: "Account deleted"

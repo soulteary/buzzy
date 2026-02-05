@@ -1,0 +1,13 @@
+en:
+  users:
+    email_addresses:
+      already_in_account: "You already have a user in this account with that email address"
+      confirm_page_title: "Confirm your new email address"
+      check_email: "Check your email"
+      sent_to: "We just sent an email to %{email}"
+      hit_link: "Hit the link in the email to confirm this is the email address you want to use with Fizzy going forward."
+    data_exports:
+      export_started: "Export started. You'll receive an email when it's ready."
+    access_tokens:
+      token_no_longer_visible: "Token is no longer visible"
+    my_profile: "My profile"
