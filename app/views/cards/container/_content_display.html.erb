@@ -1,0 +1,13 @@
+<h1 class="card__title flex align-start gap-half">
+  <% if card_editable_by_current_user?(card) %>
+    <%= link_to card.title, edit_user_board_card_path(card.board.url_user, card.board, card), class: "card__title-link" %>
+  <% else %>
+    <%= card.title %>
+  <% end %>
+</h1>
+
+<% unless card.description.blank? %>
+  <div class="card__description rich-text-content" data-controller="syntax-highlight retarget-links">
+    <%= rich_text_with_attachments(card.description) %>
+  </div>
+<% end %>

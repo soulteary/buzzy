@@ -1,0 +1,17 @@
+json.cache! [ notification, I18n.locale ] do
+  json.(notification, :id)
+  json.read notification.read?
+  json.read_at notification.read_at&.utc
+  json.created_at notification.created_at.utc
+
+  json.partial! "notifications/notification/#{notification.source_type.underscore}/body", notification: notification
+
+  json.creator notification.creator, partial: "users/user", as: :user
+
+  json.card do
+    json.(notification.card, :id, :title, :status)
+    json.url user_board_card_url(notification.card.board.url_user, notification.card.board, notification.card)
+  end
+
+  json.url notification_url(notification, script_name: notification.account.slug)
+end

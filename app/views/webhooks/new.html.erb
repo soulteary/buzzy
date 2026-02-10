@@ -1,0 +1,45 @@
+<% @page_title = t("webhooks.new.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("webhooks.index.back_to"), user_board_webhooks_path(@board.url_user, @board), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<article class="panel panel--wide center txt-align-start" style="view-transition-name: <%= dom_id(@webhook) %>">
+  <%= form_with model: @webhook, url: user_board_webhooks_path(@board.url_user, @board), data: { controller: "form" }, html: { class: "flex flex-column gap" } do |form| %>
+    <h2 class="txt-large margin-none">
+      <%= form.text_field :name, required: true, autofocus: true, class: "input", placeholder: t("webhooks.new.name_placeholder"), data: { action: "keydown.esc@document->form#cancel" } %>
+    </h2>
+
+    <div class="flex flex-column gap-half">
+      <%= form.label :url do %>
+        <strong><%= t("webhooks.new.payload_url") %></strong><br>
+        <p class="margin-none txt-x-small txt-subtle"><%= t("webhooks.new.payload_url_hint") %></p>
+      <% end %>
+      <%= form.url_field :url,
+            required: true,
+            pattern: "https?://.*",
+            title: t("webhooks.new.url_title"),
+            class: "input",
+            placeholder: t("webhooks.new.url_placeholder"),
+            data: { action: "keydown.esc@document->form#cancel" } %>
+    </div>
+
+    <div class="flex flex-column gap-half">
+      <%= form.label :actions do %>
+        <strong><%= t("webhooks.new.events") %></strong><br>
+        <p class="margin-none txt-x-small txt-subtle"><%= t("webhooks.new.events_hint") %></p>
+      <% end %>
+      <%= render "webhooks/form/actions", form: form %>
+    </div>
+
+    <%= form.button type: :submit, class: "btn btn--link center txt-medium" do %>
+      <span><%= t("webhooks.new.create") %></span>
+    <% end %>
+
+    <%= link_to t("webhooks.new.go_back"), user_board_webhooks_path(@board.url_user, @board), data: { form_target: "cancel" }, hidden: true %>
+  <% end %>
+</article>

@@ -1,0 +1,46 @@
+# Buzzy Docker Compose（MySQL）
+#
+# 使用方式：在 .env 中设置 DATABASE_ADAPTER=mysql、MYSQL_PASSWORD（须与下方 db 一致），然后：
+#   docker compose -f docker-compose.mysql.yml up -d
+# 首次使用 MySQL 后需在 app 容器内执行：bin/rails db:prepare
+# 若已有数据且需中文搜索，迁移后请在 app 容器内执行：bin/rails search:reindex
+#
+# 若 db 报错 "Another process is using unix socket file"：先 down，删除或清空 ./buzzy_mysql_data 后重新 up。
+# 若 app 报错 "Access denied ... to database 'buzzy_production_cable'"：说明 init 脚本未执行（数据目录已存在），
+#   在项目根目录执行：docker compose -f docker-compose.mysql.yml exec db bash -s < docker/fix-database-grants.sh
+#
+services:
+  # MySQL 数据库（与 app 共用 .env，保证 MYSQL_USER/MYSQL_PASSWORD 一致）
+  # MySQL 9 默认 caching_sha2_password，app 通过 MYSQL_SSL_MODE=preferred 走 TLS 连接
+  # command：utf8mb4 与 ngram_token_size 用于正确存储与全文检索中文等多字节字符
+  db:
+    image: mysql:9.6
+    restart: unless-stopped
+    networks:
+      - traefik
+    command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--ngram_token_size=2" ]
+    env_file:
+      - .env
+    environment:
+      # root 密码（仅用于初始化与运维，应用使用 MYSQL_USER）
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      # 主库名（init 脚本会创建 production/cable/queue/cache 等库）
+      MYSQL_DATABASE: buzzy_production
+      # 应用使用的用户名，需与 app 的 MYSQL_USER 一致
+      MYSQL_USER: ${MYSQL_USER:-buzzy}
+      # 应用使用的密码，需与 app 的 MYSQL_PASSWORD 一致
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-buzzymysql}
+    volumes:
+      - ./buzzy_mysql_data:/var/lib/mysql
+      - ./docker/01-buzzy-databases.sh:/docker-entrypoint-initdb.d/01-buzzy-databases.sh:ro
+    healthcheck:
+      # CMD-SHELL 使 MYSQL_ROOT_PASSWORD 在容器内被正确展开；exec 形式不会展开变量
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+networks:
+  traefik:
+    external: true

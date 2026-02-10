@@ -1,0 +1,9 @@
+<%= turbo_stream.remove "#{params[:target]}-load-page-#{@page.number}" %>
+
+<%= turbo_stream.append params[:target] do %>
+  <%= render partial: "cards/display/preview", collection: @page.records, as: :card, cached: -> (card) { [ I18n.locale, card, viewing_other_user_as_limited_viewer? ] } %>
+
+  <% unless @page.last? %>
+    <%= cards_next_page_link params[:target], page: @page, filter: @filter, fetch_on_visible: @filter.indexed_by.closed? %>
+  <% end %>
+<% end %>

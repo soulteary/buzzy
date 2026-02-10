@@ -1,0 +1,8 @@
+<% mention = notification.source %>
+
+<strong class="notificaton__mention">
+  <%= mention_notification_title(mention) %>
+</strong>
+<p class="notification__details">
+  <%= mention_notification_body(mention, length: 250) %>
+</p>

@@ -1,0 +1,29 @@
+<div class="card__meta" id="<%= dom_id(card, :meta) %>">
+  <div class="card__meta-avatars card__meta-avatars--author">
+    <%= avatar_preview_tag card.creator %>
+  </div>
+
+  <span class="card__meta-text card__meta-text--added">
+    <%= card_drafted_or_added(card) %> <%= local_datetime_tag(card.created_at, style: :daysago) %>
+  </span>
+
+  <span class="card__meta-text card__meta-text--author">
+    <%= t("cards.display.meta.by") %> <strong><%= card.creator.familiar_name %></strong>
+  </span>
+
+  <span class="card__meta-text card__meta-text--updated overflow-ellipsis">
+    <%= t("cards.display.meta.updated") %>
+    <%= local_datetime_tag(card.last_active_at, style: :daysago) %>
+  </span>
+
+  <span class="card__meta-text card__meta-text--assignees overflow-ellipsis">
+    <%= card.assignees.any? ? t("cards.display.meta.assigned_to") : t("cards.display.meta.not_assigned") %>
+    <%= card.assignees.map { |assignee| "<strong>#{h assignee.familiar_name}</strong>" }.to_sentence.html_safe %>
+  </span>
+
+  <div class="card__meta-avatars card__meta-avatars--assignees" id="<%= dom_id(card, :assignees) %>">
+    <% card.assignees.each do |assignee| %>
+      <%= avatar_preview_tag assignee %>
+    <% end %>
+  </div>
+</div>

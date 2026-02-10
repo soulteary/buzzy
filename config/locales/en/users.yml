@@ -1,0 +1,123 @@
+en:
+  users:
+    missing_attachable_label: "Unknown user"
+    roles:
+      admin: "Administrator"
+      member: "Member"
+      not_applicable: "Role cannot be changed in a single-user workspace (account)."
+    edit:
+      page_title: "Edit profile"
+      back_to: "profile"
+      profile_avatar_for: "Profile photo for %{name}"
+      remove_avatar_confirm: "Remove this photo?"
+      delete_avatar: "Delete photo"
+      name_placeholder: "Your name"
+      name_locked_by_forward_auth: "Display name is managed by your gateway and cannot be changed here."
+      email_address: "Email address"
+      change_email: "Change email"
+      validation_errors: "Please fix the following:"
+      save_changes: "Save changes"
+      bio_label: "About me (up to 140 characters)"
+      bio_placeholder: "Introduce yourself in one sentence…"
+      bio_hint: "Up to 140 characters. Supports **bold** and *italic*."
+    joins:
+      new:
+        page_title: "Great! Now enter your name"
+        full_name_placeholder: "Full name"
+        continue: "Continue"
+    email_addresses:
+      cannot_change: "Email address cannot be changed for this workspace (account)."
+      already_in_account: "You already have a user in this workspace (account) with that email address"
+      confirm_page_title: "Confirm your new email address"
+      confirm_show:
+        page_title: "Confirm email change"
+        just_a_sec: "Just a sec while we confirm your new email address."
+        done: "Done"
+      check_email: "Check your email"
+      sent_to: "We just sent an email to %{email}"
+      hit_link: "Hit the link in the email to confirm this is the email address you want to use with Buzzy going forward."
+      new:
+        page_title: "Change your email"
+        new_email_placeholder: "New email address"
+        intro: "Enter your new email address, then check your email to confirm the change."
+        continue: "Continue"
+      confirmations:
+        invalid_token:
+          page_title: "Link expired"
+          body: "That email confirmation link is no longer valid—they expire after 30 minutes. You'll have to try again."
+          change_my_email: "Change my email address"
+          send_us_email: "send us an email"
+          get_stuck_html: "If you get stuck, %{link} and we'll get you back on track."
+    profile:
+      page_title_mine: "My profile"
+      page_title_other: "%{name}'s profile"
+      link_text: "My profile"
+      recent_activity: "Recent activity"
+      bio_empty_self: "You haven't added an introduction yet."
+      bio_empty_other: "%{name} hasn't added an introduction yet."
+      edit_to_add: "Edit profile to add one"
+    show:
+      edit_profile: "Edit profile"
+      profile_avatar_alt: "Profile photo for %{name}"
+      no_longer_on_account: "%{name} is no longer in this workspace (account)"
+      unverified: "This person hasn't signed in yet"
+      sign_in_code_sent: "We sent them a sign-in code"
+      boards: "%{name}'s boards"
+      cards: "Cards & todos for %{name}"
+      cards_assigned_to: "Cards assigned to %{name}"
+      cards_added_by: "Cards added by %{name}"
+      sign_out: "Sign out"
+    boards:
+      index:
+        page_title: "%{name}'s boards"
+    events:
+      show:
+        page_title_you: "What have you been up to?"
+        page_title_other: "What has %{name} been up to?"
+        load_more: "Load more…"
+    data_export:
+      title: "Export your data"
+      description: "Download a copy of all your data from this workspace (account)."
+      begin_export: "Begin export…"
+      dialog_title: "Export your data"
+      dialog_description: "This will generate a ZIP file of your workspace (account) data. It may take a while for large workspaces."
+      dialog_email: "We'll email you a link to download the file when it's ready. The link expires after 24 hours."
+      start_export: "Start export"
+      cancel: "Cancel"
+    data_exports:
+      show:
+        page_title_ready: "Download Export"
+        page_title_expired: "Download Expired"
+        ready_message: "Your export is ready. The download should start automatically."
+        download_link: "Download your data"
+        expired_message: "That download link has expired. You'll need to %{link}."
+        request_new_export: "request a new export"
+      export_started: "Export started. You'll receive an email when it's ready."
+    access_tokens:
+      token_no_longer_visible: "Token is no longer visible"
+    destroy:
+      single_user_not_allowed: "This workspace (account) can only have one user; you cannot remove yourself."
+    follow:
+      already_following: "You are already following this person."
+      cannot_follow_self: "You cannot follow yourself."
+      followed: "Following."
+      unfollowed: "Unfollowed."
+      user_not_found: "User not found."
+    my_profile: "My profile"
+    devices_heading: "Devices"
+    session_transfer_label: "Link to automatically log in on another device."
+    session_transfer_toggle_label: "Allow auto-login link"
+    session_transfer_disabled: "Auto-login link is disabled."
+    display_auto_login_qr_sr: "Display auto-login QR code"
+    copy_auto_login_link_sr: "Copy auto-login link"
+    close_dialog_sr: "Close dialog"
+    appearance_heading: "Appearance"
+    language_heading: "Language"
+    current_language: "Current language"
+    language_change_hint: "Select a language above; the page will reload with your choice."
+    theme_always_light: "Always light"
+    theme_always_dark: "Always dark"
+    theme_same_as_os: "Same as OS"
+    developer_heading: "Developer"
+    developer_intro: "Manage %{link} used with the Buzzy developer API."
+    personal_access_tokens: "personal access tokens"

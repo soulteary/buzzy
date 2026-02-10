@@ -1,0 +1,13 @@
+<%= turbo_frame_tag step do %>
+  <li class="step">
+    <% if board_accessed_via_mention? || !card_editable_by_current_user?(step.card) %>
+      <input type="checkbox" class="step__checkbox" disabled <%= "checked" if step.completed? %>>
+      <span class="step__content"><%= step.content %></span>
+    <% else %>
+      <%= form_with model: step, url: card_step_path(step.card, step), data: { controller: "form" } do |form| %>
+        <%= form.check_box :completed, { class: "step__checkbox", data: { action: "change->form#submit" } } %>
+      <% end %>
+      <%= link_to step.content, edit_card_step_path(step.card, step), class: "step__content" %>
+    <% end %>
+  </li>
+<% end %>

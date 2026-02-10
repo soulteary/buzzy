@@ -1,0 +1,9 @@
+<% reaction = notification.source %>
+
+<div class="card__title overflow-ellipsis">
+  <%= card_notification_title(reaction.card) %>
+</div>
+
+<div class="card__notification-body overflow-ellipsis">
+  <%= reaction_notification_body(reaction) %>
+</div>

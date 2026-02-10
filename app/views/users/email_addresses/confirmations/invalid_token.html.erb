@@ -1,0 +1,16 @@
+<% @page_title = t("users.email_addresses.confirmations.invalid_token.page_title") %>
+
+<div class="panel panel--centered center flex flex-column gap-half" style="--panel-size: 50ch;">
+  <h1 class="txt-x-large font-weight-black margin-none">
+    <%= @page_title %>
+  </h1>
+  <p class="margin-none-block-start margin-block-end-half">
+    <%= t("users.email_addresses.confirmations.invalid_token.body") %>
+  </p>
+
+  <%= link_to t("users.email_addresses.confirmations.invalid_token.change_my_email"), new_user_email_address_path(user_id: @user, script_name: nil), class: "btn btn--link center" %>
+
+  <p class="txt-small txt-subtle">
+    <%= t("users.email_addresses.confirmations.invalid_token.get_stuck_html", link: mail_to("support@example.com", t("users.email_addresses.confirmations.invalid_token.send_us_email"))).html_safe %>
+  </p>
+</div>

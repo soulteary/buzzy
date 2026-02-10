@@ -1,0 +1,58 @@
+<% s = "notifications.settings.system" %>
+<div class="notifications-help hide-in-browser" data-notifications-target="details">
+  <h2><%= t("#{s}.check_os_settings", os: platform.operating_system) %></h2>
+  <% case
+    when platform.firefox? && platform.android? %>
+      <ol>
+        <li><%= t("#{s}.tap_the") %> <em><%= icon_tag "menu-dots-vertical.svg", alt: t("#{s}.alt_more_options") %></em> <%= t("#{s}.menu_button") %></li>
+        <li><%= t("#{s}.tap") %> <em><%= t("#{s}.settings") %></em>.</li>
+        <li><%= t("#{s}.tap") %> <em><%= t("#{s}.notifications") %></em>.</li>
+        <li><%= t("#{s}.tap") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_toggle_button") %></em> <%= t("#{s}.to") %> <em><%= t("#{s}.allow_browser_notifications", browser: platform.browser.capitalize) %></em>.</li>
+      </ol>
+    <% when platform.edge? && platform.desktop? %>
+      <ol>
+        <li><%= t("#{s}.start_then_settings_html").html_safe %></li>
+        <li><%= t("#{s}.go_to_system_notification_html").html_safe %></li>
+        <li><%= t("#{s}.click") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_toggle_button") %></em> <em><%= t("#{s}.on") %></em> <%= t("#{s}.for_buzzy") %></li>
+      </ol>
+    <% when (platform.firefox? || platform.chrome?) && platform.desktop? %>
+      <ol>
+        <% if platform.windows? %>
+          <li><%= t("#{s}.start_then_settings_html").html_safe %></li>
+          <li><%= t("#{s}.go_to_system_notification_html").html_safe %></li>
+          <li><%= t("#{s}.click") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_toggle_button") %></em> <em><%= t("#{s}.on") %></em> <%= t("#{s}.for_buzzy") %></li>
+        <% else %>
+          <li><%= t("#{s}.click") %> <em aria-label="<%= t("#{s}.aria_apple_menu") %>"></em> <%= t("#{s}.click_apple_top_left") %></li>
+          <li><%= t("#{s}.click") %> <em><%= t("#{s}.system_settings") %></em>.</li>
+          <li><%= t("#{s}.click") %> <em><%= t("#{s}.notifications") %></em>.</li>
+          <li><%= t("#{s}.click") %> <em><%= t("#{s}.buzzy") %></em>.</li>
+          <li><%= t("#{s}.click") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_allow_notifications_switch") %></em> <%= t("#{s}.to") %> <em><%= t("#{s}.allow_notifications") %></em>.</li>
+        <% end %>
+      </ol>
+    <% when platform.safari? && platform.desktop? %>
+      <ol>
+        <li><%= t("#{s}.click") %> <em aria-label="<%= t("#{s}.aria_apple_menu") %>"></em> <%= t("#{s}.click_apple_top_left") %></li>
+        <li><%= t("#{s}.click") %> <em><%= t("#{s}.system_settings") %></em>.</li>
+        <li><%= t("#{s}.click") %> <em><%= t("#{s}.notifications") %></em>.</li>
+        <li><%= t("#{s}.click") %> <em><%= t("#{s}.buzzy") %></em>.</li>
+        <li><%= t("#{s}.click") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_allow_notifications_switch") %></em> <%= t("#{s}.to") %> <em><%= t("#{s}.allow_notifications") %></em>.</li>
+      </ol>
+    <% when (platform.safari? || platform.chrome?) && platform.ios? %>
+      <ol>
+        <li><%= t("#{s}.open_settings_app_prefix") %> <em><%= icon_tag "gear", aria: { hidden: "true" } %></em> <%= t("#{s}.open_settings_app_suffix") %>.</li>
+        <li><%= t("#{s}.scroll_to_tap_buzzy") %></li>
+        <li><%= t("#{s}.tap") %> <em><%= t("#{s}.notifications") %></em>.</li>
+        <li><%= t("#{s}.tap") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_allow_notifications_switch_button") %></em> <%= t("#{s}.to") %> <em><%= t("#{s}.allow_notifications_cap") %></em>.</li>
+      </ol>
+    <% when platform.chrome? && platform.android? %>
+      <ol>
+        <li><%= t("#{s}.open_settings_app_prefix") %> <em><%= icon_tag "gear", aria: { hidden: "true" } %></em> <%= t("#{s}.open_settings_app_suffix") %>.</li>
+        <li><%= t("#{s}.tap") %> <em><%= t("#{s}.notifications") %></em>.</li>
+        <li><%= t("#{s}.tap") %> <em><%= t("#{s}.app_notifications") %></em>.</li>
+        <li><%= t("#{s}.scroll_to_buzzy") %></li>
+        <li><%= t("#{s}.tap") %> <em><%= icon_tag "switch", alt: t("#{s}.alt_switch") %></em> <%= t("#{s}.to") %> <em><%= t("#{s}.allow_notifications_cap") %></em>.</li>
+      </ol>
+    <% else %>
+      <p><%= t("#{s}.ensure_allowed_browser", browser: platform.browser.capitalize) %></p>
+  <% end %>
+</div>

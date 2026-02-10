@@ -1,0 +1,76 @@
+zh:
+  account:
+    entropy_section_title: "自动关闭"
+    entropy_days_label: "自动关闭天数"
+    entropy_days_short: "天"
+    entropy_intro_html: "Buzzy 不会让过期卡片一直留着。若在设定时间内没有任何动态，卡片会自动移到「稍后」。<em>这是默认的全局设置，你可以在每个看板上单独覆盖。</em>"
+    saved: "已保存"
+    saved_removed_from_board: "已保存（你已从该看板移除）"
+    export_started: "导出已开始，准备好后会发邮件给你。"
+    updated: "工作区（账户）已更新"
+    deleted: "工作区（账户）已删除"
+    account_settings: "工作区（账户）设置"
+    join_codes:
+      inactive:
+        page_title: "该邀请链接已用完"
+        body: "请联系 %{name} 的成员获取新链接或提高使用次数上限。"
+        ok: "好的"
+      join:
+        page_title: "加入 %{name} 的 Buzzy"
+        email_placeholder: "邮箱地址"
+        continue: "继续"
+    imports:
+      new:
+        page_title: "导入工作区（账户）"
+        heading: "导入 Buzzy 工作区（账户）"
+        intro: "使用 Buzzy 导出数据创建工作区（账户）。请在下方向上传导出的 .zip 文件。"
+        choose_file: "选择文件…"
+        start_import: "开始导入 →"
+      create_failed: "无法创建工作区（账户）。"
+      show:
+        page_title: "导入状态"
+        heading: "导入状态"
+        in_progress: "导入进行中，较大的工作区可能需要较长时间。"
+        completed_success: "导入已成功完成！"
+        go_to_account: "前往你的工作区（账户）"
+        failed: "导入失败。"
+        failed_hint: "可能是导出数据损坏或与现有数据冲突，请用新的导出重试。"
+        try_again: "重试"
+    exports:
+      show:
+        page_title_ready: "下载导出"
+        page_title_expired: "下载链接已失效"
+        ready_message: "导出已就绪，将自动开始下载。"
+        download_link: "下载你的数据"
+        expired_message: "该下载链接已失效，请%{link}。"
+        request_new_export: "重新申请导出"
+        back_to: "工作区（账户）设置"
+    settings:
+      show:
+        page_title: "工作区（账户）设置"
+        only_admins_notice: "仅管理员可修改这些设置"
+      people_on_account: "此工作区（账户）的成员"
+      role_aria: "角色：%{role}"
+      invite_people: "邀请成员"
+      name_placeholder: "工作区（账户）名称…"
+      save_changes_sr: "保存修改"
+      remove_person_confirm: "确定要永久将此人移出该工作区（账户）吗？"
+      remove_person_sr: "将 %{name} 移出工作区（账户）"
+      delete_my_account: "注销我的工作区（账户）"
+      cancellation:
+        section_heading: "注销工作区（账户）"
+        section_intro: "删除你的 Buzzy 工作区（账户）"
+        open_button: "注销工作区（账户）"
+        dialog_heading: "确定要注销工作区（账户）？"
+        bullet_all_lose_access: "所有用户（包括你）将无法再访问"
+        bullet_subscription_canceled: "订阅将被取消"
+        bullet_data_deleted: "30 天后你的数据将被永久删除"
+        cancel_button: "取消"
+      export:
+        section_title: "导出工作区（账户）数据"
+        section_intro: "下载本工作区（账户）全部数据的完整归档。"
+        begin_export: "开始导出…"
+        dialog_title: "导出全部工作区（账户）数据"
+        dialog_body: "将生成包含本工作区（账户）所有看板、卡片、用户和设置的 ZIP 归档。"
+        dialog_footnote: "准备好后会发邮件给你下载链接，链接 24 小时后失效。"
+        start_export: "开始导出"

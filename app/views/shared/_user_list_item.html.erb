@@ -1,0 +1,17 @@
+<% # 复用于「所有人的内容」、管理所有内容、关注列表等用户关联功能：头像、姓名、可选邮箱、可选右侧操作 %>
+<% user = local_assigns[:user] %>
+<% link_path = local_assigns.fetch(:link_path) { user_path(user, script_name: nil) } %>
+<li class="flex align-center gap-half">
+  <%= link_to link_path, class: "txt-ink flex gap-half align-center min-width flex-grow", data: (local_assigns[:link_data] || {}).reverse_merge(turbo_prefetch: false) do %>
+    <%= avatar_preview_tag user, hidden_for_screen_reader: true %>
+    <div class="txt-align-start overflow-ellipsis">
+      <strong><%= user.name %></strong>
+      <% if show_email_in_ui? && user.identity %>
+        <div class="txt-x-small"><%= user.identity.email_address %></div>
+      <% end %>
+    </div>
+  <% end %>
+  <% if block_given? %>
+    <span class="flex-item-no-shrink"><%= yield %></span>
+  <% end %>
+</li>

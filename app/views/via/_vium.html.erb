@@ -1,0 +1,23 @@
+<%# 保留供 digest 或其它调用方使用。mention 与 rich_text_helper 一致：优先用 MentionResolver 从 node 解析 User，不依赖 attachment.attachable。 %>
+<% attachment = local_assigns[:vium] || local_assigns[:attachment] || @vium %>
+<% node = attachment&.node %>
+<% is_mention = node.present? && (node["content-type"].to_s.downcase.include?("mention") || ActionText::MentionResolver.resolve_user(node).present?) %>
+<% if is_mention %>
+  <% mention_user = ActionText::MentionResolver.resolve_user(node) %>
+  <% if mention_user %>
+    <%= render "users/attachable", attachment: attachment, user: mention_user %>
+  <% else %>
+    <%= render "users/missing_attachable", debug_hint: (Rails.env.development? ? "vium_unresolved" : nil) %>
+  <% end %>
+<% else %>
+  <% attachable = attachment&.attachable %>
+  <% if attachable.is_a?(User) %>
+    <%= render "users/attachable", attachment: attachment, user: attachable %>
+  <% elsif attachable.respond_to?(:to_attachable_partial_path) %>
+    <%= render attachable %>
+  <% elsif attachable.is_a?(ActionText::Attachables::MissingAttachable) %>
+    <%= render "users/missing_attachable", debug_hint: (Rails.env.development? ? "vium_missing_attachable" : nil) %>
+  <% else %>
+    <%= content_tag :span, t("users.missing_attachable_label"), class: "mention mention--missing" %>
+  <% end %>
+<% end %>

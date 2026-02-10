@@ -1,0 +1,8 @@
+<% if @session_transfer_available %>
+  <%= auto_submit_form_with method: :put %>
+<% else %>
+  <div class="panel panel--wide shadow center">
+    <h1 class="txt-large margin-none"><%= t("sessions.transfers.unavailable_title") %></h1>
+    <p class="txt-medium margin-block-start-half"><%= t("sessions.transfers.unavailable_body") %></p>
+  </div>
+<% end %>

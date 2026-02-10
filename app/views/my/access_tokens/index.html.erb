@@ -1,0 +1,35 @@
+<% @page_title = t("my.access_tokens.index.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("my.menus.my_profile"), profile_user_path(Current.user, script_name: nil), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<section class="panel panel--wide shadow center webhooks">
+  <% if @access_tokens.any? %>
+    <p class="margin-none-block-start"><%= t("my.access_tokens.index.intro") %></p>
+    <table class="access_tokens_table margin-block-end-double max-width txt-small">
+      <thead>
+        <tr>
+          <th><%= t("my.access_tokens.index.description") %></th>
+          <th><%= t("my.access_tokens.index.permission") %></th>
+          <th><%= t("my.access_tokens.index.created") %></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: "my/access_tokens/access_token", collection: @access_tokens %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="margin-none-block-start"><%= t("my.access_tokens.index.empty") %></p>
+  <% end %>
+
+  <%= link_to new_my_access_token_path, class: "btn btn--link" do %>
+    <%= icon_tag "add" %>
+    <span><%= t("my.access_tokens.index.generate_new") %></span>
+  <% end %>
+</section>

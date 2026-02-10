@@ -1,0 +1,31 @@
+<section class="notifications__status settings__section panel fill-shade center hide-on-native" data-controller="notifications" data-notifications-subscriptions-url-value="<%= user_push_subscriptions_path(Current.user) %>" data-notifications-enabled-class="notifications--on">
+  <heading>
+    <h2 class="txt-medium">
+      <%= t("notifications.settings.push_notifications.status_prefix") %>
+      <span class="notifications__on-message"><%= t("notifications.settings.push_notifications.on") %></span>
+      <span class="notifications__off-message"><%= t("notifications.settings.push_notifications.off") %></span>
+    </h2>
+  </heading>
+
+  <div class="margin-block-start-half" data-notifications-target="subscribeButton" hidden>
+    <button class="btn txt-small" data-action="notifications#attemptToSubscribe">
+      <%= icon_tag "bell" %>
+      <span><%= t("notifications.settings.push_notifications.turn_on") %></span>
+    </button>
+  </div>
+
+  <details class="margin-block-start-half" data-notifications-target="explainer">
+    <summary class="btn txt-x-small">
+      <%= icon_tag "lifebuoy" %>
+      <span class="notifications__off-message"><%= t("notifications.settings.push_notifications.help_me_fix") %></span>
+      <span class="notifications__on-message"><%= t("notifications.settings.push_notifications.not_receiving") %></span>
+    </summary>
+
+    <div class="notifications-help__explainer fill-white margin-block-start border-radius border txt-align-start">
+      <p class="margin-none-block-start notifications__on-message"><%= t("notifications.settings.push_notifications.when_not_working") %></p>
+      <%= render partial: "notifications/settings/browser" %>
+      <%= render partial: "notifications/settings/system" %>
+      <%= render partial: "notifications/settings/install" %>
+    </div>
+  </details>
+</section>

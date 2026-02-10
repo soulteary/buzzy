@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+# Single Gemfile mode: no drift check between lockfiles.
+# Kept for compatibility with bin/ci "Gemfile: Drift check" step.
+exit 0

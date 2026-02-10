@@ -1,0 +1,13 @@
+en:
+  columns:
+    choose: "Choose a column for this card"
+    add_card: "Add card"
+    no_cards_here: "No cards here"
+    drag_cards_here: "Drag cards here"
+    maximize_column: "Maximize column"
+    expand_column: "Expand column"
+    card_number_sr: "Card number"
+    expand_column_sr: "Expand column"
+    done: "Done"
+    not_now: "Not Now"
+    maybe: "Maybe?"

@@ -1,0 +1,28 @@
+<div data-controller="dialog" data-dialog-auto-open-value="true" data-dialog-modal-value="true">
+  <dialog class="welcome-letter panel panel--wide shadow dialog" data-dialog-target="dialog">
+    <button class="welcome-letter__close btn txt-x-small" data-action="dialog#close">
+      <%= icon_tag "close" %>
+      <span class="for-screen-reader"><%= t("shared.close_dialog") %></span>
+    </button>
+
+    <div class="txt-align-center margin-block-end">
+      <span class="welcome-letter__avatar txt-xx-large avatar center"><%= image_tag "jf-avatar.jpg", size: 36%></span>
+    </div>
+
+    <h2 class="txt-medium margin-none txt-tight-lines"><%= t("shared.welcome_letter_title") %></h2>
+
+    <p></p>
+
+    <p><%= t("shared.welcome_letter_intro_html").html_safe %></p>
+
+    <p><%= t("shared.welcome_letter_help") %></p>
+
+    <p><%= t("shared.welcome_letter_signoff") %></p>
+
+    <span class="welcome-letter__signature"></span>
+
+    <p><%= t("shared.welcome_letter_signature_html").html_safe %><br>
+      <em><%= t("shared.welcome_letter_byline_html").html_safe %></em>
+    </p>
+  </dialog>
+</div>

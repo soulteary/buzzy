@@ -1,0 +1,30 @@
+<% @page_title = t("square.following.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("my.menus.home"), @account ? root_path(script_name: @account.slug) : root_path, "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<section class="following-list">
+  <div class="following-list__header">
+    <h2 class="following-list__title txt-small margin-none"><%= t("square.following.members") %> (<%= @followed_users.size %>)</h2>
+  </div>
+  <% if @followed_users.any? %>
+    <ul class="following-list__users" role="list">
+      <% @followed_users.each do |user| %>
+        <%= render "shared/user_list_item", user: user do %>
+          <% if Current.user.present? && Current.user != user %>
+            <%= button_to unfollow_user_path(user), method: :delete, class: "btn btn--secondary txt-x-small", form: { data: { turbo_confirm: t("square.following.unfollow_confirm") } } do %>
+              <%= t("square.following.unfollow") %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="following-list__empty txt-small margin-none txt-tinted"><%= t("square.following.no_following") %></p>
+  <% end %>
+</section>

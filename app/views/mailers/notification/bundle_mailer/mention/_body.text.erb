@@ -1,0 +1,5 @@
+<% mention = notification.source %>
+
+<%= mention_notification_title(mention) %>
+<%= mention_notification_body(mention, length: 250) %>
+<%= url_for mention %>

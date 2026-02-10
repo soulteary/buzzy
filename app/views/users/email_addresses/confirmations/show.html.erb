@@ -1,0 +1,18 @@
+<% @page_title = t("users.email_addresses.confirm_show.page_title") %>
+
+<div class="panel panel--centered center flex flex-column gap-half" style="--panel-size: 45ch;">
+  <header>
+    <h1 class="txt-x-large font-weight-black margin-none">
+      <%= @page_title %>
+    </h1>
+    <p class="margin-none-block-start margin-block-end-half"><%= t("users.email_addresses.confirm_show.just_a_sec") %></p>
+  </header>
+
+  <%= form_with url: user_email_address_confirmation_path(user_id: @user.id), method: :post, data: { controller: "form auto-submit" } do |form| %>
+    <%= form.hidden_field :email_address_token, value: params[:email_address_token] %>
+
+    <button type="submit" class="btn btn--link center" data-form-target="submit">
+      <span><%= t("users.email_addresses.confirm_show.done") %></span>
+    </button>
+  <% end %>
+</div>

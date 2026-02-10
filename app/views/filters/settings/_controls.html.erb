@@ -1,0 +1,25 @@
+<%= render "filters/settings/boards", user_filtering: user_filtering %>
+<%= render "filters/settings/sorted_by", user_filtering: user_filtering %>
+<%= render "filters/settings/indexed_by", user_filtering: user_filtering %>
+<%= render "filters/settings/tags", user_filtering: user_filtering %>
+<% if Current.account.users.active.many? %>
+  <%= render "filters/settings/assignees", user_filtering: user_filtering %>
+  <%= render "filters/settings/creators", user_filtering: user_filtering %>
+  <%= render "filters/settings/closers", user_filtering: user_filtering %>
+<% else %>
+  <% # 当账号只有一个活跃用户时，人员筛选控件会被隐藏，但仍需保留当前筛选参数。 %>
+  <% filter = user_filtering.filter %>
+  <% filter.assignees.each do |assignee| %>
+    <%= hidden_field_tag "assignee_ids[]", assignee.id, data: { filter_settings_target: "field" } %>
+  <% end %>
+  <% filter.creators.each do |creator| %>
+    <%= hidden_field_tag "creator_ids[]", creator.id, data: { filter_settings_target: "field" } %>
+  <% end %>
+  <% filter.closers.each do |closer| %>
+    <%= hidden_field_tag "closer_ids[]", closer.id, data: { filter_settings_target: "field" } %>
+  <% end %>
+  <% if filter.assignment_status.unassigned? %>
+    <%= hidden_field_tag "assignment_status", "unassigned", data: { filter_settings_target: "field" } %>
+  <% end %>
+<% end %>
+

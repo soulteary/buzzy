@@ -1,0 +1,18 @@
+<div class="card__body">
+  <div class="avatar txt-x-small">
+    <%= avatar_image_tag notification.creator %>
+  </div>
+
+  <h3 class="flex flex-column min-width flex-item-grow font-weight-normal">
+    <% case notification.source_type
+       when "Event" %>
+      <%= render "notifications/notification/event/body", notification: notification %>
+    <% when "Mention" %>
+      <%= render "notifications/notification/mention/body", notification: notification %>
+    <% when "Reaction" %>
+      <%= render "notifications/notification/reaction/body", notification: notification %>
+    <% else %>
+      <%= render "notifications/notification/body_fallback", notification: notification %>
+    <% end %>
+  </h3>
+</div>

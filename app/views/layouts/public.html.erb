@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <%= render "layouts/shared/head" %>
+
+  <body class="public <%= @body_class %>" data-controller="local-time timezone-cookie" data-action="turbo:morph@window->local-time#refreshAll">
+    <div id="global-container">
+      <header class="header" id="header">
+        <a href="#main" class="header__skip-navigation btn" data-turbo="false"><%= t("shared.skip_to_main_content") %></a>
+        <nav>
+          <%= link_to root_path, class: "header__logo center flex-inline align-center" do %>
+            <span><%= image_tag "logo.png", alt: "" %></span>
+<svg width="96" height="30" viewBox="0 0 1325 414" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;" title="Buzzy">
+    <g transform="matrix(1.68045,0,0,1.40859,-3858.85,-2306.27)">
+        <path d="M2413.49,1891.66L2451.09,1891.66C2453.76,1891.66 2455.96,1890.8 2457.69,1889.06C2459.43,1887.33 2460.29,1885.26 2460.29,1882.86L2460.29,1741.66L2532.69,1677.66L2311.49,1677.66L2311.49,1644.86L2618.29,1644.86L2618.29,1672.06L2513.89,1763.66L2513.89,1888.86C2513.89,1898.73 2510.43,1907.13 2503.49,1914.06C2496.56,1921 2488.16,1924.46 2478.29,1924.46L2401.49,1924.46L2413.49,1891.66Z" style="fill-rule:nonzero;" fill="currentColor" fill-rule="evenodd"/>
+        <path d="M2703.09,1812.46L2734.29,1812.46L2698.69,1762.46L2749.09,1762.46L2776.29,1800.46L2779.89,1787.26L2731.89,1714.86L2782.69,1714.86L2795.89,1734.86L2807.49,1696.86L2689.09,1696.86L2714.29,1640.46L2769.49,1640.46L2759.89,1662.46L2873.49,1662.46L2817.49,1846.86L2689.09,1846.86L2703.09,1812.46ZM2708.69,1865.66L2770.29,1865.66L2749.49,1929.26L2687.89,1929.26L2708.69,1865.66ZM2849.09,1865.66L2869.89,1929.26L2807.89,1929.26L2787.09,1865.66L2849.09,1865.66ZM2922.29,1721.66L2871.89,1721.66L2871.89,1687.26L2926.29,1687.26L2926.29,1640.46L2982.69,1640.46L2982.69,1687.26L2998.29,1687.26L2993.49,1640.46L3032.29,1640.46L3040.69,1721.66L2979.09,1721.66L2965.89,1748.86L3000.29,1748.86L3039.89,1846.86L2983.49,1846.86L2953.89,1774.06L2919.09,1846.86L2860.29,1846.86L2922.29,1721.66ZM2935.09,1865.66L2955.89,1929.26L2894.29,1929.26L2873.49,1865.66L2935.09,1865.66ZM3021.49,1865.66L3041.89,1929.26L2980.29,1929.26L2959.49,1865.66L3021.49,1865.66Z" style="fill-rule:nonzero;" fill="currentColor" fill-rule="evenodd"/>
+    </g>
+</svg>
+          <% end %>
+        </nav>
+
+        <%= yield :header %>
+      </header>
+
+      <%= render "layouts/shared/flash" %>
+
+      <main id="main">
+        <%= yield %>
+      </main>
+    </div>
+
+    <footer id="footer">
+      <%= yield :footer %>
+    </footer>
+  </body>
+</html>

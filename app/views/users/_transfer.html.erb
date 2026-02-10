@@ -1,0 +1,53 @@
+<% if Buzzy.session_transfer_enabled? %>
+<section class="settings__section">
+  <% session_transfer_enabled = user.identity.session_transfer_enabled? %>
+  <% url = session_transfer_enabled ? session_transfer_url(user.identity.transfer_id, script_name: nil) : nil %>
+
+  <header>
+    <h2 class="divider"><%= t("users.devices_heading") %></h2>
+    <p class="margin-none" id="session_transfer_label"><%= t("users.session_transfer_label") %></p>
+  </header>
+
+  <%= form_with url: my_session_transfer_path, method: :patch, scope: :session_transfer,
+      data: { controller: "form" },
+      class: "flex align-center gap-half margin-block-end-half" do |form| %>
+    <span class="switch flex align-center gap-half">
+      <%= form.check_box :enabled, class: "switch__input", checked: session_transfer_enabled,
+          data: { action: "change->form#submit" } %>
+      <span class="switch__btn round"></span>
+    </span>
+    <span class="txt-small"><%= t("users.session_transfer_toggle_label") %></span>
+  <% end %>
+
+  <% if session_transfer_enabled %>
+    <input type="text" class="input fill-white" id="session_transfer_url" value="<%= url %>" aria-labelledby="session_transfer_label" readonly>
+
+    <div class="flex justify-center gap">
+      <div data-controller="dialog" data-dialog-modal-value="true" class="flex-inline">
+        <%= tag.button class: "btn", data: { action: "dialog#open", controller: "tooltip" } do %>
+          <%= icon_tag "qr-code" %>
+          <span class="for-screen-reader"><%= t("users.display_auto_login_qr_sr") %></span>
+        <% end %>
+
+        <dialog class="dialog panel shadow" data-dialog-target="dialog">
+          <%= qr_code_image(url) %>
+
+          <form method="dialog" class="margin-block-start flex justify-center">
+            <button class="btn" data-controller="tooltip">
+              <%= icon_tag "remove" %>
+              <span class="for-screen-reader"><%= t("users.close_dialog_sr") %></span>
+            </button>
+          </form>
+        </dialog>
+      </div>
+
+      <%= button_to_copy_to_clipboard(url) do %>
+        <%= icon_tag "copy-paste" %>
+        <span class="for-screen-reader"><%= t("users.copy_auto_login_link_sr") %></span>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="txt-small txt-tinted margin-none"><%= t("users.session_transfer_disabled") %></p>
+  <% end %>
+</section>
+<% end %>

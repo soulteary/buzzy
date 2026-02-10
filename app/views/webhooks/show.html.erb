@@ -1,0 +1,60 @@
+<% @page_title = @webhook.name %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <div class="header__actions header__actions--start">
+      <%= back_link_to t("webhooks.index.back_to"), user_board_webhooks_path(@webhook.board.url_user, @webhook.board), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+    </div>
+  </div>
+
+  <div class="header__actions header__actions--end">
+    <%= link_to edit_user_board_webhook_path(@webhook.board.url_user, @webhook.board, @webhook), class: "btn" do %>
+      <%= icon_tag "pencil" %>
+      <span class="for-screen-reader"><%= t("webhooks.show.edit") %></span>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="panel panel--wide shadow center flex flex-column gap txt-align-start">
+  <header>
+    <h1 class="txt-x-large margin-none"><%= @webhook.name %></h1>
+    <span class="txt-medium txt-break"><%= @webhook.url %></span>
+  </header>
+  <% unless @webhook.active? %>
+    <div>
+      <%= button_to t("webhooks.show.reactivate"), user_board_webhook_activation_path(@webhook.board.url_user, @webhook.board, @webhook), method: :post %>
+    </div>
+  <% end %>
+
+  <div>
+    <h2 class="margin-none txt-uppercase txt-medium"><%= t("webhooks.show.secret") %></h2>
+    <strong><code><%= @webhook.signing_secret %></code></strong>
+    <p class="txt-small txt-subtle margin-none">
+      <%= t("webhooks.show.secret_description", header: "X-Webhook-Signature", hmac: "HMAC", sha256: "SHA256") %>
+    </p>
+  </div>
+
+    <div class="flex flex-column">
+      <h2 class="margin-none txt-uppercase txt-medium"><%= t("webhooks.show.subscribed_to") %></h2>
+      <% if @webhook.subscribed_actions.empty? %>
+        <p class="margin-none txt-subtle"><%= t("webhooks.show.no_events") %></p>
+      <% else %>
+        <ul class="margin-none unpad-block">
+          <% @webhook.subscribed_actions.each do |action| %>
+            <li><%= webhook_action_label(action) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+    </div>
+
+    <div class="flex flex-column">
+      <h2 class="margin-none txt-uppercase txt-medium"><%= t("webhooks.show.deliveries") %></h2>
+      <% if @webhook.deliveries.empty? %>
+        <p class="margin-none txt-subtle"><%= t("webhooks.show.no_deliveries") %></p>
+      <% else %>
+        <ul class="margin-none unpad-block">
+          <%= render partial: "webhooks/delivery", collection: @webhook.deliveries.ordered.limit(20), as: :delivery %>
+        </ul>
+      <% end %>
+    </div>
+</div>

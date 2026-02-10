@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>502 Application Starting</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/error.css">
+  </head>
+  <body>
+    <hgroup class="error-page__stamp">
+      <h1>502</h1>
+      <h2>Application is starting</h2>
+      <hr />
+      <div>The server is still booting. Please wait a moment and refresh the page.</div>
+    </hgroup>
+
+    <a href="/">Refresh page</a>
+
+    <script>
+      // Auto-refresh once after 3s so users don't have to manually refresh
+      setTimeout(function() { window.location.reload(); }, 3000);
+    </script>
+  </body>
+</html>

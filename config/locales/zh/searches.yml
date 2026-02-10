@@ -1,0 +1,9 @@
+zh:
+  searches:
+    bar_label: "搜索"
+    close_search: "关闭搜索"
+    page_title: "搜索"
+    page_title_with_query: "「%{query}」的搜索结果"
+    search_buzzy: "搜索 Buzzy"
+    placeholder: "查找卡片、看板、成员…"
+    no_matches: "没有匹配结果"

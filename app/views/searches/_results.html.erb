@@ -1,0 +1,15 @@
+<section class="search">
+  <div class="search__results">
+    <% unless page.used? %>
+      <div class="search__blank-slate blank-slate">
+        <%= t("searches.no_matches") %>
+      </div>
+    <% end %>
+
+    <ul class="search__list">
+      <%= with_automatic_pagination :filtered_search_results, page do %>
+        <%= render partial: "searches/result", collection: page.records %>
+      <% end %>
+    </ul>
+  </div>
+</section>

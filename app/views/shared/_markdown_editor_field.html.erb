@@ -1,0 +1,38 @@
+<%
+  wrapper_class = local_assigns[:wrapper_class]
+  data_attrs = local_assigns[:data] || {}
+  prompts_url = local_assigns[:prompts_url]
+  direct_uploads_url = local_assigns[:direct_uploads_url]
+  textarea_data = data_attrs.merge(markdown_editor_target: "textarea")
+  textarea_data[:markdown_prompt_target] = "textarea" if prompts_url.present?
+  wrapper_controller = "markdown-editor"
+  wrapper_controller += " markdown-prompt" if prompts_url.present?
+  wrapper_data = { controller: wrapper_controller }
+  wrapper_data[:markdown_prompt_url_value] = prompts_url if prompts_url.present?
+  wrapper_data[:markdown_editor_direct_uploads_url_value] = direct_uploads_url if direct_uploads_url.present?
+%>
+<div class="markdown-editor <%= wrapper_class %>" data-controller="<%= wrapper_controller %>" <%= "data-markdown-prompt-url-value=\"#{ERB::Util.html_escape(prompts_url)}\"".html_safe if prompts_url.present? %> <%= "data-markdown-editor-direct-uploads-url-value=\"#{ERB::Util.html_escape(direct_uploads_url)}\"".html_safe if direct_uploads_url.present? %>>
+  <%= form.hidden_field attribute, data: { markdown_editor_target: "hiddenInput" }, value: initial_value %>
+  <div class="markdown-editor__editor-wrapper">
+    <%= tag.textarea(
+          initial_value,
+          name: nil,
+          placeholder: placeholder,
+          class: "markdown-editor__textarea input input--textarea full-width borderless",
+          rows: 6,
+          dir: "auto",
+          required: local_assigns[:required],
+          autofocus: local_assigns[:autofocus],
+          data: textarea_data
+        ) %>
+  </div>
+  <div class="markdown-editor__toolbar-extra flex gap-half align-center" data-markdown-editor-target="attachments">
+    <button type="button" class="btn btn--small markdown-editor__upload-btn" data-action="click->markdown-editor#uploadFile">
+      <%= t("shared.upload_file", default: "Upload file") %>
+    </button>
+    <input type="file" class="markdown-editor__file-input hidden" data-markdown-editor-target="fileInput" multiple accept="image/*,.pdf,.doc,.docx,.txt" aria-hidden="true" tabindex="-1" />
+  </div>
+  <% if prompts_url.present? %>
+    <div class="markdown-prompt__menu" data-markdown-prompt-target="menu" hidden></div>
+  <% end %>
+</div>

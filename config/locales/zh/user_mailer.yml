@@ -1,0 +1,9 @@
+zh:
+  user_mailer:
+    email_change_confirmation:
+      subject: "确认邮箱变更"
+      subtitle: "确认邮箱变更"
+      button: "是的，使用此邮箱"
+      ignore: "若你未请求此变更，可忽略此邮件，除非你点击按钮，否则邮箱不会被修改。"
+      need_help: "需要帮助？"
+      send_email: "给我们发邮件"

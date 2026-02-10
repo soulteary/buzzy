@@ -1,0 +1,11 @@
+Rails.application.config.after_initialize do
+  Rails::HTML5::SafeListSanitizer.allowed_tags.merge(%w[ s table tr td th thead tbody details summary video source ])
+  Rails::HTML5::SafeListSanitizer.allowed_attributes.merge(%w[ data-turbo-frame data-lightbox-target data-lightbox-caption-value controls type width ])
+
+  # ugh, see https://github.com/rails/rails/issues/54478 which I need to fix upstream --mike
+  ActionText::ContentHelper.allowed_tags = Rails::HTML5::SafeListSanitizer.allowed_tags.to_a + [ ActionText::Attachment.tag_name, "figure", "figcaption" ] + ActionText::ContentHelper.allowed_tags.to_a
+  # Allow "gid" so Lexxy-serialized mention attachments are not stripped; they are normalized to sgid on save (see action_text.rb).
+  # Allow "data-filename" and "data-blob-type" so Markdown blob-sgid tokens round-trip in HtmlToMarkdown.
+  action_text_attachment_attrs = ActionText::Attachment::ATTRIBUTES + [ "gid", "data-filename", "data-blob-type", "data-user-id", "data-handle" ]
+  ActionText::ContentHelper.allowed_attributes = Rails::HTML5::SafeListSanitizer.allowed_attributes.to_a + action_text_attachment_attrs + ActionText::ContentHelper.allowed_attributes.to_a
+end

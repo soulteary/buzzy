@@ -1,0 +1,6 @@
+<% mention = notification.source %>
+
+<strong class="card__title overflow-ellipsis"><mark class="card__notification-mentioner"><%= mention_notification_title(mention) %></mark></strong>
+<div class="card__notification-body overflow-ellipsis">
+  <%= mention_notification_body(mention) %>
+</div>

@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+# 确保运行所需目录存在（log、storage、tmp/pids、tmp/storage 及 storage.oss 用到的子目录）
+mkdir -p log storage tmp/pids tmp/storage tmp/storage/files \
+  storage/development/files storage/test/files storage/production/files
+
+# If running the rails server then create or migrate existing database
+if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
+  MIGRATE=1 ./bin/rails db:prepare
+  # 双保险：db:prepare 后再次确保目录存在
+  mkdir -p log storage tmp/pids tmp/storage tmp/storage/files \
+    storage/development/files storage/test/files storage/production/files
+fi
+
+# 过滤静态资源请求日志（Thruster 等输出的 JSON 请求行），减少噪音。设置 SKIP_STATIC_REQUEST_LOGS=1 启用。
+if [ "${SKIP_STATIC_REQUEST_LOGS}" = "1" ] && [ "${1}" = "./bin/thrust" ] && [ "${2}" = "./bin/rails" ] && [ "${3}" = "server" ]; then
+  exec ./bin/filter-static-request-logs "${@}"
+else
+  exec "${@}"
+fi

@@ -1,0 +1,4 @@
+<% assign_read_only = assignees_read_only_for?(card) %>
+<%= render "cards/display/common/assignees", card: card, read_only: assign_read_only do %>
+  <%= turbo_frame_tag card, :assignment, src: card_path_with_context(card, :new_assignment), loading: :lazy, refresh: "morph" unless assign_read_only %>
+<% end %>

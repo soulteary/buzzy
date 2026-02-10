@@ -1,0 +1,39 @@
+<div class="flex gap">
+  <div class="flex flex-column full-width justify-center gap-half">
+    <div class="nav__header">
+      <% if Current.identity.accounts.many? %>
+        <div class="nav__header-title max-width">
+          <div class="overflow-ellipsis"><strong><%= Current.account.name %></strong></div>
+        </div>
+      <% end %>
+      <div class="nav__header-actions nav__header-actions--end nav__close">
+        <button class="btn txt-xx-small" data-action="dialog#close">
+          <%= icon_tag "close" %>
+          <span class="for-screen-reader"><%= t("my.menus.close_menu") %></span>
+        </button>
+      </div>
+    </div>
+    <%= jump_field_tag %>
+  </div>
+</div>
+
+<% # 始终使用当前用户所在账号的 script_name，避免在他人主页或缓存下链到错误账号 %>
+<% cards_url_options = Current.user.present? ? { script_name: Current.user.account.slug } : {} %>
+<div class="nav__scroll-container">
+  <div class="nav__hotkeys margin-block-end-half" role="list">
+    <%= filter_hotkey_link t("my.menus.home"), root_path, 1, "home" %>
+    <%= filter_hotkey_link t("my.menus.assigned_to_me"), cards_path(expand_all: true, assignee_ids: [ Current.user.to_param ], sorted_by: "newest", indexed_by: "all", **cards_url_options), 2, "clipboard", data: { turbo_frame: "_top" } %>
+    <%= filter_hotkey_link t("my.menus.added_by_me"), cards_path(creator_ids: [ Current.user.to_param ], **cards_url_options), 3, "person-add" %>
+    <%= filter_hotkey_link t("my.menus.all_content"), square_all_content_path(script_name: nil), 4, "board" %>
+    <%= filter_hotkey_link t("my.menus.following"), square_following_path(script_name: nil), 5, "person" %>
+    <% if super_admin? %>
+      <%= filter_hotkey_link t("my.menus.all_content_admin"), admin_all_content_path, 6, "board" %>
+    <% end %>
+  </div>
+
+  <%= yield %>
+
+  <div class="nav__blank-slate blank-slate">
+    <%= t("my.menus.nothing_matches") %>
+  </div>
+</div>

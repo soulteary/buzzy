@@ -1,0 +1,15 @@
+zh:
+  signups:
+    new:
+      page_title: "注册 Buzzy"
+      title: "注册"
+      email_placeholder: "输入你的邮箱地址…"
+      enter_email: "输入邮箱以创建工作区（账户）。"
+      submit: "注册"
+    completions:
+      new:
+        page_title: "完成注册"
+        one_step_away: "只差一步，输入你的名字即可拥有自己的 Buzzy 工作区（账户）。"
+        full_name_placeholder: "输入你的姓名…"
+        validation_errors: "无法保存你的修改："
+        continue: "继续"

@@ -1,0 +1,7 @@
+-- 已弃用：请使用 01-buzzy-databases.sh（按 MYSQL_USER 授权）。
+-- 若数据库已用本文件初始化且当前使用其他 MYSQL_USER（如 fizzy），
+-- 需在 MySQL 内对该用户授权，例如：
+--   GRANT ALL PRIVILEGES ON buzzy_production_cable.* TO 'fizzy'@'%';
+--   GRANT ALL PRIVILEGES ON buzzy_production_queue.* TO 'fizzy'@'%';
+--   GRANT ALL PRIVILEGES ON buzzy_production_cache.* TO 'fizzy'@'%';
+--   FLUSH PRIVILEGES;

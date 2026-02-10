@@ -1,0 +1,13 @@
+<%= column_tag id: "closed-cards", name: t("columns.done"), drop_url: user_scoped_column_drop_path(board, type: :closure, card_id: "__id__"), class: "cards--closed", style: "--card-color: var(--color-card-complete);",
+  data: {
+    card_hotkeys_disabled: true,
+    drag_and_strum_target: "container",
+    collapsible_columns_target: "column",
+    action: "focus->collapsible-columns#focusOnColumn"
+  } do %>
+  <header class="cards__header">
+    <%= render "boards/show/expander", title: t("columns.done"), count: board_display_cards.closed.count, column_id: "closed-cards" %>
+    <%= render "boards/show/menu/maximize", column_path: user_board_columns_closed_path(board.url_user, board) %>
+  </header>
+  <%= column_frame_tag :closed_column, src: user_board_columns_closed_path(board.url_user, board) %>
+<% end %>

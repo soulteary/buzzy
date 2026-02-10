@@ -1,0 +1,23 @@
+<li class="flex align-center gap-half" data-filter-target="item" data-navigable-list-target="item">
+  <%= link_to user_path(user, script_name: nil), class: "txt-ink flex gap-half align-center min-width" do %>
+    <%= avatar_preview_tag user, hidden_for_screen_reader: true %>
+    <div class="txt-align-start overflow-ellipsis">
+      <strong><%= user.name %></strong>
+      <% if show_email_in_ui? %>
+        <div class="txt-x-small"><%= user.identity.email_address %></div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <hr class="separator--horizontal flex-item-grow" style="--border-color: var(--color-ink-medium); --border-style: dashed" aria-hidden="true">
+
+  <%= icon_tag "check", class: "toggler__visible-when-on margin-inline-end" %>
+
+  <label class="switch toggler__visible-when-off flex-item-no-shrink">
+    <% checkbox_data = { toggle_class_target: "checkbox" } %>
+    <% checkbox_data[:boards_form_target] = "meCheckbox" if user == Current.user %>
+    <%= check_box_tag "user_ids[]", user.id, selected, class: "switch__input", id: nil, data: checkbox_data, disabled: disabled %>
+    <span class="switch__btn round"></span>
+    <span class="for-screen-reader"><%= t("boards.give_access_sr", name: user.name) %></span>
+  </label>
+</li>

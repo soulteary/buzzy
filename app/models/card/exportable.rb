@@ -1,0 +1,101 @@
+module Card::Exportable
+  extend ActiveSupport::Concern
+  include ActionView::Helpers::TagHelper
+
+  def export_json
+    JSON.pretty_generate({
+      number: number,
+      title: title,
+      board: board.name,
+      status: export_status,
+      creator: export_user(creator),
+      description: export_html(description),
+      created_at: created_at.iso8601,
+      updated_at: updated_at.iso8601,
+      comments: comments.chronologically.map do |comment|
+        {
+          id: comment.id,
+          body: export_html(comment.body),
+          creator: export_user(comment.creator),
+          created_at: comment.created_at.iso8601
+        }
+      end
+    })
+  end
+
+  def export_attachments
+    collect_attachments.map do |attachment|
+      { path: export_attachment_path(attachment.blob), blob: attachment.blob }
+    end
+  end
+
+  private
+    def export_html(rich_text)
+      return "" if rich_text.blank?
+
+      rich_text.body.render_attachments do |attachment|
+        attachment_representation(attachment)
+      end.to_html
+    end
+
+    def attachment_representation(attachment)
+      content_type = attachment.node&.[]("content-type").to_s.downcase
+      if content_type.include?("mention")
+        user = ActionText::MentionResolver.resolve_user(attachment.node)
+        if user
+          tag.span("@#{user.first_name.downcase}", class: "mention")
+        else
+          tag.span(I18n.t("users.missing_attachable_label"), class: "mention mention--missing")
+        end
+      else
+        case attachable = attachment.attachable
+        when ActiveStorage::Blob
+          path = export_attachment_path(attachable)
+          if attachable.image?
+            tag.img(src: path, alt: attachable.filename)
+          else
+            tag.a(attachable.filename, href: path)
+          end
+        when ActionText::Attachables::RemoteImage
+          tag.img(src: attachable.url, alt: "Remote image")
+        when User
+          tag.span("@#{attachable.first_name.downcase}", class: "mention")
+        when Tag
+          tag.span("##{attachable.title}", class: "tag")
+        when ActionText::Attachables::MissingAttachable
+          tag.span(I18n.t("users.missing_attachable_label"), class: "mention mention--missing")
+        else
+          tag.span(I18n.t("shared.attachment_unavailable"), class: "attachment-placeholder")
+        end
+      end
+    end
+
+    def export_user(user)
+      {
+        id: user.id,
+        name: user.name,
+        email: user.identity&.email_address
+      }
+    end
+
+    def export_attachment_path(blob)
+      "#{number}/#{blob.key}_#{blob.filename}"
+    end
+
+    def collect_attachments
+      (attachments.to_a + comments.flat_map { |c| c.attachments.to_a }).uniq(&:blob_id)
+    end
+
+    def export_status
+      case
+      when closed?
+        I18n.t("columns.done")
+      when postponed?
+        I18n.t("columns.not_now")
+      when column.present?
+        column.name
+      else
+        I18n.t("columns.maybe")
+      end
+    end
+end

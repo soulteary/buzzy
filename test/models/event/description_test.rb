@@ -1,0 +1,74 @@
+require "test_helper"
+
+class Event::DescriptionTest < ActiveSupport::TestCase
+  test "generates html description for card published event" do
+    description = events(:logo_published).description_for(users(:david))
+
+    assert_includes description.to_html, "published"
+    assert_includes description.to_html, "logo"
+  end
+
+  test "generates plain text description for card published event" do
+    description = events(:logo_published).description_for(users(:david))
+
+    assert_includes description.to_plain_text, "David published"
+    assert_includes description.to_plain_text, "logo"
+  end
+
+  test "generates description for comment event" do
+    description = events(:layout_commented).description_for(users(:jz))
+
+    assert_includes description.to_plain_text, "David commented on"
+  end
+
+  test "uses always the name even when the event creator is the current user" do
+    description = events(:logo_published).description_for(users(:david))
+
+    assert_includes description.to_plain_text, "David published"
+  end
+
+  test "uses creator name when event creator is not the current user" do
+    description = events(:logo_published).description_for(users(:jz))
+
+    assert_includes description.to_plain_text, "David published"
+  end
+
+  test "escapes html in card titles in plain text description" do
+    card = cards(:logo)
+    card.update_column(:title, "<script>alert('xss')</script>")
+
+    description = events(:logo_published).description_for(users(:david))
+
+    assert_includes description.to_plain_text, "&lt;script&gt;alert(&#39;xss&#39;)&lt;/script&gt;"
+    assert_not_includes description.to_plain_text, "<script>"
+  end
+
+  test "generates description for mention events" do
+    event = cards(:logo).board.events.create!(
+      action: "card_mentioned",
+      creator: users(:david),
+      board: cards(:logo).board,
+      eventable: cards(:logo),
+      particulars: { mentionee_ids: [ users(:jz).id ] }
+    )
+
+    description = event.description_for(users(:david))
+    assert_includes description.to_plain_text, "mentioned"
+    assert_includes description.to_plain_text, users(:jz).name
+  end
+
+  test "generates description for comment mention events" do
+    event = cards(:logo).board.events.create!(
+      action: "comment_mentioned",
+      creator: users(:david),
+      board: cards(:logo).board,
+      eventable: comments(:logo_agreement_jz),
+      particulars: { mentionee_ids: [ users(:kevin).id ] }
+    )
+
+    description = event.description_for(users(:david))
+    assert_includes description.to_plain_text, "mentioned"
+    assert_includes description.to_plain_text, ERB::Util.h(cards(:logo).title)
+    assert_includes description.to_plain_text, users(:kevin).name
+  end
+end

@@ -1,0 +1,14 @@
+<div id="<%= dom_id(card, :pin_button) %>">
+  <% pinning_user = pinning_user_for(card) %>
+  <% if card_pinnable_by_current_user?(card) && pinning_user && card.pinned_by?(pinning_user) %>
+    <%= button_to card_path_with_context(card, :pin), method: :delete, class: "btn btn--reversed btn--circle-mobile",
+          data: { controller: "tooltip hotkey", action: "keydown.shift+p@document->hotkey#click", bridge__overflow_menu_target: "item", bridge_title: t("cards.unpin_this_card") } do %>
+      <%= icon_tag "pinned" %> <span class="for-screen-reader"><%= t("cards.unpin_this_card") %> (shift+p)</span>
+    <% end %>
+  <% elsif card_pinnable_by_current_user?(card) && pinning_user %>
+    <%= button_to card_path_with_context(card, :pin), class: "btn btn--circle-mobile",
+          data: { controller: "tooltip hotkey", action: "keydown.shift+p@document->hotkey#click", bridge__overflow_menu_target: "item", bridge_title: t("cards.pin_this_card") } do %>
+      <%= icon_tag "unpinned" %> <span class="for-screen-reader"><%= t("cards.pin_this_card_sr") %> (shift+p)</span>
+    <% end %>
+  <% end %>
+</div>

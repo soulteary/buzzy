@@ -1,0 +1,34 @@
+<% @page_title = t("users.boards.index.page_title", name: @user.name) %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to @user.name, user_path(@user, script_name: nil), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<section class="settings margin-block-start-half">
+  <div class="settings__panel panel shadow">
+    <section class="settings__section">
+      <h2 class="divider"><%= t("users.boards.index.page_title", name: @user.name) %> (<%= @page.recordset.records_count %>)</h2>
+      <ul class="settings__user-list flex flex-column gap-half" role="list">
+        <% @page.records.each do |board| %>
+          <li>
+            <%= link_to user_board_path(@user, board), class: "txt-ink flex gap-half align-center min-width" do %>
+              <%= icon_tag "board", class: "popup__icon" %>
+              <div class="txt-align-start overflow-ellipsis">
+                <strong><%= board.name %></strong>
+                <div class="txt-x-small"><%= board.creator.name %></div>
+              </div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <% if @page.records.empty? %>
+        <p class="txt-small margin-block-half"><%= t("square.all_content.no_boards") %></p>
+      <% end %>
+      <%= paginate @page if @page.recordset.page_count > 1 %>
+    </section>
+  </div>
+</section>

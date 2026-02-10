@@ -1,0 +1,7 @@
+<%= turbo_frame_tag board, :entropy do %>
+  <div class="margin-block-end">
+    <h2 class="divider txt-large"><%= t("boards.auto_close_heading") %></h2>
+    <p class="margin-none-block-start"><%= t("boards.entropy_intro") %></p>
+    <%= render "entropy/auto_close", model: board, url: board_entropy_update_path(board), disabled: !board_administerable_by_current_user?(board) %>
+  </div>
+<% end %>

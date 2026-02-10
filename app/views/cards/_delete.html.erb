@@ -1,0 +1,16 @@
+<div data-controller="dialog" data-dialog-modal-value="true" data-action="keydown.esc->dialog#close:stop">
+  <button type="button" class="btn txt-negative borderless txt-small" data-action="dialog#open">
+    <%= icon_tag "trash" %>
+    <span><%= t("cards.delete_this_card") %></span>
+  </button>
+  <dialog class="dialog panel fill-white shadow gap flex-column" style="--panel-size: 40ch" data-dialog-target="dialog">
+    <h3 class="txt-large txt-bold"><%= t("cards.delete_confirm_heading") %></h3>
+    <p class="txt-medium margin-block-half"><%= t("cards.delete_confirm_body") %></p>
+    <div class="flex gap-half justify-center margin-block-start">
+      <button type="button" class="btn" data-action="dialog#close"><%= t("shared.cancel") %></button>
+      <%= button_to user_board_card_path(card.board.url_user, card.board, card), method: :delete, class: "btn txt-negative", data: { turbo_frame: "_top" } do %>
+        <span><%= t("cards.delete_card") %></span>
+      <% end %>
+    </div>
+  </dialog>
+</div>

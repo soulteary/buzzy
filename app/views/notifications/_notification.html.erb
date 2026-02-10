@@ -1,0 +1,9 @@
+<% cache [ notification, I18n.locale, "mention-render-v2" ] do %>
+  <%# Helper Dependency Updated: avatar_image_tag + mention_notification_body 2026-02-13 %>
+  <%= notification_tag notification do %>
+    <%= render "notifications/notification/header", notification: notification do %>
+      <%= notification_toggle_read_button(notification, url: notification_reading_path(notification)) %>
+    <% end %>
+    <%= render "notifications/notification/body", notification: notification %>
+  <% end %>
+<% end %>

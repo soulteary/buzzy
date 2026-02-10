@@ -1,0 +1,21 @@
+<section class="settings__section">
+  <header>
+    <h2 class="divider"><%= t("account.settings.export.section_title") %></h2>
+    <div><%= t("account.settings.export.section_intro") %></div>
+  </header>
+
+  <div data-controller="dialog" data-dialog-modal-value="true" data-action="keydown.esc->dialog#close">
+    <button type="button" class="btn" data-action="dialog#open"><%= t("account.settings.export.begin_export") %></button>
+
+    <dialog class="dialog panel panel--wide shadow" data-dialog-target="dialog" style="--panel-size: 48ch;">
+      <h2 class="txt-large"><%= t("account.settings.export.dialog_title") %></h2>
+      <p><%= t("account.settings.export.dialog_body") %></p>
+      <p><%= t("account.settings.export.dialog_footnote") %></p>
+
+      <div class="flex gap justify-center">
+        <%= button_to t("account.settings.export.start_export"), account_exports_path, method: :post, class: "btn btn--link", form: { data: { action: "submit->dialog#close" } } %>
+        <button type="button" class="btn" data-action="dialog#close"><%= t("shared.cancel") %></button>
+      </div>
+    </dialog>
+  </div>
+</section>

@@ -1,0 +1,49 @@
+<% me_or_you = t("cards.me") %>
+<div class="settings__panel panel shadow txt-align-center">
+  <div class="flex flex-column gap position-relative">
+    <%= link_to edit_user_path(@user, script_name: nil), class: "user-edit-link btn", data: { controller: "tooltip" } do %>
+      <%= icon_tag "pencil" %>
+      <span class="for-screen-reader"><%= t("users.show.edit_profile") %></span>
+    <% end %>
+
+    <div class="avatar txt-xx-large center fill-white btn--circle hide-focus-ring">
+      <%= image_tag user_avatar_path(@user, script_name: nil), alt: t("users.show.profile_avatar_alt", name: @user.name) %>
+    </div>
+
+    <div class="flex flex-column gap-half margin-block-end">
+      <h2 class="txt-x-large margin-none"><%= @user.name %></h2>
+      <div class="txt-medium">
+        <% if !@user.active? %>
+          <%= t("users.show.no_longer_on_account", name: @user.name) %>
+        <% elsif !@user.verified? %>
+          <%= t("users.show.unverified") %>
+          <div class="txt-small txt-tinted"><%= t("users.show.sign_in_code_sent") %></div>
+        <% elsif show_email_in_ui? && @user.identity %>
+          <%= mail_to @user.identity.email_address %>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @user.verified? %>
+      <div class="flex-inline center justify-center flex-wrap gap">
+        <%= link_to t("users.profile.link_text"), profile_user_path(@user, script_name: nil), class: "btn btn--link", data: { turbo_frame: "_top" } %>
+        <%= link_to t("users.show.boards", name: me_or_you),
+              boards_user_path(@user, script_name: nil), class: "btn btn--link", data: { turbo_frame: "_top" } %>
+        <%= link_to t("users.show.cards", name: me_or_you),
+              cards_user_path(@user, script_name: nil), class: "btn btn--link", data: { turbo_frame: "_top" } %>
+        <%= link_to t("users.show.cards_assigned_to", name: me_or_you),
+              cards_path(assignee_ids: [ @user.to_param ], sorted_by: "newest"), class: "btn btn--link", data: { turbo_frame: "_top" } %>
+        <%= link_to t("users.show.cards_added_by", name: me_or_you),
+              cards_path(creator_ids: [ @user.to_param ], sorted_by: "newest"), class: "btn btn--link", data: { turbo_frame: "_top" } %>
+      </div>
+    <% end %>
+
+    <% unless forward_auth_enabled? %>
+      <hr class="separator--horizontal full-width flex-item-grow margin-block-start-double" style="--border-color: var(--color-ink-light);" aria-hidden="true">
+
+      <%= button_to session_path(script_name: nil), method: :delete, class: "btn txt-x-small center", data: { turbo: false } do %>
+        <span><%= t("users.show.sign_out") %></span>
+      <% end %>
+    <% end %>
+  </div>
+</div>

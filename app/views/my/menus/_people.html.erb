@@ -1,0 +1,5 @@
+<%= collapsible_nav_section(local_assigns[:section_title] || t("my.menus.people")) do %>
+  <% users.each do |user| %>
+    <%= my_menu_user_item(user) %>
+  <% end %>
+<% end %>

@@ -1,0 +1,26 @@
+<% if Current.account.cancellable? && Current.user.owner? %>
+  <header class="margin-block-start-double">
+    <h2 class="divider txt-large txt-negative"><%= t("account.settings.cancellation.section_heading") %></h2>
+    <p class="margin-none-block"><%= t("account.settings.cancellation.section_intro") %></p>
+  </header>
+
+  <div data-controller="dialog" data-dialog-modal-value="true">
+    <button type="button" class="btn btn--negative" data-action="dialog#open"><%= t("account.settings.cancellation.open_button") %></button>
+
+    <dialog class="dialog panel panel--wide shadow" data-dialog-target="dialog">
+      <h2 class="margin-none txt-large txt-negative"><%= t("account.settings.cancellation.dialog_heading") %></h2>
+      <ul class="txt-align-start">
+        <li><%= t("account.settings.cancellation.bullet_all_lose_access") %></li>
+        <% if Current.account.try(:active_subscription) %>
+          <li><%= t("account.settings.cancellation.bullet_subscription_canceled") %></li>
+        <% end %>
+        <li><%= t("account.settings.cancellation.bullet_data_deleted") %></li>
+      </ul>
+
+      <div class="flex gap justify-center">
+        <button type="button" class="btn" data-action="dialog#close"><%= t("account.settings.cancellation.cancel_button") %></button>
+        <%= button_to t("account.settings.delete_my_account"), account_cancellation_path, method: :post, class: "btn btn--negative", form: { data: { action: "submit->dialog#close", turbo: false } } %>
+      </div>
+    </dialog>
+  </div>
+<% end %>

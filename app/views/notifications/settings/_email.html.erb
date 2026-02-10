@@ -1,0 +1,12 @@
+<section class="settings__section">
+  <heading>
+    <h2 class="divider"><%= t("notifications.settings.email.title") %></h2>
+    <div><%= t("notifications.settings.email.description") %></div>
+  </heading>
+
+  <%= form_with model: settings, url: notifications_settings_path,
+      method: :patch, local: true, data: { controller: "form" } do |form| %>
+    <div class="margin-block-end-half"><strong><%= form.label :bundle_email_frequency, t("notifications.settings.email.label_frequency") %></strong></div>
+    <%= form.select :bundle_email_frequency, bundle_email_frequency_options_for(settings), {}, class: "input input--select txt-align-center", data: { action: "change->form#submit" } %>
+  <% end %>
+</section>

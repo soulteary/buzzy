@@ -1,0 +1,13 @@
+<% if card_editable_by_current_user?(card) && card.golden? %>
+  <%= button_to card_goldness_path(card), method: :delete, class: "btn btn--reversed btn--circle-mobile",
+        data: { controller: "tooltip hotkey", action: "keydown.shift+g@document->hotkey#click", bridge__overflow_menu_target: "item", bridge_title: t("cards.demote_to_normal") } do %>
+    <%= icon_tag "golden-ticket" %>
+    <span class="for-screen-reader"><%= t("cards.demote_to_normal_sr") %></span>
+  <% end %>
+<% elsif card_editable_by_current_user?(card) %>
+  <%= button_to card_goldness_path(card), class: "btn btn--circle-mobile",
+        data: { controller: "tooltip hotkey", action: "keydown.shift+g@document->hotkey#click", bridge__overflow_menu_target: "item", bridge_title: t("cards.promote_to_golden") } do %>
+    <%= icon_tag "golden-ticket" %>
+    <span class="for-screen-reader"><%= t("cards.promote_to_golden_sr") %></span>
+  <% end %>
+<% end %>

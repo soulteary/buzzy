@@ -1,0 +1,8 @@
+zh:
+  tags:
+    menu_title: "标签"
+    tag_this: "添加标签…"
+    index:
+      title: "全部标签"
+      delete: "删除"
+      delete_confirm: "确定吗？"

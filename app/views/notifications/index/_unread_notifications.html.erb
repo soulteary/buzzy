@@ -1,0 +1,25 @@
+<section class="notifications-list panel panel--wide center borderless unpad flex flex-column gap-half">
+  <% if unread.any? %>
+    <div class="flex align-center justify-space-between margin-block-start margin-block-end-half">
+      <h2 class="txt-medium txt-uppercase txt-alert"><%= t("notifications.index.new_for_you") %></h2>
+      <%= button_to t("notifications.index.mark_all_as_read"), bulk_reading_path, class: "btn txt-small", form: { data: { turbo: false } }, data: { action: "badge#clear" } %>
+    </div>
+  <% else %>
+    <div class="notifications-list__blank-slate blank-slate align-self-center">
+      <%= t("notifications.index.nothing_new") %>
+    </div>
+  <% end %>
+
+  <div id="notifications_list" contents>
+    <%= render partial: "notifications/index/notification", collection: unread %>
+  </div>
+
+  <% if unread.any? %>
+    <% total_unread_count = Current.user.notifications.unread.count %>
+    <% if Current.user.notifications.unread.count > NotificationsController::MAX_UNREAD_NOTIFICATIONS %>
+      <div class="fill-highlight txt-x-small border-radius pad-block-half pad-inline">
+        <%= t("notifications.index.showing_recent", count: NotificationsController::MAX_UNREAD_NOTIFICATIONS, hidden: total_unread_count - NotificationsController::MAX_UNREAD_NOTIFICATIONS) %>
+      </div>
+    <% end %>
+  <% end %>
+</section>

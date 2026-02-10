@@ -1,0 +1,16 @@
+zh:
+  mailers:
+    magic_link:
+      sign_in_instructions_subject: "你的 Buzzy 验证码是 %{code}"
+    export:
+      completed_subject: "你的 Buzzy 数据导出已可下载"
+    import:
+      completed_subject: "你的 Buzzy 工作区（账户）导入已完成"
+      failed_subject: "你的 Buzzy 工作区（账户）导入失败"
+    account:
+      cancellation_subject: "你的 Buzzy 工作区（账户）已注销"
+    notification:
+      bundle_subject: "Buzzy：新通知"
+      bundle_subject_with_account: "Buzzy（%{account_name}）：新通知"
+    user_mailer:
+      email_change_confirmation_subject: "确认你的新邮箱地址"

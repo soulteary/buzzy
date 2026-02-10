@@ -1,0 +1,16 @@
+<lexxy-prompt-item
+  search="<%= "#{user.name} #{user.initials} #{user.account.name} #{user.mention_handle} #{"me" if user == Current.user}" %>"
+  sgid="<%= user.attachable_sgid %>"
+  data-display="<%= user.name %>"
+  data-account-name="<%= user.account.name %>"
+  data-user-handle="<%= user.mention_handle %>"
+  data-user-id="<%= user.id %>">
+  <template type="menu">
+    <%= avatar_image_tag user %>
+    <%= user.name %>
+  </template>
+  <template type="editor">
+    <%= avatar_image_tag user %>
+    <%= user.first_name %>
+  </template>
+</lexxy-prompt-item>

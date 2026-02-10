@@ -1,0 +1,19 @@
+<%# Rendered outside card container section so watch/pin frames do not reload when card is replaced. %>
+<% if (Current.user && !board_accessed_via_mention?) || (board_accessed_via_mention? && Current.identity.present?) %>
+<div class="card-perma__actions card-perma__actions--right">
+  <% if Current.user && !board_accessed_via_mention? %>
+  <%= turbo_frame_tag card, :watch, src: card_path_with_context(card, :watch), target: "_top", refresh: :morph do %>
+    <%= button_to card_path_with_context(card, :watch), class: "btn", data: { controller: "tooltip" } do %>
+      <%= icon_tag "bell-off" %> <span class="for-screen-reader"><%= t("cards.watch_this_sr") %></span>
+    <% end %>
+  <% end %>
+  <% end %>
+  <% if card_pinnable_by_current_user?(card) %>
+  <%= turbo_frame_tag card, :pin, src: card_path_with_context(card, :pin), refresh: :morph do %>
+    <%= button_to card_path_with_context(card, :pin), class: "btn", data: { controller: "tooltip" } do %>
+      <%= icon_tag "unpinned" %> <span class="for-screen-reader"><%= t("cards.pin_this_card_sr") %></span>
+    <% end %>
+  <% end %>
+  <% end %>
+</div>
+<% end %>

@@ -1,0 +1,19 @@
+active:
+  id: <%= ActiveRecord::FixtureSet.identify("active", :uuid) %>
+  active: true
+  name: Production API
+  url: https://api.example.com/webhooks
+  signing_secret: "550e8400-e29b-41d4-a716-446655440001" # gitleaks:allow fixture UUID
+  subscribed_actions: '<%= %w[ card_published card_assigned card_closed ].to_json %>'
+  board: writebook_uuid
+  account: 37s_uuid
+
+inactive:
+  id: <%= ActiveRecord::FixtureSet.identify("inactive", :uuid) %>
+  active: false
+  name: Test Webhook
+  url: https://test.example.com/webhooks
+  signing_secret: "550e8400-e29b-41d4-a716-446655440002" # gitleaks:allow fixture UUID
+  subscribed_actions: '<%= %w[ card_published card_assigned card_closed ].to_json %>'
+  board: private_uuid
+  account: 37s_uuid

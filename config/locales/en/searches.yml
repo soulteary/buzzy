@@ -1,0 +1,9 @@
+en:
+  searches:
+    bar_label: "Search"
+    close_search: "Close search"
+    page_title: "Search"
+    page_title_with_query: "Search results for \"%{query}\""
+    search_buzzy: "Search Buzzy"
+    placeholder: "Find something…"
+    no_matches: "No matches"

@@ -1,0 +1,24 @@
+json.cache! card do
+  json.(card, :id, :number, :title, :status)
+  json.description card.description.to_plain_text
+  json.description_html rich_text_with_attachments(card.description)
+  json.image_url card.image.presence && url_for(card.image)
+
+  json.tags card.tags.pluck(:title).sort
+
+  json.closed card.closed?
+  json.golden card.golden?
+  json.last_active_at card.last_active_at.utc
+  json.created_at card.created_at.utc
+
+  json.url user_board_card_url(card.board.url_user, card.board, card)
+
+  json.board card.board, partial: "boards/board", as: :board
+  json.column card.column, partial: "columns/column", as: :column if card.column
+  json.creator card.creator, partial: "users/user", as: :user
+  json.assignees card.assignees.limit(5), partial: "users/user", as: :user
+  json.has_more_assignees card.assignees.size > 5
+
+  json.comments_url user_board_card_comments_url(card.board.url_user, card.board, card)
+  json.reactions_url user_board_card_reactions_url(card.board.url_user, card.board, card)
+end

@@ -1,0 +1,27 @@
+<% if @export.present? %>
+  <% @page_title = t("users.data_exports.show.page_title_ready") %>
+<% else %>
+  <% @page_title = t("users.data_exports.show.page_title_expired") %>
+<% end %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to @user.name, user_path(@user, script_name: nil), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+<% end %>
+
+<div class="panel panel--wide shadow center flex flex-column align-center gap">
+  <h2 class="txt-large font-weight-black margin-none"><%= @page_title %></h2>
+
+  <% if @export.present? %>
+    <div><%= t("users.data_exports.show.ready_message") %></div>
+
+    <%= link_to t("users.data_exports.show.download_link"), rails_blob_path(@export.file, disposition: "attachment"),
+          id: "download-link",
+          class: "btn btn--link",
+          data: { turbo: false, controller: "auto-click" } %>
+  <% else %>
+    <div><%= t("users.data_exports.show.expired_message", link: link_to(t("users.data_exports.show.request_new_export"), user_path(@user, script_name: nil), class: "txt-link")).html_safe %></div>
+  <% end %>
+
+</div>

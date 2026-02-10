@@ -1,0 +1,8 @@
+<lexxy-prompt-item>
+  <template type="menu">
+    #<%= card.number %> <%= card.title %>
+  </template>
+  <template type="editor">
+    <%= link_to "##{card.number} #{card.title}", user_board_card_path(card.board.url_user, card.board, card), data: { turbo_prefetch: false } %>
+  </template>
+</lexxy-prompt-item>

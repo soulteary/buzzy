@@ -1,0 +1,123 @@
+zh:
+  users:
+    missing_attachable_label: "未知用户"
+    roles:
+      admin: "管理员"
+      member: "成员"
+      not_applicable: "单用户工作区（账户）无法修改角色。"
+    edit:
+      page_title: "编辑资料"
+      back_to: "资料"
+      profile_avatar_for: "%{name} 的头像"
+      remove_avatar_confirm: "确定要移除此头像？"
+      delete_avatar: "删除头像"
+      name_placeholder: "你的名字"
+      name_locked_by_forward_auth: "显示名称由网关维护，无法在此处修改。"
+      email_address: "邮箱地址"
+      change_email: "更换邮箱"
+      validation_errors: "请修正以下问题："
+      save_changes: "保存修改"
+      bio_label: "个人介绍（最多 140 字）"
+      bio_placeholder: "用一句话介绍自己…"
+      bio_hint: "最多 140 字。支持 **粗体**、*斜体*。"
+    joins:
+      new:
+        page_title: "很好！请输入你的名字"
+        full_name_placeholder: "姓名"
+        continue: "继续"
+    email_addresses:
+      cannot_change: "此工作区（账户）的邮箱地址无法修改。"
+      already_in_account: "此工作区（账户）中已有使用该邮箱的用户"
+      confirm_page_title: "确认你的新邮箱"
+      confirm_show:
+        page_title: "确认邮箱变更"
+        just_a_sec: "正在确认你的新邮箱，请稍候。"
+        done: "完成"
+      check_email: "请查收邮件"
+      sent_to: "我们已向 %{email} 发送邮件"
+      hit_link: "点击邮件中的链接以确认将此邮箱用于 Buzzy。"
+      new:
+        page_title: "更换邮箱"
+        new_email_placeholder: "新邮箱地址"
+        intro: "输入新邮箱后请查收邮件以确认变更。"
+        continue: "继续"
+      confirmations:
+        invalid_token:
+          page_title: "链接已失效"
+          body: "该邮箱确认链接已失效（30 分钟后过期），请重新操作。"
+          change_my_email: "更换我的邮箱"
+          send_us_email: "给我们发邮件"
+          get_stuck_html: "若遇到问题，可%{link}，我们会帮你解决。"
+    profile:
+      page_title_mine: "我的资料"
+      page_title_other: "%{name} 的资料"
+      link_text: "我的资料"
+      recent_activity: "最近的动态"
+      bio_empty_self: "你还没有填写个人介绍。"
+      bio_empty_other: "%{name} 还没有填写个人介绍。"
+      edit_to_add: "去编辑资料添加"
+    show:
+      edit_profile: "编辑资料"
+      profile_avatar_alt: "%{name} 的头像"
+      no_longer_on_account: "%{name} 已不在此工作区（账户）"
+      unverified: "该用户尚未登录过"
+      sign_in_code_sent: "我们已向其发送登录验证码"
+      boards: "%{name} 的看板"
+      cards: "%{name} 的待办与卡片"
+      cards_assigned_to: "指派给 %{name} 的卡片"
+      cards_added_by: "%{name} 添加的卡片"
+      sign_out: "退出登录"
+    boards:
+      index:
+        page_title: "%{name} 的看板"
+    events:
+      show:
+        page_title_you: "你最近在做什么？"
+        page_title_other: "%{name} 最近在做什么？"
+        load_more: "加载更多…"
+    data_export:
+      title: "导出你的数据"
+      description: "下载本工作区（账户）中你的全部数据副本。"
+      begin_export: "开始导出…"
+      dialog_title: "导出你的数据"
+      dialog_description: "将生成工作区（账户）数据的 ZIP 文件，工作区较大时可能需要一些时间。"
+      dialog_email: "准备好后会发邮件给你下载链接，链接 24 小时后失效。"
+      start_export: "开始导出"
+      cancel: "取消"
+    data_exports:
+      show:
+        page_title_ready: "下载导出"
+        page_title_expired: "下载链接已失效"
+        ready_message: "导出已就绪，将自动开始下载。"
+        download_link: "下载你的数据"
+        expired_message: "该下载链接已失效，请%{link}。"
+        request_new_export: "重新申请导出"
+      export_started: "导出已开始，准备好后会发邮件给你。"
+    access_tokens:
+      token_no_longer_visible: "令牌已不可见"
+    destroy:
+      single_user_not_allowed: "每个工作区（账户）只能有一个用户，无法移除自己。"
+    follow:
+      already_following: "已关注此人。"
+      cannot_follow_self: "不能关注自己。"
+      followed: "已关注。"
+      unfollowed: "已取消关注。"
+      user_not_found: "未找到该用户。"
+    my_profile: "我的资料"
+    devices_heading: "设备"
+    session_transfer_label: "用于在另一台设备上自动登录的链接。"
+    session_transfer_toggle_label: "允许自动登录链接"
+    session_transfer_disabled: "自动登录链接已禁用。"
+    display_auto_login_qr_sr: "显示自动登录二维码"
+    copy_auto_login_link_sr: "复制自动登录链接"
+    close_dialog_sr: "关闭对话框"
+    appearance_heading: "外观"
+    language_heading: "语言"
+    current_language: "当前语言"
+    language_change_hint: "在上方选择语言后，页面将自动刷新并应用所选语言。"
+    theme_always_light: "始终浅色"
+    theme_always_dark: "始终深色"
+    theme_same_as_os: "跟随系统"
+    developer_heading: "开发者"
+    developer_intro: "管理用于 Buzzy 开发者 API 的%{link}。"
+    personal_access_tokens: "个人访问令牌"

@@ -1,0 +1,47 @@
+<%= link_to user_board_card_path(event.board.url_user, event.board, event.card),
+      id: dom_id(event, "timelined"),
+      class: "event event--#{ event.action } #{ "golden-effect" if event.card.golden? } center-block flex flex-column full-width align-start justify-start position-relative",
+      style: "--card-color: #{ card.closed? ? "var(--color-card-complete)" : card.color };",
+      target: "_top",
+      data: {
+        related_element_target: "related",
+        related_element_group_value: card.id,
+        turbo_prefetch: false,
+        action: "mouseover->related-element#highlight mouseout->related-element#unhighlight" } do %>
+  <div class="card__header">
+    <h4 class="card__board">
+      <span class="card__id">
+        <span class="for-screen-reader"><%= t("columns.card_number_sr") %></span>
+        <%= card.number %>
+      </span>
+      <span class="card__board-name">
+        <span class="overflow-ellipsis"><%= event.board.name %></span>
+      </span>
+    </h4>
+
+    <% unless event.action.in?(%w[ card_closed card_published card_reopened ]) %>
+      <%= icon_tag event_action_icon(event), class: "event__icon" %>
+    <% end %>
+  </div>
+  <div class="event__content">
+    <div class="flex align-start gap">
+      <div class="avatar txt-x-small">
+        <%= avatar_image_tag(event.creator) %>
+      </div>
+
+      <div class="flex flex-column min-width txt-small align-start txt-align-start" style="color: color-mix(in srgb, var(--card-color) 40%, var(--color-ink));">
+        <strong class="event__title txt-break overflow-line-clamp txt-tight-lines">
+          <%= event.description_for(Current.user).to_html %>
+        </strong>
+
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+
+  <% if event.card.image.present? %>
+    <div class="card__background">
+      <%= image_tag event.card.image.presence || "", size: 120, aria: { hidden: true } %>
+    </div>
+  <% end %>
+<% end %>

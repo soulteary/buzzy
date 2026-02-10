@@ -1,0 +1,25 @@
+class Notifications::SettingsController < ApplicationController
+  before_action :set_settings
+
+  def show
+    @boards = if Current.account_single_user?
+      Current.account.boards.alphabetically
+    else
+      Current.user.boards.alphabetically.includes(:accesses)
+    end
+  end
+
+  def update
+    @settings.update!(settings_params)
+    redirect_to notifications_settings_path, notice: I18n.t("notifications.settings_updated")
+  end
+
+  private
+    def set_settings
+      @settings = Current.user.settings
+    end
+
+    def settings_params
+      params.expect(user_settings: :bundle_email_frequency)
+    end
+end
