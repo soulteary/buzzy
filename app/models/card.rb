@@ -1,8 +1,8 @@
 class Card < ApplicationRecord
   include Accessible, Assignable, Attachments, Broadcastable, Closeable, Colored, Commentable,
     Entropic, Eventable, Exportable, Golden, Mentions, Multistep, OperationLoggable, Pinnable,
-    Postponable, Promptable, Readable, Searchable, Stallable, Statuses, Storage::Tracked, Taggable,
-    Triageable, Watchable
+    Postponable, Promptable, Readable, Searchable, SoftDeletable, Stallable, Statuses, Storage::Tracked,
+    Taggable, Triageable, Watchable
 
   belongs_to :account, default: -> { board.account }
   belongs_to :board
@@ -45,6 +45,10 @@ class Card < ApplicationRecord
     when "latest" then latest
     else latest
     end
+  end
+
+  def soft_deletable_audit_action
+    "card_deleted"
   end
 
   def card

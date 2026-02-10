@@ -15,11 +15,13 @@ module Admin
         return
       end
       @user.update!(active: false, frozen_at: Time.current, frozen_by: Current.user)
+      SensitiveAuditLog.log!(action: "user_frozen", account: @user.account, user: Current.user, subject: @user)
       redirect_to admin_all_content_path(script_name: admin_redirect_script_name), notice: I18n.t("admin.users.frozen")
     end
 
     def unfreeze
       @user.update!(active: true, frozen_at: nil, frozen_by: nil)
+      SensitiveAuditLog.log!(action: "user_unfrozen", account: @user.account, user: Current.user, subject: @user)
       redirect_to admin_all_content_path(script_name: admin_redirect_script_name), notice: I18n.t("admin.users.unfrozen")
     end
 

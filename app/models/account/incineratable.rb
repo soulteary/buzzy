@@ -11,7 +11,8 @@ module Account::Incineratable
 
   def incinerate
     run_callbacks :incinerate do
-      account.destroy
+      SensitiveAuditLog.log!(action: "account_deleted", account: account, user: nil, subject: account)
+      account.real_destroy
     end
   end
 end

@@ -17,6 +17,12 @@ module Admin
         visibility_locked_by_id: locked ? Current.user&.id : nil
       }
       if @board.update(attrs)
+        SensitiveAuditLog.log!(
+          action: locked ? "board_visibility_locked" : "board_visibility_unlocked",
+          account: @board.account,
+          user: Current.user,
+          subject: @board
+        )
         redirect_to admin_all_content_path(script_name: admin_redirect_script_name), notice: visibility_lock_notice
       else
         redirect_to admin_all_content_path(script_name: admin_redirect_script_name), alert: @board.errors.full_messages.to_sentence
@@ -31,6 +37,12 @@ module Admin
         edit_locked_by_id: locked ? Current.user&.id : nil
       }
       if @board.update(attrs)
+        SensitiveAuditLog.log!(
+          action: locked ? "board_edit_locked" : "board_edit_unlocked",
+          account: @board.account,
+          user: Current.user,
+          subject: @board
+        )
         redirect_to admin_all_content_path(script_name: admin_redirect_script_name), notice: edit_lock_notice
       else
         redirect_to admin_all_content_path(script_name: admin_redirect_script_name), alert: @board.errors.full_messages.to_sentence

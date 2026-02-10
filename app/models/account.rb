@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  include Account::Storage, Cancellable, Entropic, Incineratable, MultiTenantable, Seedeable
+  include Account::Storage, Cancellable, Entropic, Incineratable, MultiTenantable, Seedeable, SoftDeletable
 
   has_one :join_code, dependent: :destroy
   has_many :users, dependent: :destroy
@@ -44,6 +44,10 @@ class Account < ApplicationRecord
 
   def active?
     !cancelled? && !importing?
+  end
+
+  def soft_deletable_audit_action
+    "account_deleted"
   end
 
   def importing?

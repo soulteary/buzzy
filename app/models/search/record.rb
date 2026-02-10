@@ -36,9 +36,9 @@ class Search::Record < ApplicationRecord
 
   scope :search, ->(query, user:, account_id: nil, board_ids: nil) do
     query = Search::Query.wrap(query)
-
-    for_query(query, user: user, account_id: account_id, board_ids: board_ids)
-      .joins(:card)
+    base = for_query(query, user: user, account_id: account_id, board_ids: board_ids).joins(:card)
+    base = base.merge(Card.kept) if Card.column_names.include?("deleted_at")
+    base
       .includes(:searchable, card: [ :board, :creator ])
       .order(created_at: :desc)
       .select(:id, :account_id, :searchable_type, :searchable_id, :card_id, :board_id, :title, :content, :created_at, *search_fields(query))
@@ -77,14 +77,16 @@ class Search::Record < ApplicationRecord
 
     quoted = pairs.map { |(a, b)| "(#{table_name}.account_id = #{connection.quote(a)} AND #{table_name}.board_id = #{connection.quote(b)})" }.join(" OR ")
     rel = matching(query.to_s, user.account_id).where(quoted).joins(:card)
+    rel = rel.merge(Card.kept) if Card.column_names.include?("deleted_at")
+    rel = rel
       .includes(:searchable, card: [ :board, :creator ])
       .order(created_at: :desc)
       .select(:id, :account_id, :searchable_type, :searchable_id, :card_id, :board_id, :title, :content, :created_at, *search_fields(query))
     return rel unless rel.limit(1).empty? && query.terms.present?
     # FTS 无结果时（如 CJK）回退到 LIKE
-    matching_like(query.to_s)
-      .where(quoted)
-      .joins(:card)
+    rel = matching_like(query.to_s).where(quoted).joins(:card)
+    rel = rel.merge(Card.kept) if Card.column_names.include?("deleted_at")
+    rel
       .includes(:searchable, card: [ :board, :creator ])
       .order(created_at: :desc)
       .select(:id, :account_id, :searchable_type, :searchable_id, :card_id, :board_id, :title, :content, :created_at, *search_fields(query))

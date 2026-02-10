@@ -9,6 +9,14 @@ class Event < ApplicationRecord
   has_many :webhook_deliveries, class_name: "Webhook::Delivery", dependent: :delete_all
 
   scope :chronologically, -> { order created_at: :asc, id: :desc }
+  # 时间轴中不展示已软删除卡片的事件，避免 eventable 加载时 RecordNotFound
+  scope :only_kept_eventables, -> {
+    if Card.column_names.include?("deleted_at")
+      where("(events.eventable_type != ?) OR (events.eventable_id IN (SELECT id FROM cards WHERE cards.deleted_at IS NULL))", "Card")
+    else
+      all
+    end
+  }
   scope :preloaded, -> {
     includes(:creator, :board, {
       eventable: [

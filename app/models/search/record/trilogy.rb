@@ -51,9 +51,9 @@ module Search::Record::Trilogy
       bid_list = board_ids || user.board_ids
       return none unless q.valid? && bid_list.any?
 
-      matching_like(q.to_s)
-        .where(account_id: acc_id, board_id: bid_list)
-        .joins(:card)
+      base = matching_like(q.to_s).where(account_id: acc_id, board_id: bid_list).joins(:card)
+      base = base.merge(Card.kept) if Card.column_names.include?("deleted_at")
+      base
         .includes(:searchable, card: [ :board, :creator ])
         .order(created_at: :desc)
         .select(:id, :account_id, :searchable_type, :searchable_id, :card_id, :board_id, :title, :content, :created_at, search_fields(q))

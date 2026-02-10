@@ -1,6 +1,6 @@
 class Board < ApplicationRecord
   include Accessible, AutoPostponing, Board::Storage, Broadcastable, Cards, Entropic, Filterable,
-    OperationLoggable, Publishable, ::Storage::Tracked, Triageable
+    OperationLoggable, Publishable, SoftDeletable, ::Storage::Tracked, Triageable
 
   belongs_to :creator, class_name: "User", default: -> { Current.user }
   belongs_to :account, default: -> { creator.account }
@@ -35,5 +35,9 @@ class Board < ApplicationRecord
   # 用于生成看板/卡片规范 URL 的用户（/users/:id/boards/...）；统一用 creator，便于旧链接 301 与链接生成一致
   def url_user
     creator
+  end
+
+  def soft_deletable_audit_action
+    "board_deleted"
   end
 end

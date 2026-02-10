@@ -73,6 +73,7 @@ class User::DayTimeline
     def timelineable_events
       Event
         .preloaded
+        .only_kept_eventables
         .where(board: boards)
         .where(action: TIMELINEABLE_ACTIONS)
     end

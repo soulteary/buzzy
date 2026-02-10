@@ -1,5 +1,8 @@
 #!/bin/bash -e
 
+# 确保运行所需目录存在（log、storage、tmp/pids、tmp/storage）
+mkdir -p log storage tmp/pids tmp/storage
+
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/thrust" ] && [ "${2}" == "./bin/rails" ] && [ "${3}" == "server" ]; then
   MIGRATE=1 ./bin/rails db:prepare

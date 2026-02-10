@@ -13,7 +13,9 @@ class Users::DataExportsController < ApplicationController
   end
 
   def create
-    @user.data_exports.create!(account: Current.account).build_later
+    export = @user.data_exports.create!(account: Current.account)
+    SensitiveAuditLog.log!(action: "user_data_export_started", account: Current.account, user: Current.user, subject: export)
+    export.build_later
     redirect_to user_path(@user, script_name: nil), notice: I18n.t("users.data_exports.export_started")
   end
 

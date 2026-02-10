@@ -75,6 +75,7 @@ class UsersController < ApplicationController
     end
 
     @user.deactivate
+    SensitiveAuditLog.log!(action: "user_deactivated", account: Current.account, user: Current.user, subject: @user)
 
     respond_to do |format|
       format.html { redirect_to account_settings_path }

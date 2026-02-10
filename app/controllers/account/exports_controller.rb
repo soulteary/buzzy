@@ -10,7 +10,9 @@ class Account::ExportsController < ApplicationController
   end
 
   def create
-    Current.account.exports.create!(user: Current.user).build_later
+    export = Current.account.exports.create!(user: Current.user)
+    SensitiveAuditLog.log!(action: "account_export_started", account: Current.account, user: Current.user, subject: export)
+    export.build_later
     redirect_to account_settings_path, notice: I18n.t("account.export_started")
   end
 
