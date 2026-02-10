@@ -1,0 +1,180 @@
+@layer components {
+  .settings {
+    --settings-spacer: var(--block-space);
+    --settings-item-padding-inline: 0.5ch;
+
+    display: grid;
+    gap: calc(var(--settings-spacer) * 2);
+    margin: 0 auto;
+    max-inline-size: min(100ch, 100%);
+
+    @media (min-width: 960px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Sections & Panels
+  /* -------------------------------------------------------------------------- */
+
+  .settings__panel {
+    --panel-size: 100%;
+    --panel-padding: calc(var(--settings-spacer) / 1);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--panel-padding);
+    min-block-size: 100%;
+    min-inline-size: 0;
+
+    @media (min-width: 640px) {
+      --panel-padding: calc(var(--settings-spacer) * 2);
+    }
+  }
+
+  .settings__panel--users {
+    @media (min-width: 640px) {
+      max-height: 80dvh;
+    }
+
+    @media (min-width: 960px) {
+      max-height: calc(100dvh - 12rem);
+    }
+  }
+
+  .settings__section {
+    h2 {
+      font-size: var(--text-large);
+    }
+
+    > * + * {
+      margin-block-start: calc(var(--panel-padding) / 2);
+    }
+
+    &:is(:first-child):has(h2) {
+      margin-top: -0.33lh; /* Align h2 letters caps with panel padding */
+    }
+  }
+
+  /* Users
+  /* ------------------------------------------------------------------------ */
+
+  .settings__user-filter {
+    --btn-size: 3.5ch;
+    --avatar-size: var(--btn-size);
+
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--settings-spacer) / 2);
+    min-height: 0;
+  }
+
+  .settings__user-filter--bg {
+    background-color: var(--color-ink-lightest);
+    border-radius: 0.5em;
+    margin-block: 0;
+    padding: var(--settings-spacer);
+  }
+
+  .settings__user-list {
+    flex: 1 1 auto;
+    list-style: none;
+    margin: calc(var(--settings-spacer) / -4) calc(-1 * var(--settings-item-padding-inline));
+    padding: 0;
+    overflow: auto;
+
+    li {
+      border-radius: 0.5em;
+
+      /* Add padding if it's not already on a link within */
+      &:not(:has(a:first-child)) { padding-inline-end: var(--settings-item-padding-inline); }
+      &:not(:has(a:last-child)) { padding-inline-end: var(--settings-item-padding-inline); }
+    }
+
+    a {
+      padding: calc(var(--settings-spacer) / 4) var(--settings-item-padding-inline);
+
+      @media(any-hover: hover) {
+        &:hover {
+          text-decoration: underline;
+        }
+        /* 所有人的内容：悬停时 .txt-x-small 不显示下划线 */
+        &.all-content-card-link:hover .txt-x-small {
+          text-decoration: none;
+        }
+      }
+    }
+
+    /* Only add a BG color when you can actually navigate */
+    .settings__user-filter:focus-within & {
+      [aria-selected] {
+        background: var(--color-selected);
+      }
+    }
+  }
+
+  .settings__user-list-tips {
+    border-top: 1px solid var(--color-ink-light);
+    color: var(--color-ink-dark);
+    font-size: var(--text-small);
+    padding-block-start: var(--settings-spacer);
+
+    .settings__user-filter--bg & {
+      margin-inline: calc(-1 * var(--settings-spacer));
+      padding-inline: var(--settings-spacer);
+    }
+  }
+
+  /* 我关注的人：整页全宽列表
+  /* ------------------------------------------------------------------------ */
+
+  .following-list {
+    --following-spacer: var(--block-space);
+    --following-item-padding-inline: 0.5ch;
+
+    display: flex;
+    flex-direction: column;
+    inline-size: 100%;
+    min-block-size: 100%;
+    padding-block-end: var(--following-spacer);
+    text-align: start;
+  }
+
+  .following-list__header {
+    flex-shrink: 0;
+    margin-block-end: calc(var(--following-spacer) / 2);
+    padding-inline: var(--following-item-padding-inline);
+  }
+
+  .following-list__title {
+    font-size: var(--text-small);
+  }
+
+  .following-list__users {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: var(--following-spacer);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      border-radius: 0.5em;
+      flex: 0 0 auto;
+      padding: calc(var(--following-spacer) / 4) var(--following-item-padding-inline);
+    }
+
+    a {
+      @media (any-hover: hover) {
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .following-list__empty {
+    flex-shrink: 0;
+    padding-inline: var(--following-item-padding-inline);
+  }
+}

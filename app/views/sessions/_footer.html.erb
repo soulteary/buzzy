@@ -1,0 +1,4 @@
+<div class="pad-inline txt-align-center center margin-block-double txt-subtle txt-small">
+  <%= render "layouts/shared/colophon" %>.
+  <%= t("shared.need_help_html", link: mail_to("support@example.com", t("users.email_addresses.confirmations.invalid_token.send_us_email"), class: "txt-link")).html_safe %>
+</div>

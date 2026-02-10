@@ -1,0 +1,8 @@
+en:
+  tags:
+    menu_title: "Tags"
+    tag_this: "Tag this…"
+    index:
+      title: "All tags"
+      delete: "Delete"
+      delete_confirm: "Are you sure?"

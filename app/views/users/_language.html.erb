@@ -1,0 +1,21 @@
+<section class="settings__section">
+  <header>
+    <h2 class="divider"><%= t("users.language_heading") %></h2>
+  </header>
+
+  <%= form_with url: my_locale_path, method: :patch, class: "settings__language-form", data: { controller: "form", turbo: false } do |locale_form| %>
+    <p class="txt-small margin-block-none">
+      <span class="txt-tinted"><%= t("users.current_language") %>:</span>
+      <span><%= t("locales.name.#{current_display_locale}", default: current_display_locale.to_s) %></span>
+    </p>
+    <div class="flex align-center gap margin-block-start-quarter" style="flex-wrap: wrap;">
+      <label class="flex align-center gap" style="min-width: 12rem;">
+        <span class="txt-small txt-tinted" style="min-width: 5ch;"><%= t("locales.language") %></span>
+        <%= locale_form.select :locale, options_for_select(available_locales_for_select, current_display_locale.to_s), {}, class: "input", style: "flex: 1; min-width: 10rem;", data: { action: "change->form#submit" } %>
+      </label>
+    </div>
+    <p class="txt-small txt-tinted margin-block-none margin-block-start-quarter">
+      <%= t("users.language_change_hint") %>
+    </p>
+  <% end %>
+</section>

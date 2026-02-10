@@ -1,0 +1,2 @@
+<% assign_read_only = board_accessed_via_mention? || card_from_other_account?(card) || viewing_other_user_as_limited_viewer? %>
+<%= render "cards/display/common/assignees", card: card, preview: true, read_only: assign_read_only %>

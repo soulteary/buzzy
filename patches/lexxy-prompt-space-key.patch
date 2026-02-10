@@ -1,0 +1,20 @@
+diff --git a/src/elements/prompt.js b/src/elements/prompt.js
+index 0412fb2..ee38cab 100644
+--- a/src/elements/prompt.js
++++ b/src/elements/prompt.js
+@@ -339,6 +339,15 @@ export default class LexicalPromptElement extends HTMLElement {
+   }
+ 
+   #handleSelectedOption(event) {
++    // If the key is SPACE, we only want to select the option if the user has typed something.
++    // Otherwise, we want to let the editor handle the space key (e.g. for Markdown headers).
++    const isSpace = event instanceof KeyboardEvent && event.key === " "
++    const isQueryEmpty = this.#editorContents.textBackUntil(this.trigger) === ""
++
++    if (isSpace && isQueryEmpty) {
++      return false
++    }
++
+     event.preventDefault()
+     event.stopPropagation()
+     this.#optionWasSelected()

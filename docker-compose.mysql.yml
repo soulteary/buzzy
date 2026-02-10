@@ -1,0 +1,153 @@
+# Buzzy Docker Compose（MySQL）
+#
+# 使用方式：在 .env 中设置 DATABASE_ADAPTER=mysql、MYSQL_PASSWORD（须与下方 db 一致），然后：
+#   docker compose -f docker-compose.mysql.yml up -d
+# 首次使用 MySQL 后需在 app 容器内执行：bin/rails db:prepare
+# 若已有数据且需中文搜索，迁移后请在 app 容器内执行：bin/rails search:reindex
+#
+# 若 db 报错 "Another process is using unix socket file"：先 down，删除或清空 ./buzzy_mysql_data 后重新 up。
+# 若 app 报错 "Access denied ... to database 'buzzy_production_cable'"：说明 init 脚本未执行（数据目录已存在），
+#   在项目根目录执行：docker compose -f docker-compose.mysql.yml exec db bash -s < docker/fix-database-grants.sh
+#
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: buzzy:latest
+    # image: ghcr.io/soulteary/buzzy:main
+    restart: unless-stopped
+    networks:
+      - traefik
+    environment:
+      # ----- Rails -----
+      RAILS_ENV: production
+
+      # ----- 数据库 -----
+      # 适配器：sqlite（默认）| mysql（需 --profile mysql 启动 db）
+      DATABASE_ADAPTER: mysql
+      # 仅当 DATABASE_ADAPTER=mysql 时生效；使用本 compose 的 db 服务时填 db
+      MYSQL_HOST: ${MYSQL_HOST:-db}
+      MYSQL_PORT: ${MYSQL_PORT:-3306}
+      MYSQL_USER: ${MYSQL_USER:-buzzy}
+      # 需与下方 db 的 MYSQL_PASSWORD 一致；未在 .env 中设置时使用与 db 相同的默认值
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-buzzymysql}
+      # MySQL 9 使用 caching_sha2_password，需 TLS；preferred 表示优先 TLS（兼容自签名证书）
+      MYSQL_SSL_MODE: ${MYSQL_SSL_MODE:-preferred}
+
+      # ----- 应用 URL -----
+      # 应用对外访问地址，用于邮件链接、重定向等
+      BASE_URL: ${BASE_URL:-http://localhost:3006}
+
+      # ----- 邮件（可选） -----
+      # SMTP 服务器地址，不设则不发邮件
+      SMTP_ADDRESS: ${SMTP_ADDRESS:-}
+      # SMTP 端口，通常 587（TLS）或 465（SSL）
+      SMTP_PORT: ${SMTP_PORT:-587}
+      # SMTP 登录用户名
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      # SMTP 登录密码
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      # 发件人邮箱地址
+      MAILER_FROM_ADDRESS: ${MAILER_FROM_ADDRESS:-}
+
+      # ----- 多租户 -----
+      # 是否启用多租户（按账户隔离）
+      MULTI_TENANT: ${MULTI_TENANT:-false}
+
+      # ----- 后台任务 -----
+      # 在 Puma 内运行 Solid Queue，单容器即可，无需单独 worker 容器
+      SOLID_QUEUE_IN_PUMA: "true"
+
+      # ----- Forward Auth（修改 .env 后需 --force-recreate app） -----
+      # 是否信任反向代理传入的认证信息（如 X-Auth-Email）
+      FORWARD_AUTH_ENABLED: ${FORWARD_AUTH_ENABLED:-true}
+      # 信任的代理 IP，逗号分隔；空则仅校验密钥头
+      FORWARD_AUTH_TRUSTED_IPS: ${FORWARD_AUTH_TRUSTED_IPS:-}
+      # 校验请求时必须携带的密钥头名称
+      FORWARD_AUTH_SECRET_HEADER: ${FORWARD_AUTH_SECRET_HEADER:-}
+      # 校验请求时必须携带的密钥值
+      FORWARD_AUTH_SECRET: ${FORWARD_AUTH_SECRET:-}
+      # 是否根据代理传入身份自动创建/关联用户
+      FORWARD_AUTH_AUTO_PROVISION: ${FORWARD_AUTH_AUTO_PROVISION:-false}
+      # 自动创建用户时的默认角色：owner | admin | member
+      FORWARD_AUTH_DEFAULT_ROLE: ${FORWARD_AUTH_DEFAULT_ROLE:-member}
+      # 是否自动创建会话（登录态）
+      FORWARD_AUTH_CREATE_SESSION: ${FORWARD_AUTH_CREATE_SESSION:-true}
+      # 是否用邮箱@前部分作为用户名并锁定邮箱不可改
+      FORWARD_AUTH_USE_EMAIL_LOCAL_PART_AND_LOCK_EMAIL: ${FORWARD_AUTH_USE_EMAIL_LOCAL_PART_AND_LOCK_EMAIL:-false}
+      # 是否在无账户时自动创建账户
+      FORWARD_AUTH_AUTO_CREATE_ACCOUNT: ${FORWARD_AUTH_AUTO_CREATE_ACCOUNT:-true}
+      # 自动创建账户的默认名称
+      FORWARD_AUTH_AUTO_CREATE_ACCOUNT_NAME: ${FORWARD_AUTH_AUTO_CREATE_ACCOUNT_NAME:-My Workspace}
+
+      # ----- PWA / CSP -----
+      # CSP 允许的 manifest 来源（逗号分隔）
+      CSP_MANIFEST_SRC: ${CSP_MANIFEST_SRC:-https://auth.lab.dev}
+      # PWA manifest 的基础 URL（前端请求此 URL 的 /manifest.json，需在网关上放行，见下）
+      PWA_MANIFEST_BASE_URL: ${PWA_MANIFEST_BASE_URL:-https://buzzy.lab.dev}
+      # 若使用 Forward Auth：必须在网关（如 Stargate/Traefik）中放行 GET /manifest.json，不重定向到登录，
+      # 否则浏览器请求 manifest 会被重定向到 auth 域，导致 CORS 报错。详见 docs/forward_auth.md
+
+      # ----- 功能开关 -----
+      # 是否禁用导出（账户导出、用户数据导出），true 时隐藏并返回 404
+      DISABLE_EXPORT_DATA: ${DISABLE_EXPORT_DATA:-true}
+      # 是否在界面隐藏用户邮箱（显示为占位符），不影响发信与登录
+      HIDE_EMAILS: ${HIDE_EMAILS:-true}
+
+    volumes:
+      - ./buzzy_storage:/rails/storage
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.entrypoints=http
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.middlewares=redir-https
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.rule=Host(`${PROTECTED_DOMAIN:-buzzy.test.localhost}`)
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.service=noop@internal
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.entrypoints=https
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.tls=true
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.middlewares=gzip,stargate-auth
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.rule=Host(`${PROTECTED_DOMAIN:-buzzy.test.localhost}`)
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.service=${PROTECTED_PREFIX:-protected}-backend
+      - traefik.http.services.${PROTECTED_PREFIX:-protected}-backend.loadbalancer.server.scheme=http
+      - traefik.http.services.${PROTECTED_PREFIX:-protected}-backend.loadbalancer.server.port=80
+
+  # MySQL 数据库（与 app 共用 .env，保证 MYSQL_USER/MYSQL_PASSWORD 一致）
+  # MySQL 9 默认 caching_sha2_password，app 通过 MYSQL_SSL_MODE=preferred 走 TLS 连接
+  # command：utf8mb4 与 ngram_token_size 用于正确存储与全文检索中文等多字节字符
+  db:
+    image: mysql:9.6
+    restart: unless-stopped
+    networks:
+      - traefik
+    command: [ "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci", "--ngram_token_size=2" ]
+    env_file:
+      - .env
+    environment:
+      # root 密码（仅用于初始化与运维，应用使用 MYSQL_USER）
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+      # 主库名（init 脚本会创建 production/cable/queue/cache 等库）
+      MYSQL_DATABASE: buzzy_production
+      # 应用使用的用户名，需与 app 的 MYSQL_USER 一致
+      MYSQL_USER: ${MYSQL_USER:-buzzy}
+      # 应用使用的密码，需与 app 的 MYSQL_PASSWORD 一致
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-buzzymysql}
+    volumes:
+      - ./buzzy_mysql_data:/var/lib/mysql
+      - ./docker/01-buzzy-databases.sh:/docker-entrypoint-initdb.d/01-buzzy-databases.sh:ro
+    healthcheck:
+      # CMD-SHELL 使 MYSQL_ROOT_PASSWORD 在容器内被正确展开；exec 形式不会展开变量
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p\"$$MYSQL_ROOT_PASSWORD\" || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+networks:
+  traefik:
+    external: true

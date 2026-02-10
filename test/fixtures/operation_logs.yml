@@ -1,0 +1,11 @@
+# 用于测试操作流水；多数测试通过 create/update/destroy 自动生成
+card_create_sample:
+  id: <%= ActiveRecord::FixtureSet.identify("card_create_sample", :uuid) %>
+  account: 37s_uuid
+  board: writebook_uuid
+  user: david_uuid
+  action: create
+  subject_type: Card
+  subject_id: <%= ActiveRecord::FixtureSet.identify("logo", :uuid) %>
+  changes: <%= { "title" => [ nil, "Logo" ] }.to_json %>
+  created_at: <%= 1.day.ago %>

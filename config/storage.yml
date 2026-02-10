@@ -1,0 +1,4 @@
+<%
+  config_path = File.join(__dir__, "storage.oss.yml")
+%>
+<%= ERB.new(File.read(config_path)).result %>

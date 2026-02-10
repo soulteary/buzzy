@@ -1,0 +1,2 @@
+<%# sgid 无法解析时的 mention 占位（如用户已删除），与 users/attachable 风格一致。development 下可用 data-debug-mention 排查。 %>
+<%= content_tag :span, t("users.missing_attachable_label"), class: "mention mention--missing", data: (local_assigns[:debug_hint].present? ? { debug_mention: local_assigns[:debug_hint] } : {}) %>

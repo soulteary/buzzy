@@ -1,0 +1,26 @@
+<% form_disabled = !Current.user.can_administer_board?(board) || !board.editable_by?(Current.user) %>
+<% visibility_disabled = form_disabled || !board.visibility_changeable_by?(Current.user) %>
+<header>
+  <h2 class="divider txt-medium margin-block-start"><%= t("boards.edit.users.who_can_access") %></h2>
+</header>
+
+<%= access_menu_tag board, class: "settings__user-filter unpad margin-none" do %>
+  <li class="flex align-center gap-half">
+    <figure class="avatar fill-selected">
+      <%= icon_tag "everyone" %>
+      <span class="for-screen-reader"><%= t("boards.edit.users.everyone") %></span>
+    </figure>
+
+    <div class="min-width">
+      <div class="overflow-ellipsis"><strong><%= t("boards.edit.users.everyone") %></strong></div>
+    </div>
+
+    <hr class="separator--horizontal flex-item-grow" style="--border-color: var(--color-ink-medium); --border-style: dashed" aria-hidden="true" />
+
+    <label for="board_all_access" class="switch">
+      <%= form.check_box :all_access, class: "switch__input", checked: board.all_access?, disabled: visibility_disabled, data: { action: "change->toggle-class#toggle" } %>
+      <span class="switch__btn round"></span>
+      <span class="for-screen-reader"><%= t("boards.edit.users.give_everyone_access") %></span>
+    </label>
+  </li>
+<% end %>

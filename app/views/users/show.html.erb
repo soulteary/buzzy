@@ -1,0 +1,19 @@
+<% @page_title = @user.name %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--end flex gap-half">
+    <% if Current.user.present? && Current.user != @user %>
+      <%# 关注/取消关注必须提交到当前用户所在账号，否则在他人主页时 Current.account 为对方账号会导致 302 %>
+      <% follow_url_options = { script_name: Current.user.account.slug } %>
+      <% if Current.user.following?(@user) %>
+        <%= button_to t("square.following.unfollow"), unfollow_user_path(@user, follow_url_options), method: :delete, class: "btn btn--secondary", form: { data: { turbo_confirm: t("square.following.unfollow_confirm") } } %>
+      <% else %>
+        <%= button_to t("square.following.follow"), follow_user_path(@user, follow_url_options), method: :post, class: "btn btn--primary" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if @user.verified? %>
+  <%= turbo_frame_tag "user_events", src: polymorphic_path([ @user, :events ], script_name: nil) %>
+<% end %>

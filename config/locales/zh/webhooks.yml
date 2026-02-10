@@ -1,0 +1,52 @@
+zh:
+  webhooks:
+    index:
+      page_title: "Webhook 管理"
+      back_to: "Webhook 管理"
+      intro: "当看板中发生事件时，Webhook 可通知其他应用。你需要选择订阅的事件并提供一个用于接收数据的 URL。"
+      example: "例如，当看板有事件发生时，可向飞书、钉钉或企业微信发送消息，或触发其他自动化流程。"
+      set_up_new: "新建 Webhook"
+    new:
+      page_title: "设置 Webhook"
+      name_placeholder: "为此 Webhook 命名…"
+      payload_url: "Payload URL"
+      payload_url_hint: "接收 Buzzy 推送数据的应用 URL。"
+      events: "事件"
+      events_hint: "在以下情况时向 Payload URL 发起请求："
+      create: "创建 Webhook"
+      go_back: "返回"
+      url_title: "须为 http:// 或 https:// 的 URL"
+      url_placeholder: "https://example.com"
+    edit:
+      name_placeholder: "为 Webhook 命名…"
+      events: "事件"
+      events_hint: "在以下情况时向 Payload URL 发起请求："
+      save_changes: "保存修改"
+      go_back: "返回"
+    show:
+      edit: "编辑"
+      secret: "密钥"
+      secret_description: "我们会在每次请求中发送 %{header} 头，你可以用此密钥对请求体做 %{sha256} 生成 %{hmac}，以验证请求来自我们。"
+      reactivate: "重新启用"
+      subscribed_to: "已订阅"
+      no_events: "此 Webhook 未订阅任何事件，将不会触发。"
+      deliveries: "推送记录"
+      no_deliveries: "此 Webhook 尚未被触发"
+    form:
+      enable_all: "全部启用"
+      disable_all: "全部禁用"
+    actions:
+      card_assigned: "卡片被指派"
+      card_auto_postponed: "卡片因无动态自动移至稍后"
+      card_board_changed: "卡片所属看板变更"
+      card_closed: "卡片已关闭"
+      card_postponed: "卡片已移至稍后"
+      card_published: "卡片已发布"
+      card_reopened: "卡片已重新打开"
+      card_sent_back_to_triage: "卡片已退回待分拣"
+      card_triaged: "卡片已分拣"
+      card_unassigned: "卡片已取消指派"
+      comment_created: "评论已创建"
+    webhook:
+      remove: "移除 %{name}"
+      remove_confirm: "确定要永久移除此 Webhook 吗？"

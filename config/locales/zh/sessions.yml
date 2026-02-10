@@ -1,0 +1,44 @@
+zh:
+  sessions:
+    new:
+      page_title: "输入邮箱"
+      title: "登录 Buzzy"
+      email_placeholder: "输入你的邮箱地址…"
+      new_here: "新用户？"
+      sign_up: "注册"
+      to_create_account: "以创建账户。"
+      already_have_account: "已有账户？"
+      enter_email: "输入邮箱即可登录。"
+      submit: "继续"
+    starts:
+      new:
+        just_a_sec: "正在使用 %{account_name} 为你登录…"
+        sign_in: "登录"
+        signing_in: "登录中…"
+    magic_links:
+      show:
+        page_title: "查收邮件"
+        enter_code: "在下方输入邮件中的验证码："
+        code_expires: "发往 %{email} 的验证码有效期为 %{duration}。"
+        code_expires_html: "发往 <strong>%{email}</strong> 的验证码有效期为 %{duration}。"
+        psst_code: "验证码是："
+        dev_badge: "开发"
+    transfers:
+      unavailable_title: "自动登录链接不可用"
+      unavailable_body: "该自动登录链接已禁用或已过期。"
+    menus:
+      show:
+        page_title: "选择账户"
+        your_accounts: "你的 Buzzy 账户"
+        hmm: "嗯…"
+        no_accounts: "你还没有 Buzzy 账户。"
+        sign_up_new: "注册新 Buzzy 账户"
+        import_exported: "导入已导出的账户"
+    rate_limit: "请稍后再试。"
+    something_went_wrong: "出了点问题"
+    enter_email_to_sign_in: "输入邮箱地址以登录。"
+    try_another_code: "换一个验证码。"
+    try_again_15_minutes: "15 分钟后再试。"
+    something_went_wrong_try_again: "出了点问题，请重试。"
+  signups:
+    try_again_later: "请稍后再试。"

@@ -1,0 +1,24 @@
+<% @page_title = t("account.imports.new.page_title") %>
+
+<div class="panel panel--centered flex flex-column gap">
+  <header>
+    <h1 class="txt-x-large font-weight-black txt-tight-lines margin-block-end-half"><%= t("account.imports.new.heading") %></h1>
+    <div><%= t("account.imports.new.intro") %></div>
+  </header>
+
+  <%= form_with url: account_imports_path, class: "flex flex-column gap", data: { controller: "form upload-preview" }, multipart: true do |form| %>
+    <label class="btn input--upload">
+      <div data-upload-preview-target="placeholder"><%= t("account.imports.new.choose_file") %></div>
+      <div data-upload-preview-target="fileName" hidden></div>
+      <%= form.file_field :file, accept: ".zip", required: true, data: { action: "upload-preview#previewFileName", upload_preview_target: "input" } %>
+    </label>
+
+    <button type="submit" class="btn btn--link center" data-form-target="submit">
+      <span><%= t("account.imports.new.start_import") %></span>
+    </button>
+  <% end %>
+</div>
+
+<% content_for :footer do %>
+  <%= render "sessions/footer" %>
+<% end %>

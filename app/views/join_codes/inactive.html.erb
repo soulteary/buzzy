@@ -1,0 +1,15 @@
+<% @page_title = t("account.join_codes.inactive.page_title") %>
+
+<div class="panel panel--centered flex flex-column gap-half">
+  <h1 class="txt-x-large font-weight-black margin-none"><%= @page_title %></h1>
+
+  <p class="txt-medium margin-none"><%= t("account.join_codes.inactive.body", name: @join_code.account.name) %></p>
+
+  <p class="txt-medium">
+    <%= link_to t("account.join_codes.inactive.ok"), "https://buzzy.example.com", class: "btn btn--link" %>
+  </p>
+</div>
+
+<% content_for :footer do %>
+  <%= render "sessions/footer" %>
+<% end %>

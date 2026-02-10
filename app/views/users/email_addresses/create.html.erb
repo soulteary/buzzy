@@ -1,0 +1,15 @@
+<% @page_title = t("users.email_addresses.confirm_page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("users.my_profile"), profile_user_path(@user, script_name: nil), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+<% end %>
+
+<div class="panel panel--centered flex flex-column gap-half" style="--panel-size: 50ch;">
+  <h1 class="txt-x-large font-weight-black margin-none"><%= t("users.email_addresses.check_email") %></h1>
+  <p class="margin-none"><%= t("users.email_addresses.sent_to", email: content_tag(:strong, display_email_in_sentence(params[:email_address]))).html_safe %></p>
+  <p class="margin-none-block-start margin-block-end-half"><%= t("users.email_addresses.hit_link") %></p>
+
+  <%= link_to t("shared.done"), profile_user_path(@user, script_name: nil), class: "btn btn--link center" %>
+</div>

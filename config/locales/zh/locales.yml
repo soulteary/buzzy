@@ -1,0 +1,7 @@
+# 语言选择器显示名称
+zh:
+  locales:
+    language: "语言"
+    name:
+      en: "English"
+      zh: "中文"

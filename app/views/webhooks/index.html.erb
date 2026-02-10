@@ -1,0 +1,25 @@
+<% @page_title = t("webhooks.index.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= link_back_to_board(@board) %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<%= tag.section class: "panel panel--wide shadow center webhooks" do %>
+  <% if @page.records.any? %>
+    <ul class="flex flex-column align-start gap margin-none-block-start unpad webhooks-list">
+      <%= render partial: "webhooks/webhook", collection: @page.records %>
+    </ul>
+  <% else %>
+    <p><%= t("webhooks.index.intro") %></p>
+    <p><%= t("webhooks.index.example") %></p>
+  <% end %>
+
+  <%= link_to new_user_board_webhook_path(@board.url_user, @board), class: "btn btn--link" do %>
+    <%= icon_tag "add" %>
+    <span><%= t("webhooks.index.set_up_new") %></span>
+  <% end %>
+<% end %>

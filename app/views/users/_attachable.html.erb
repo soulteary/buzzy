@@ -1,0 +1,5 @@
+<% user = local_assigns[:user] || local_assigns[:attachment]&.attachable %>
+<% if user %>
+<%= avatar_image_tag user %>
+<%= user.first_name %>
+<% end %>

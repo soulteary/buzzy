@@ -1,0 +1,3 @@
+<% if filter.card_ids.present? %>
+  <%= filter_chip_tag t("filters.cards_ids", ids: filter.card_ids.join(", ")), filter.as_params.without(:card_ids) %>
+<% end %>

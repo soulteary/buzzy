@@ -1,0 +1,52 @@
+zh:
+  activerecord:
+    errors:
+      models:
+        webhook:
+          attributes:
+            url:
+              invalid_scheme: "必须使用 %{schemes}"
+              invalid: "不是有效的 URL"
+        user:
+          attributes:
+            account_id:
+              single_user_per_account: "每个账户只能有一个用户"
+            bio:
+              too_long: "不能超过 %{count} 字"
+        user/avatar:
+          attributes:
+            avatar:
+              invalid_content_type: "必须是 JPEG、PNG、GIF 或 WebP 图片"
+              width_too_large: "宽度不能超过 %{max}px"
+              height_too_large: "高度不能超过 %{max}px"
+        signup:
+          attributes:
+            base:
+              creation_failed: "出了点问题，无法创建账户，请重试。"
+        push/subscription:
+          attributes:
+            endpoint:
+              invalid_url: "不是有效的 URL"
+              invalid_scheme: "必须使用 HTTPS"
+              not_permitted: "不是允许的推送服务"
+              private_ip: "解析到私有或无效 IP 地址"
+        notification/bundle:
+          attributes:
+            base:
+              overlapping: "推送窗口与已有待处理推送 (id %{id}) 重叠"
+        comment:
+          attributes:
+            card:
+              not_commentable: "不允许评论"
+        assignment:
+          attributes:
+            base:
+              limit_reached: "该卡片已达到最多 %{count} 位指派人"
+        account/join_code:
+          attributes:
+            usage_limit:
+              less_than_or_equal_to: "不能大于地球人口"
+        user_follow:
+          attributes:
+            followee_id:
+              cannot_follow_self: "不能关注自己"

@@ -1,0 +1,15 @@
+en:
+  signups:
+    new:
+      page_title: "Sign up for Buzzy"
+      title: "Sign up"
+      email_placeholder: "Enter your email address…"
+      enter_email: "Enter your email to create an account."
+      submit: "Let's go"
+    completions:
+      new:
+        page_title: "Complete your sign-up"
+        one_step_away: "You're one step away. Just enter your name to get your own Buzzy account."
+        full_name_placeholder: "Enter your full name…"
+        validation_errors: "Your changes couldn't be saved:"
+        continue: "Continue"

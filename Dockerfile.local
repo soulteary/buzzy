@@ -1,0 +1,49 @@
+# check=error=true
+
+# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
+# docker build -f Dockerfile.local -t buzzy .   # requires buzzy:base from Dockerfile.base
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name buzzy buzzy
+#
+# Runtime secret: You MUST pass RAILS_MASTER_KEY or SECRET_KEY_BASE at run time (same value used
+# when generating content). If missing or inconsistent, Action Text SGIDs (e.g. @mentions) will
+# fail to resolve and display as "未知用户" (unknown user).
+#
+# Important: Code is copied into the image at build time (COPY . .). Any change to app/, config/, etc.
+# (e.g. helpers, views, initializers) will NOT take effect until you rebuild the image.
+# For iterative development with live reload, use bin/dev on the host, or run the container with a
+# volume mount, e.g.: docker run -v "$(pwd)/app:/rails/app" ... (may need matching Gemfile/gems).
+#
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+ARG RUBY_VERSION=3.4.7
+FROM buzzy:base AS base
+
+# Copy application code
+COPY . .
+
+# Precompile bootsnap code for faster boot times.
+# -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+RUN bundle exec bootsnap precompile -j 1 app/ lib/
+
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
+RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+
+# Run and own only the runtime files as a non-root user for security
+# Only create group/user when missing so we don't conflict with base image (e.g. GID 1000 in noble)
+RUN (getent group rails > /dev/null 2>&1 || groupadd --system rails) && \
+    (getent passwd rails > /dev/null 2>&1 || useradd rails --gid rails --create-home --shell /bin/bash)
+
+# Single-stage build: code and assets are already in this layer (from COPY/RUN above).
+# Ensure entrypoint and log filter script are executable; give rails user ownership.
+RUN chmod +x ./bin/docker-entrypoint ./bin/filter-static-request-logs && \
+    chown -R rails:rails /rails
+USER rails:rails
+
+ENV SKIP_STATIC_REQUEST_LOGS=1
+# Entrypoint prepares the database; with SKIP_STATIC_REQUEST_LOGS=1 it filters /assets/, /favicon, /packs/ request logs.
+ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+
+# Start server via Thruster by default, this can be overwritten at runtime
+EXPOSE 80
+CMD ["./bin/thrust", "./bin/rails", "server"]

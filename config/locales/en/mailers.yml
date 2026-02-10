@@ -1,0 +1,16 @@
+en:
+  mailers:
+    magic_link:
+      sign_in_instructions_subject: "Your Buzzy code is %{code}"
+    export:
+      completed_subject: "Your Buzzy data export is ready for download"
+    import:
+      completed_subject: "Your Buzzy account import is done"
+      failed_subject: "Your Buzzy account import failed"
+    account:
+      cancellation_subject: "Your Buzzy account was cancelled"
+    notification:
+      bundle_subject: "Buzzy: New notifications"
+      bundle_subject_with_account: "Buzzy (%{account_name}): New notifications"
+    user_mailer:
+      email_change_confirmation_subject: "Confirm your new email address"

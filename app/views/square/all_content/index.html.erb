@@ -1,0 +1,75 @@
+<% @page_title = t("square.all_content.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("my.menus.home"), @account ? root_path(script_name: @account.slug) : root_path, "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<section class="settings margin-block-start-half">
+  <% @accounts.each do |account| %>
+    <% users = @users_by_account[account.id] || [] %>
+    <% public_boards = @public_boards_by_account[account.id] || [] %>
+    <% public_cards = @public_cards_by_account[account.id] || [] %>
+    <% has_public = public_boards.any? || public_cards.any? %>
+    <% has_anything = users.any? || has_public %>
+    <% next unless has_anything %>
+
+    <div class="settings__panel panel shadow">
+      <section class="settings__section">
+        <% if users.any? %>
+          <ul class="settings__user-list flex flex-column gap-half margin-block-end" role="list">
+            <% users.each do |user| %>
+              <%= render "shared/user_list_item", user: user do %>
+                <% if Current.user.present? && Current.user != user %>
+                  <% if Current.user.following?(user) %>
+                    <%= button_to t("square.following.unfollow"), unfollow_user_path(user), method: :delete, class: "btn btn--secondary txt-x-small", form: { data: { turbo_confirm: t("square.following.unfollow_confirm") } } %>
+                  <% else %>
+                    <%= button_to t("square.following.follow"), follow_user_path(user), method: :post, class: "btn btn--primary txt-x-small" %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="txt-small margin-none txt-tinted margin-block-end"><%= t("square.all_content.no_members") %></p>
+        <% end %>
+
+        <% if has_public %>
+          <% if public_cards.any? %>
+            <ul class="settings__user-list flex flex-column gap-half" role="list">
+              <% public_cards.each do |card| %>
+                <li>
+                  <%= link_to user_board_card_path(card.board.url_user, card.board, card), class: "txt-ink all-content-card-link flex gap-half align-center min-width", data: { turbo_prefetch: false } do %>
+                    <%= icon_tag "clipboard", class: "popup__icon" %>
+                    <div class="txt-align-start overflow-ellipsis">
+                      <div class="all-content-card-title-row flex align-center gap-half flex-wrap">
+                        <strong><%= card.title.presence || t("square.all_content.untitled_card") %></strong>
+                        <span class="txt-x-small all-content-board-name" title="<%= card.board.name %>"><%= truncate(card.board.name, length: 10) %></span>
+                      </div>
+                      <% show_card_creator = (Current.user.nil? || card.creator_id != Current.user.id) && @last_editor_id_by_card[card.id] != card.creator_id %>
+                      <% if show_card_creator %>
+                        <div class="txt-x-small"><%= t('square.all_content.creator', name: card.creator.name) %></div>
+                      <% end %>
+                      <div class="txt-x-small txt-tinted"><%= t("square.all_content.last_updated", time: relative_time_ago(card.updated_at)) %></div>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        <% else %>
+          <p class="txt-small margin-none txt-tinted margin-block-end"><%= t("square.all_content.no_public_content") %></p>
+        <% end %>
+      </section>
+    </div>
+  <% end %>
+
+  <% if @accounts.empty? %>
+    <div class="settings__panel panel shadow">
+      <p class="txt-small margin-block-half"><%= t("square.all_content.no_members") %></p>
+    </div>
+  <% end %>
+</section>

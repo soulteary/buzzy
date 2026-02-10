@@ -1,0 +1,21 @@
+logo_card_david_mention_by_jz:
+  id: <%= ActiveRecord::FixtureSet.identify("logo_card_david_mention_by_jz", :uuid) %>
+  account: 37s_uuid
+  source: logo_uuid (Card)
+  mentioner: jz_uuid
+  mentionee: david_uuid
+
+logo_comment_david_mention_by_jz:
+  id: <%= ActiveRecord::FixtureSet.identify("logo_comment_david_mention_by_jz", :uuid) %>
+  account: 37s_uuid
+  source: logo_agreement_jz_uuid (Comment)
+  mentioner: jz_uuid
+  mentionee: david_uuid
+
+# 隐藏看板上的卡片 @ 提及 david，用于「仅因提及可访问」测试
+secret_card_david_mention_by_kevin:
+  id: <%= ActiveRecord::FixtureSet.identify("secret_card_david_mention_by_kevin", :uuid) %>
+  account: 37s_uuid
+  source: secret_card (Card)
+  mentioner: kevin_uuid
+  mentionee: david_uuid

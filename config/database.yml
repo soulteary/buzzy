@@ -1,0 +1,4 @@
+<%
+  config_path = File.join("config", "database.#{Buzzy.db_adapter}.yml")
+%>
+<%= ERB.new(File.read(config_path)).result %>

@@ -1,0 +1,64 @@
+# check=error=true
+
+# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
+# docker build -t buzzy .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name buzzy buzzy
+
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version
+ARG RUBY_VERSION=4.0
+FROM ghcr.io/ruby/ruby:$RUBY_VERSION-noble AS base
+
+# Rails app lives here
+WORKDIR /rails
+
+RUN set -eux; \
+    file="/etc/apt/sources.list.d/ubuntu.sources"; \
+    base="https://mirrors.tuna.tsinghua.edu.cn"; \
+    arch="$(dpkg --print-architecture)"; \
+    case "$arch" in amd64|i386) repo="ubuntu" ;; *) repo="ubuntu-ports" ;; esac; \
+    sed -E -i "s|^URIs:\s*.*$|URIs: ${base}/${repo}|g" "$file"; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends ca-certificates curl; \
+    rm -rf /var/lib/apt/lists/*
+
+# Install base packages
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y curl libjemalloc2 libvips sqlite3 libssl-dev && \
+    ln -s /usr/lib/$(uname -m)-linux-gnu/libjemalloc.so.2 /usr/local/lib/libjemalloc.so && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+# Set production environment variables and enable jemalloc for reduced memory usage and latency.
+ENV RAILS_ENV="production" \
+    BUNDLE_DEPLOYMENT="1" \
+    BUNDLE_PATH="/usr/local/bundle" \
+    BUNDLE_WITHOUT="development:test" \
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so"
+
+# Throw-away build stage to reduce size of final image
+FROM base AS build
+
+# Install packages needed to build gems and lexxy (clone + yarn build). Node 20+ required by lexxy deps (e.g. marked@16).
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libyaml-dev pkg-config ca-certificates curl && \
+    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+
+RUN gem sources --add https://gems.ruby-china.com/ --remove https://rubygems.org/
+# RUN gem install bundler -v 2.7.2
+RUN bundle config mirror.https://rubygems.org https://gems.ruby-china.com
+
+# Copy dependency manifests and assets; then apply lexxy prompt patch (creates vendor/lexxy)
+# COPY Gemfile vendor ./
+COPY Gemfile Gemfile.lock vendor ./
+# COPY patches ./patches
+# COPY script/setup_lexxy ./script/setup_lexxy
+ENV CI=1
+# RUN chmod +x ./script/setup_lexxy && bash ./script/setup_lexxy
+
+# Install application gems (uses patched vendor/lexxy when present). Allow lockfile to resolve to path gem in build.
+RUN bundle config set frozen false && \
+    bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
+    bundle exec bootsnap precompile -j 1 --gemfile

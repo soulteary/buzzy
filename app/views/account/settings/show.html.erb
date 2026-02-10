@@ -1,0 +1,28 @@
+<% @page_title = t("account.settings.show.page_title") %>
+
+<% content_for :header do %>
+  <h1 class="header__title" data-bridge--title-target="header">
+    <%= @page_title %>
+    <% unless Current.user.admin? %>
+      <div class="txt-normal font-weight-normal"><%= t("account.settings.show.only_admins_notice") %></div>
+    <% end %>
+  </h1>
+<% end %>
+
+<div class="settings margin-block-start-half">
+  <%= render "account/settings/profile" %>
+
+  <div class="settings__panel panel shadow center hide-on-native">
+    <%= render "users/theme" %>
+    <%= render "users/language" %>
+    <%= render "users/transfer", user: @user if @user.identity %>
+    <%= render "users/access_tokens" %>
+    <%= render "users/data_export" if Buzzy.export_data_enabled? %>
+  </div>
+
+  <div class="settings__panel settings__panel--entropy panel shadow center">
+    <%= render "account/settings/entropy", account: @account %>
+    <%= render "account/settings/export" if (Current.user.admin? || Current.user.owner?) && Buzzy.export_data_enabled? %>
+    <%= render "account/settings/cancellation" %>
+  </div>
+</div>

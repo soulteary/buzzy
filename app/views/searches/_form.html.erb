@@ -1,0 +1,23 @@
+<%= form_with url: search_path, method: :get, class: "search__form flex align-center justify-center gap-half", data: {
+      bar_target: "form",
+      turbo_frame: defined?(target_turbo_frame) ? target_turbo_frame : nil,
+      controller: "search-form",
+      search_form_min_length_value: 2,
+      action: "submit->search-form#preventSubmitIfTooShort",
+    } do |form| %>
+  <%= form.label :q, t("searches.search_buzzy"), class: "font-weight-black txt-nowrap" %>
+  <%= text_field_tag :q, query_terms,
+        class: "search__input input",
+        type: "search",
+        placeholder: t("searches.placeholder"),
+        autocomplete: "off",
+        autofocus: true,
+        data: {
+          bar_target: "searchInput",
+          search_form_target: "input",
+          action: "keydown.enter->bar#showModalAndSubmit:prevent keydown.esc->bar#reset" } %>
+  <button class="search__reset btn btn--circle borderless" data-action="bar#clearInput">
+    <%= icon_tag "close" %>
+    <span class="for-screen-reader"><%= t("searches.close_search") %></span>
+  </button>
+<% end %>

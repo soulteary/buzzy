@@ -1,0 +1,13 @@
+zh:
+  columns:
+    choose: "选择要放入的列"
+    add_card: "添加卡片"
+    no_cards_here: "暂无卡片"
+    drag_cards_here: "将卡片拖到此处"
+    maximize_column: "最大化列"
+    expand_column: "展开列"
+    card_number_sr: "卡片编号"
+    expand_column_sr: "展开列"
+    done: "完成"
+    not_now: "稍后"
+    maybe: "待定"

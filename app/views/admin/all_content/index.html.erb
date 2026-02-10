@@ -1,0 +1,110 @@
+<% @page_title = t("admin.all_content.page_title") %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to t("my.menus.home"), @account ? root_path(script_name: @account.slug) : root_path, "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+
+  <h1 class="header__title" data-bridge--title-target="header"><%= @page_title %></h1>
+<% end %>
+
+<section class="settings margin-block-start-half">
+  <% @accounts.each do |account| %>
+    <% users = @users_by_account[account.id] || [] %>
+    <% boards = @boards_by_account[account.id] || [] %>
+    <% cards = @cards_by_account[account.id] || [] %>
+    <% has_anything = users.any? || boards.any? || cards.any? %>
+    <% next unless has_anything %>
+
+    <div class="settings__panel panel shadow">
+      <section class="settings__section">
+        <% if users.any? %>
+          <h2 class="divider"><%= t("admin.all_content.members") %> (<%= users.size %>)</h2>
+          <ul class="settings__user-list flex flex-column gap-half margin-block-end" role="list">
+            <% users.each do |user| %>
+              <%= render "shared/user_list_item", user: user do %>
+                <% unless user.active? %>
+                  <span class="txt-x-small txt-tinted flex-item-no-shrink"><%= t("admin.all_content.frozen_badge") %></span>
+                <% end %>
+                <% if user.active? %>
+                  <%= button_to t("admin.all_content.freeze_user"), admin_user_freeze_path(user, script_name: account.slug), method: :patch, class: "btn btn--plain txt-x-small", form: { data: { turbo_confirm: t("admin.users.confirm_freeze") } } %>
+                <% else %>
+                  <%= button_to t("admin.all_content.unfreeze_user"), admin_user_unfreeze_path(user, script_name: account.slug), method: :patch, class: "btn btn--plain txt-x-small", form: { data: { turbo_confirm: t("admin.users.confirm_unfreeze") } } %>
+                <% end %>
+              <% end %>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="txt-small margin-none txt-tinted margin-block-end"><%= t("admin.all_content.no_members") %></p>
+        <% end %>
+
+        <% if boards.any? %>
+          <h2 class="divider"><%= t("admin.all_content.boards") %> (<%= boards.size %>)</h2>
+          <ul class="settings__user-list flex flex-column gap-half margin-block-end-half" role="list">
+            <% boards.each do |board| %>
+              <li class="flex align-center gap-half min-width-0 flex-wrap">
+                <%= link_to user_board_path(board.url_user, board), class: "txt-ink flex gap-half align-center min-width flex-grow" do %>
+                  <%= icon_tag "board", class: "popup__icon" %>
+                  <div class="txt-align-start overflow-ellipsis">
+                    <strong><%= board.name %></strong>
+                    <div class="txt-x-small"><%= t("admin.all_content.creator", name: board.creator.name) %></div>
+                  </div>
+                <% end %>
+                <% unless board.all_access? %>
+                  <span class="txt-x-small txt-tinted flex-item-no-shrink" title="<%= t("admin.all_content.hidden_board_hint") %>"><%= t("admin.all_content.hidden") %></span>
+                <% end %>
+                <% if board.visibility_locked? %>
+                  <span class="txt-x-small txt-tinted flex-item-no-shrink" title="<%= t("admin.all_content.visibility_locked_badge_hint") %>"><%= t("admin.all_content.visibility_locked_badge") %></span>
+                <% end %>
+                <% if board.edit_locked? %>
+                  <span class="txt-x-small txt-tinted flex-item-no-shrink" title="<%= t("admin.all_content.edit_locked_badge_hint") %>"><%= t("admin.all_content.edit_locked_badge") %></span>
+                <% end %>
+                <span class="flex-item-no-shrink flex align-center gap-half">
+                  <%= button_to (board.visibility_locked? ? t("admin.all_content.unlock_visibility") : t("admin.all_content.lock_visibility")), admin_board_toggle_visibility_lock_path(board, script_name: account.slug), method: :patch, class: "btn btn--plain txt-x-small", form: (board.visibility_locked? ? {} : { data: { turbo_confirm: t("admin.boards.confirm_lock_visibility") } }) %>
+                  <%= button_to (board.edit_locked? ? t("admin.all_content.unlock_edit") : t("admin.all_content.lock_edit")), admin_board_toggle_edit_lock_path(board, script_name: account.slug), method: :patch, class: "btn btn--plain txt-x-small", form: (board.edit_locked? ? {} : { data: { turbo_confirm: t("admin.boards.confirm_lock_edit") } }) %>
+                </span>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="txt-small margin-none txt-tinted margin-block-end"><%= t("admin.all_content.no_boards") %></p>
+        <% end %>
+
+        <% if cards.any? %>
+          <h2 class="divider"><%= t("admin.all_content.recent_cards") %> (<%= cards.size %>)</h2>
+          <% cards.group_by(&:board).sort_by { |board, _| board.name.downcase }.each do |board, board_cards| %>
+            <h3 class="txt-small margin-block-start margin-block-end-half"><%= board.name %></h3>
+            <ul class="settings__user-list flex flex-column gap-half margin-block-end" role="list">
+              <% board_cards.each do |card| %>
+                <li>
+                  <%= link_to user_board_card_path(card.board.url_user, card.board, card), class: "txt-ink all-content-card-link flex gap-half align-center min-width", data: { turbo_prefetch: false } do %>
+                    <%= icon_tag "clipboard", class: "popup__icon" %>
+                    <div class="txt-align-start overflow-ellipsis">
+                      <div class="all-content-card-title-row flex align-center gap-half flex-wrap">
+                        <strong><%= card.title.presence || t("admin.all_content.untitled_card") %></strong>
+                        <span class="txt-x-small all-content-board-name" title="<%= card.board.name %>"><%= truncate(card.board.name, length: 10) %></span>
+                      </div>
+                      <% show_card_creator = (Current.user.nil? || card.creator_id != Current.user.id) && @last_editor_id_by_card[card.id] != card.creator_id %>
+                      <% if show_card_creator %>
+                        <div class="txt-x-small"><%= t("admin.all_content.creator", name: card.creator.name) %></div>
+                      <% end %>
+                      <div class="txt-x-small txt-tinted"><%= t("admin.all_content.last_updated", time: relative_time_ago(card.updated_at)) %></div>
+                    </div>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% end %>
+        <% else %>
+          <p class="txt-small margin-block-half"><%= t("admin.all_content.no_cards") %></p>
+        <% end %>
+      </section>
+    </div>
+  <% end %>
+
+  <% if @accounts.empty? %>
+    <div class="settings__panel panel shadow">
+      <p class="txt-small margin-block-half"><%= t("admin.all_content.no_members") %></p>
+    </div>
+  <% end %>
+</section>

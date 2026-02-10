@@ -1,0 +1,23 @@
+<% @page_title = t("account.imports.show.page_title") %>
+
+<%= turbo_stream_from @import %>
+
+<div class="panel panel--centered flex flex-column gap-half">
+  <h1 class="txt-x-large font-weight-black margin-block-end"><%= t("account.imports.show.heading") %></h1>
+
+  <% case @import.status %>
+  <% when "pending", "processing" %>
+    <p class="txt-medium"><%= t("account.imports.show.in_progress") %></p>
+  <% when "completed" %>
+    <p class="txt-medium txt-positive"><%= t("account.imports.show.completed_success") %></p>
+    <%= link_to t("account.imports.show.go_to_account"), landing_url(script_name: @import.account.slug), class: "btn btn--link center txt-medium" %>
+  <% when "failed" %>
+    <p class="txt-medium txt-negative"><%= t("account.imports.show.failed") %></p>
+    <p class="txt-small"><%= t("account.imports.show.failed_hint") %></p>
+    <%= link_to t("account.imports.show.try_again"), new_account_import_path, class: "btn btn--plain center txt-medium" %>
+  <% end %>
+</div>
+
+<% content_for :footer do %>
+  <%= render "sessions/footer" %>
+<% end %>

@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# 启动服务器并过滤其 stdout/stderr：丢弃“静态资源请求”的 JSON 日志行（如 Thruster 的 "msg":"Request" 且 path 为 /assets/、/favicon 等），其余原样输出。
+# 由 docker-entrypoint 在 SKIP_STATIC_REQUEST_LOGS=1 时调用：exec ./bin/filter-static-request-logs ./bin/thrust ./bin/rails server
+# 本进程作为 PID 1 接收 SIGTERM 并转发给子进程。
+
+STATIC_PATH_PATTERNS = [
+  %r{"path":"/assets/},
+  %r{"path":"/favicon},
+  %r{"path":"/packs/},
+].freeze
+
+def static_request_log?(line)
+  return false unless line.include?('"path":')
+  STATIC_PATH_PATTERNS.any? { |re| line.match?(re) }
+end
+
+# 若传入参数则启动子进程并过滤其输出（作为 PID 1 转发 SIGTERM/SIGINT）；否则从 stdin 过滤
+if ARGV.any?
+  require "open3"
+  Open3.popen2e(*ARGV) do |_stdin, stdout_err, wait_thr|
+    pid = wait_thr.pid
+    trap("SIGTERM") { Process.kill("TERM", pid) }
+    trap("SIGINT")  { Process.kill("INT", pid) }
+    stdout_err.each_line do |line|
+      $stdout.print line unless static_request_log?(line)
+      $stdout.flush
+    end
+    exit wait_thr.value.exitstatus
+  end
+else
+  $stdin.each_line do |line|
+    $stdout.print line unless static_request_log?(line)
+    $stdout.flush
+  end
+end

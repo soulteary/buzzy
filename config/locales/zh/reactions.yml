@@ -1,0 +1,11 @@
+zh:
+  reactions:
+    new:
+      submit: "提交"
+      cancel: "取消"
+      new_reaction: "新反应"
+      add_reaction_aria: "添加反应"
+    reaction:
+      add_your_own: "添加你自己的反应"
+      delete_this: "删除此反应"
+      press_enter_to_delete: "按回车删除此反应"

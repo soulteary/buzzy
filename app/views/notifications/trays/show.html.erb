@@ -1,0 +1,4 @@
+<%= turbo_frame_tag "notifications" do %>
+  <%= render partial: "notifications/notification", collection: @notifications %>
+  <div hidden data-notifications-tray-target="hiddenNotifications"></div>
+<% end %>

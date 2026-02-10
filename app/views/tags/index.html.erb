@@ -1,0 +1,21 @@
+<section class="panel borderless center margin pad">
+  <h1><%= t("tags.index.title") %></h1>
+  <ul class="txt-align-start">
+    <% @page.records.each do |tag| %>
+      <li class="flex align-start justify-space-between gap pad" style="border-block-end: 1px solid var(--color-ink-lighter)">
+        <span>
+          <strong class="txt-nowrap"><%= tag.title %></strong>
+        </span>
+
+        <span>
+          <%= tag.cards.map(&:title).to_sentence %>
+        </span>
+
+        <%= button_to tag_path(tag), class: "btn txt-small", method: :delete, data: { turbo_confirm: t("tags.delete_confirm") } do %>
+          <%= icon_tag "remove" %>
+          <span class="for-screen-reader"><%= t("tags.index.delete") %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</section>

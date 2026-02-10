@@ -1,0 +1,47 @@
+<section id="<%= dom_id(card, :card_container) %>" class="card-perma" style="--card-color: <%= card.color %>;" data-controller="dialog-manager bridge--form">
+  <%# 正文区（含 rich_text_with_attachments）不包在 cache 内，避免 digest "via/vium" 报错并保证 @mention 用 attachable 正确渲染 %>
+  <div class="card-perma__actions card-perma__actions--left">
+    <%= render "cards/container/gild", card: card if card.published? && !card.closed? %>
+    <%= render "cards/container/image", card: card %>
+  </div>
+
+  <div class="card-perma__bg">
+    <%= card_article_tag card, class: "card" do %>
+      <header class="card__header">
+        <%= render "cards/display/perma/board", card: card %>
+        <%= render "cards/display/perma/tags", card: card %>
+      </header>
+
+      <div class="card__body justify-space-between">
+        <div class="card__content">
+          <%= render "cards/container/content", card: card %>
+          <%= render "cards/display/perma/steps", card: card %>
+        </div>
+
+        <% if card.published? %>
+          <% if board_accessed_via_mention? %>
+            <%= render "cards/display/preview/columns", card: card %>
+          <% else %>
+            <%= render "cards/triage/columns", card: card %>
+          <% end %>
+        <% end %>
+
+        <%= render "cards/display/common/stamp", card: card %>
+      </div>
+
+      <footer class="card__footer">
+        <%= render "cards/display/perma/meta", card: card %>
+        <%= render "cards/display/perma/background", card: card %>
+        <%= render "reactions/reactions", reactable: card %>
+      </footer>
+    <% end %>
+
+    <% if card.entropic? %>
+      <%= render "cards/display/preview/bubble", card: card %>
+    <% end %>
+  </div>
+
+  <% if card.published? %>
+    <%= render "cards/container/footer/published", card: card %>
+  <% end %>
+</section>

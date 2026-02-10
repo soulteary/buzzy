@@ -1,0 +1,19 @@
+<%# Digest 阶段会解析到 content-type application/vnd.actiontext.mention 派生的路径 via/vium，此处统一把 mention 附件转交给 users/attachable 或缺失占位渲染。 %>
+<% attachment = local_assigns[:vium] || local_assigns[:attachment] || @vium %>
+<% attachable = attachment&.attachable %>
+<%# 当 sgid 解析失败得到 MissingAttachable 时，尝试用节点上的 gid 解析 User（例如表单只提交了 gid 或 sgid 校验失败） %>
+<% if attachable.is_a?(ActionText::Attachables::MissingAttachable) && attachment&.node.present? && attachment.node["gid"].present? %>
+  <% gid = GlobalID.parse(attachment.node["gid"]) rescue nil %>
+  <% attachable = gid.find if gid %>
+  <% attachable = nil unless attachable.is_a?(User) %>
+<% end %>
+<% if attachable.is_a?(User) %>
+  <%= render "users/attachable", attachment: attachment, user: attachable %>
+<% elsif attachable.respond_to?(:to_attachable_partial_path) %>
+  <%= render attachable %>
+<% elsif attachable.is_a?(ActionText::Attachables::MissingAttachable) %>
+  <% debug_hint = Rails.env.development? && attachment&.node&.[]("gid").blank? ? "sgid_invalid_no_gid" : nil %>
+  <%= render "users/missing_attachable", debug_hint: debug_hint %>
+<% else %>
+  <%= content_tag :span, t("users.missing_attachable_label"), class: "mention mention--missing" %>
+<% end %>

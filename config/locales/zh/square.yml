@@ -1,0 +1,27 @@
+zh:
+  square:
+    following:
+      page_title: "我关注的人"
+      members: "关注的人"
+      no_following: "暂无关注的人。在「所有人的内容」或用户主页可关注其他用户。"
+      follow: "关注"
+      unfollow: "取消关注"
+      unfollow_confirm: "确定不再关注此人？"
+    all_content:
+      page_title: "所有人的内容"
+      members: "成员"
+      boards: "看板"
+      creator: "创建者：%{name}"
+      recent_cards: "最近卡片"
+      no_members: "暂无成员。"
+      no_boards: "暂无看板。"
+      no_cards: "暂无卡片。"
+      untitled_card: "无标题"
+      visible_to_everyone: "对所有人可见"
+      accessible_to_you: "你有权限的内容"
+      no_public_content: "该账户暂无对所有人可见的内容。"
+      last_updated: "最近更新：%{time}"
+      just_now: "刚刚"
+      minutes_ago: "%{count} 分钟前"
+      hours_ago: "%{count} 小时前"
+      days_ago: "%{count} 天前"

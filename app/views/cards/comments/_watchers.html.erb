@@ -1,0 +1,13 @@
+<div id="<%= dom_id(card, :comment_watchers) %>" class="comments__subscribers flex flex-column margin-block-start txt-align-start full-width">
+  <strong class="txt-uppercase"><%= t("cards.subscribers") %></strong>
+
+  <p class="margin-none-block-start margin-block-end-half">
+    <%= t("cards.comments.watchers_will_be_notified", count: card.watchers.active.count) %>
+  </p>
+
+  <div class="flex align-center flex-wrap gap-half max-width txt-normal">
+    <% card.watchers.active.alphabetically.each do |watcher| %>
+      <%= avatar_tag watcher %>
+    <% end %>
+  </div>
+</div>

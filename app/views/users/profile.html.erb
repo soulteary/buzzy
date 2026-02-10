@@ -1,0 +1,55 @@
+<% @page_title = @user == Current.user ? t("users.profile.page_title_mine") : t("users.profile.page_title_other", name: @user.name) %>
+
+<% content_for :header do %>
+  <div class="header__actions header__actions--start">
+    <%= back_link_to @user.name, user_path(@user, script_name: nil), "keydown.left@document->hotkey#click keydown.esc@document->hotkey#click" %>
+  </div>
+  <div class="header__actions header__actions--end flex gap-half">
+    <% if Current.user.present? && Current.user != @user %>
+      <% follow_url_options = { script_name: Current.user.account.slug } %>
+      <% if Current.user.following?(@user) %>
+        <%= button_to t("square.following.unfollow"), unfollow_user_path(@user, follow_url_options), method: :delete, class: "btn btn--secondary", form: { data: { turbo_confirm: t("square.following.unfollow_confirm") } } %>
+      <% else %>
+        <%= button_to t("square.following.follow"), follow_user_path(@user, follow_url_options), method: :post, class: "btn btn--primary" %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<div class="panel shadow center" style="--panel-size: 56ch;">
+  <div class="flex flex-column gap align-center txt-align-center margin-block-end">
+    <div class="avatar txt-xx-large center fill-white btn--circle hide-focus-ring">
+      <%= image_tag user_avatar_path(@user, script_name: nil), alt: t("users.show.profile_avatar_alt", name: @user.name) %>
+    </div>
+    <h1 class="txt-x-large margin-none"><%= @user.name %></h1>
+  </div>
+
+  <% if @user.respond_to?(:bio) && @user.bio.present? %>
+    <div class="user-profile__bio rich-text-content prose margin-block-start">
+      <%= render_markdown_bio(@user.bio) %>
+    </div>
+  <% elsif Current.user == @user %>
+    <p class="txt-tinted txt-small margin-block-start">
+      <%= t("users.profile.bio_empty_self") %>
+      <%= link_to t("users.profile.edit_to_add"), edit_user_path(@user, script_name: nil), class: "txt-link" %>.
+    </p>
+  <% else %>
+    <p class="txt-tinted txt-small margin-block-start"><%= t("users.profile.bio_empty_other", name: @user.name) %></p>
+  <% end %>
+</div>
+
+<% if @user.verified? && defined?(@day_timeline) && @day_timeline %>
+  <section class="margin-block-start-double" aria-labelledby="profile-activity-heading">
+    <h2 id="profile-activity-heading" class="font-weight-black txt-large margin-block-end"><%= t("users.profile.recent_activity") %></h2>
+    <div class="events margin-block-double" id="activity" data-controller="pagination" data-pagination-paginate-on-intersection-value="true">
+      <%= day_timeline_pagination_frame_tag @day_timeline do %>
+        <%= render "events/day", day_timeline: @day_timeline %>
+
+        <% if @day_timeline.next_day %>
+          <%= link_to t("users.events.show.load_more"), polymorphic_path([ @user, :events ], day: @day_timeline.next_day.strftime("%Y-%m-%d"), **@filter.as_params),
+                class: "day-timeline-pagination-link", data: { frame: day_timeline_pagination_frame_id_for(@day_timeline.next_day), pagination_target: "paginationLink" } %>
+        <% end %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

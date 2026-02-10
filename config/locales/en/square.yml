@@ -1,0 +1,27 @@
+en:
+  square:
+    following:
+      page_title: "People I follow"
+      members: "Following"
+      no_following: "You are not following anyone yet. Follow others from Everyone's content or their profile."
+      follow: "Follow"
+      unfollow: "Unfollow"
+      unfollow_confirm: "Unfollow this person?"
+    all_content:
+      page_title: "Everyone's content"
+      members: "Members"
+      boards: "Boards"
+      creator: "by %{name}"
+      recent_cards: "Recent cards"
+      no_members: "No members yet."
+      no_boards: "No boards yet."
+      no_cards: "No cards yet."
+      untitled_card: "Untitled"
+      visible_to_everyone: "Visible to everyone"
+      accessible_to_you: "Content you have access to"
+      no_public_content: "This account has no content visible to everyone."
+      last_updated: "Last updated %{time}"
+      just_now: "just now"
+      minutes_ago: "%{count} minutes ago"
+      hours_ago: "%{count} hours ago"
+      days_ago: "%{count} days ago"

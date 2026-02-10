@@ -1,0 +1,4 @@
+<% assign_read_only = board_accessed_via_mention? || card_from_other_account?(card) || viewing_other_user_as_limited_viewer? %>
+<%= render "cards/display/common/assignees", card: card, read_only: assign_read_only do %>
+  <%= turbo_frame_tag card, :assignment, src: card_path_with_context(card, :new_assignment), loading: :lazy, refresh: "morph" unless assign_read_only %>
+<% end %>

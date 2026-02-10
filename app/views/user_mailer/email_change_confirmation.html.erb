@@ -1,0 +1,8 @@
+<p class="subtitle"><%= t("user_mailer.email_change_confirmation.subtitle") %></p>
+
+<%= link_to t("user_mailer.email_change_confirmation.button"), user_email_address_confirmation_url(user_id: @user.id, email_address_token: @token, script_name: nil), class: "btn" %>
+
+<p class="margin-block-start-double"><%= t("user_mailer.email_change_confirmation.ignore") %></p>
+
+<p class="footer"><%= t("user_mailer.email_change_confirmation.need_help") %> <%= mail_to "support@example.com", t("user_mailer.email_change_confirmation.send_email") %>.
+</p>

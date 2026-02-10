@@ -1,0 +1,27 @@
+diff --git a/src/nodes/custom_action_text_attachment_node.js b/src/nodes/custom_action_text_attachment_node.js
+--- a/src/nodes/custom_action_text_attachment_node.js
++++ b/src/nodes/custom_action_text_attachment_node.js
+@@ -32,7 +32,8 @@ export class CustomActionTextAttachmentNode extends DecoratorNode {
+   static importDOM() {
+     return {
+       [this.TAG_NAME]: (element) => {
+-        if (!element.getAttribute("content")) {
++        const sgid = element.getAttribute("sgid") || element.getAttribute("gid")
++        if (!sgid && !element.getAttribute("content")) {
+           return null
+         }
+ 
+@@ -44,8 +45,9 @@ export class CustomActionTextAttachmentNode extends DecoratorNode {
+               nodes.push($createTextNode(" "))
+             }
+ 
+-            nodes.push(new CustomActionTextAttachmentNode({
+-              sgid: attachment.getAttribute("sgid"),
+-              innerHtml: JSON.parse(attachment.getAttribute("content")),
++            const contentAttr = attachment.getAttribute("content")
++            const innerHtml = contentAttr ? JSON.parse(contentAttr) : ""
++            nodes.push(new CustomActionTextAttachmentNode({
++              sgid: attachment.getAttribute("sgid") || attachment.getAttribute("gid"),
++              innerHtml,
+               contentType: attachment.getAttribute("content-type")
+             }))

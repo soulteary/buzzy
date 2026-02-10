@@ -1,0 +1,31 @@
+<% @page_title = t("signups.completions.new.page_title") %>
+
+<div class="panel panel--centered flex flex-column gap-half <%= "shake" if flash[:alert] %>">
+  <h1 class="txt-x-large font-weight-black margin-block-end"><%= @page_title %></h1>
+
+  <%= form_with model: @signup, url: signup_completion_path, scope: "signup", class: "flex flex-column gap", data: { controller: "form" } do |form| %>
+    <%= form.text_field :full_name, class: "input txt-large", autocomplete: "name", placeholder: t("signups.completions.new.full_name_placeholder"), autofocus: true, required: true, maxlength: 240 %>
+
+    <p><%= t("signups.completions.new.one_step_away") %></p>
+
+    <% if @signup.errors.any? %>
+      <div class="margin-block-half txt-negative txt-small" style="text-align: left;">
+        <p class="margin-block-none font-weight-bold"><%= t("signups.completions.new.validation_errors") %></p>
+        <ul class="margin-block-none">
+          <% @signup.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <button type="submit" class="btn btn--link center" data-form-target="submit">
+      <span><%= t("signups.completions.new.continue") %></span>
+      <%= icon_tag "arrow-right" %>
+    </button>
+  <% end %>
+</div>
+
+<% content_for :footer do %>
+  <%= render "sessions/footer" %>
+<% end %>

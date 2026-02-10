@@ -1,0 +1,108 @@
+
+# Buzzy Docker Compose
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: buzzy:latest
+    restart: unless-stopped
+    networks:
+      - traefik
+    environment:
+      # ----- Rails -----
+      RAILS_ENV: production
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      # 设为 1 时过滤 /assets/、/favicon、/packs/ 等静态资源请求的 JSON 日志（Thruster 输出），减少噪音
+      SKIP_STATIC_REQUEST_LOGS: ${SKIP_STATIC_REQUEST_LOGS:-0}
+
+
+      # ----- 数据库 -----
+      # 适配器：sqlite（默认）| mysql
+      DATABASE_ADAPTER: sqlite
+
+      # ----- 应用 URL -----
+      # 应用对外访问地址，用于邮件链接、重定向等
+      BASE_URL: ${BASE_URL:-http://localhost:3006}
+
+      # ----- 邮件（可选） -----
+      # SMTP 服务器地址，不设则不发邮件
+      SMTP_ADDRESS: ${SMTP_ADDRESS:-}
+      # SMTP 端口，通常 587（TLS）或 465（SSL）
+      SMTP_PORT: ${SMTP_PORT:-587}
+      # SMTP 登录用户名
+      SMTP_USERNAME: ${SMTP_USERNAME:-}
+      # SMTP 登录密码
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      # 发件人邮箱地址
+      MAILER_FROM_ADDRESS: ${MAILER_FROM_ADDRESS:-}
+
+      # ----- 多租户 -----
+      # 是否启用多租户（按账户隔离）
+      MULTI_TENANT: ${MULTI_TENANT:-false}
+
+      # ----- 后台任务 -----
+      # 在 Puma 内运行 Solid Queue，单容器即可，无需单独 worker 容器
+      SOLID_QUEUE_IN_PUMA: "true"
+
+      # ----- Forward Auth（修改 .env 后需 --force-recreate app） -----
+      # 是否信任反向代理传入的认证信息（如 X-Auth-Email）
+      FORWARD_AUTH_ENABLED: ${FORWARD_AUTH_ENABLED:-true}
+      # 信任的代理 IP，逗号分隔；空则仅校验密钥头
+      FORWARD_AUTH_TRUSTED_IPS: ${FORWARD_AUTH_TRUSTED_IPS:-}
+      # 校验请求时必须携带的密钥头名称
+      FORWARD_AUTH_SECRET_HEADER: ${FORWARD_AUTH_SECRET_HEADER:-}
+      # 校验请求时必须携带的密钥值
+      FORWARD_AUTH_SECRET: ${FORWARD_AUTH_SECRET:-}
+      # 是否根据代理传入身份自动创建/关联用户
+      FORWARD_AUTH_AUTO_PROVISION: ${FORWARD_AUTH_AUTO_PROVISION:-false}
+      # 自动创建用户时的默认角色：owner | admin | member
+      FORWARD_AUTH_DEFAULT_ROLE: ${FORWARD_AUTH_DEFAULT_ROLE:-member}
+      # 是否自动创建会话（登录态）
+      FORWARD_AUTH_CREATE_SESSION: ${FORWARD_AUTH_CREATE_SESSION:-true}
+      # 是否用邮箱@前部分作为用户名并锁定邮箱不可改
+      FORWARD_AUTH_USE_EMAIL_LOCAL_PART_AND_LOCK_EMAIL: ${FORWARD_AUTH_USE_EMAIL_LOCAL_PART_AND_LOCK_EMAIL:-false}
+      # 是否在无账户时自动创建账户
+      FORWARD_AUTH_AUTO_CREATE_ACCOUNT: ${FORWARD_AUTH_AUTO_CREATE_ACCOUNT:-true}
+      # 自动创建账户的默认名称
+      FORWARD_AUTH_AUTO_CREATE_ACCOUNT_NAME: ${FORWARD_AUTH_AUTO_CREATE_ACCOUNT_NAME:-My Workspace}
+
+      # ----- PWA / CSP -----
+      # CSP 允许的 manifest 来源（逗号分隔）
+      CSP_MANIFEST_SRC: ${CSP_MANIFEST_SRC:-https://auth.lab.dev}
+      # PWA manifest 的基础 URL（前端请求此 URL 的 /manifest.json，需在网关上放行，见下）
+      PWA_MANIFEST_BASE_URL: ${PWA_MANIFEST_BASE_URL:-https://buzzy.lab.dev}
+      # 若使用 Forward Auth：必须在网关（如 Stargate/Traefik）中放行 GET /manifest.json，不重定向到登录，
+      # 否则浏览器请求 manifest 会被重定向到 auth 域，导致 CORS 报错。详见 docs/forward_auth.md
+
+      # ----- 功能开关 -----
+      # 是否禁用导出（账户导出、用户数据导出），true 时隐藏并返回 404
+      DISABLE_EXPORT_DATA: ${DISABLE_EXPORT_DATA:-false}
+      # 是否在界面隐藏用户邮箱（显示为占位符），不影响发信与登录
+      HIDE_EMAILS: ${HIDE_EMAILS:-false}
+
+      ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      DISABLE_SESSION_TRANSFER: ${DISABLE_SESSION_TRANSFER:-false}
+
+    volumes:
+      - ./buzzy_storage:/rails/storage
+
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.entrypoints=http
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.middlewares=redir-https
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.rule=Host(`${PROTECTED_DOMAIN:-buzzy.test.localhost}`)
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-http.service=noop@internal
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.entrypoints=https
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.tls=true
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.middlewares=gzip,stargate-auth
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.rule=Host(`${PROTECTED_DOMAIN:-buzzy.test.localhost}`)
+      - traefik.http.routers.${PROTECTED_PREFIX:-protected}-https.service=${PROTECTED_PREFIX:-protected}-backend
+      - traefik.http.services.${PROTECTED_PREFIX:-protected}-backend.loadbalancer.server.scheme=http
+      - traefik.http.services.${PROTECTED_PREFIX:-protected}-backend.loadbalancer.server.port=80
+
+networks:
+  traefik:
+    external: true
