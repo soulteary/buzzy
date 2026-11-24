@@ -1,3 +1,5 @@
+require "ostruct"
+
 module Filterable
   extend ActiveSupport::Concern
 

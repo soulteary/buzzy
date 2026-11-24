@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
 gem "rails", ">= 8.1.2"
+gem "cgi", "~> 0.5.2" # Ruby 4 only bundles CGI escaping, not the full API.
 
 # Assets & front end
 gem "importmap-rails"
