@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
       else
         render plain: "Forward Auth is enabled. Please access through the trusted gateway.", status: :unauthorized
       end
-      return
+      nil
     end
   end
 

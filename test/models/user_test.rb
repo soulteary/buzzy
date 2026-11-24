@@ -122,5 +122,4 @@ class UserTest < ActiveSupport::TestCase
     user.verify
     assert_equal original_time.to_i, user.reload.verified_at.to_i
   end
-
 end

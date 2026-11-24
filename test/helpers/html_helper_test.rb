@@ -127,19 +127,19 @@ class HtmlHelperTest < ActionView::TestCase
   end
 
   test "render_markdown strips script and dangerous tags (XSS)" do
-    result = render_markdown('<script>alert(1)</script>hello')
+    result = render_markdown("<script>alert(1)</script>hello")
     assert_no_match(/<script/i, result, "script must be stripped or escaped")
     assert_includes result, "hello"
 
-    result = render_markdown('before <img src=x onerror=alert(1)> after')
+    result = render_markdown("before <img src=x onerror=alert(1)> after")
     assert_no_match(/<img/i, result, "img must be stripped")
     assert_no_match(/onerror/i, result)
   end
 
   test "render_markdown strips javascript: and data: links" do
-    result = render_markdown('[click](javascript:alert(1))')
+    result = render_markdown("[click](javascript:alert(1))")
     assert_no_match(/javascript:/i, result)
-    result = render_markdown('[click](data:text/html,<script>alert(1)</script>)')
+    result = render_markdown("[click](data:text/html,<script>alert(1)</script>)")
     assert_no_match(/<script/i, result)
   end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "uri"
 
 # Converts Markdown to HTML and replaces @mention and blob attachment tokens with

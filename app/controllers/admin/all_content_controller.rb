@@ -44,7 +44,7 @@ module Admin
         end
         if @account.blank? && Current.identity.blank?
           head :unprocessable_entity
-          return
+          nil
         end
       end
   end
